@@ -1,0 +1,32 @@
+Step 4: You can use this script to add constraints to every bone in your armature. It will add a Track To constraint to every bone, set it to track your mesh and for each bone it will set it to track the vertex group of the same name. It assumes Track Axis: Y and Up: Z are going to work for you.
+
+import bpy
+
+#change to your armature's name
+armature = 'Armature'
+
+#change to the name of the mesh parented to the armature
+mesh = 'Plane.001'
+
+bones = bpy.data.objects[armature].pose.bones
+
+for bone in bones:
+    nc = bone.constraints.new(type='TRACK_TO')
+    nc.target = bpy.data.objects[mesh]
+    nc.subtarget = bone.name
+    nc.track_axis = 'TRACK_Y'
+    nc.up_axis = 'UP_Z'
+    nc.use_target_z = True
+
+If you mess up you can clear all constraints with
+
+import bpy
+
+#name of your armature
+armature = 'Armature'
+
+bones = bpy.data.objects[armature].pose.bones
+
+for bone in bones:
+    for constraint in bone.constraints:
+        bone.constraints.remove(constraint)
