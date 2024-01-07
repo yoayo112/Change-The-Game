@@ -1,5 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8331312349942939794
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -7,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Stylized Water Variant
+  m_Name: Simple Water Variant
   m_Shader: {fileID: -6465566751694194690, guid: 3f1522f14feb5c345b56ba4ee844110c, type: 3}
   m_Parent: {fileID: 2100000, guid: 0f6cb89431b473b4e91d25a04cc59724, type: 2}
   m_ModifiedSerializedProperties: 0
@@ -25,22 +38,7 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _Distance: 3.09
-    - _Wobble_Scale: 0.56
-    - _Wobble_Speed: 1.55
-    - _Wobble_Strength: 1.08
+    - _Wobble_Speed: 0.09
+    - _Wobble_Strength: 0.03
     m_Colors: []
   m_BuildTextureStacks: []
---- !u!114 &5348061301408812700
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 7
