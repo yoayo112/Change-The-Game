@@ -6,7 +6,7 @@ GITHUB CHEAT SHEET
 INIT - obv dont use SkysBranch .. thats mine.
 ----
 
-cd c:/Idont/fucking/know  						//Navigates to local directory
+cd c:/I/dont/fucking/know  						//Navigates to local directory
 cd ..									//Navigates out of current directory because your a fuckup
 git init 								//Adds some default information to allow sync
 git pull https://github.com/yoayo112/Change-The-Game.git		//Populates your local directory with current data
@@ -95,5 +95,21 @@ git commit -m "The godliest commit ever known to mankind"	//"Suck deez nutzz" al
 								//generally its nice to see a breif description of what you added or changed.
 								// i.e. "fixed clipping bug while running" or "added a dope minigame!"
 git push							//your changes now exist ethereally everywhere. Well at least on some server somewhere.
-								//Note: This just pushes changes to YOUR branch. This will not merge changes into the master. 
+								//Note: This just pushes changes to YOUR branch. This will not merge changes into the master.
 
+
+
+-------
+MERGING - Below is sort of redundant but is best practice for safety.
+-------
+
+git checkout master						//Switch to the master branch
+git pull origin master						//Redundant insurance that everything is up to date.
+								//This will fix a headache if someone merged since you last pulled.
+								//You may see merge conflicts here and we need to make sure they all get fixed before a real push
+git merge SkysBranch						//Pulls all the changes from SkysBranch into the master.
+								//You may see more merge conflicts. Please fix them or ask for help!
+
+git push origin master						//pushes the master branch to the cloud.
+git checkout SkysBranch						//Sets the whole thing up again for next time
+								// All Done :) 
