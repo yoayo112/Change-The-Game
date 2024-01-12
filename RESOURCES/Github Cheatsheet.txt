@@ -107,9 +107,12 @@ git checkout master						//Switch to the master branch
 git pull origin master						//Redundant insurance that everything is up to date.
 								//This will fix a headache if someone merged since you last pulled.
 								//You may see merge conflicts here and we need to make sure they all get fixed before a real push
-git merge SkysBranch						//Pulls all the changes from SkysBranch into the master.
+git merge origin/SkysBranch						//Pulls all the changes from SkysBranch into the master.
 								//You may see more merge conflicts. Please fix them or ask for help!
 
 git push origin master						//pushes the master branch to the cloud.
 git checkout SkysBranch						//Sets the whole thing up again for next time
 								// All Done :) 
+
+
+<3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3 <3
