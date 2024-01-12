@@ -1,0 +1,71 @@
+++++++++++++++++++
+GITHUB CHEAT SHEET
+++++++++++++++++++
+
+----
+INIT - obv dont use SkysBranch .. thats mine.
+----
+
+cd c:/Idont/fucking/know  						//Navigates to local directory
+cd ..									//Navigates out of current directory because your a fuckup
+git init 								//Adds some default information to allow sync
+git pull https://github.com/yoayo112/Change-The-Game.git		//Populates your local directory with current data
+git status								//Shows your relationship to the origin. 
+									// -> should say "Working tree clean. Nothing to commit".
+git checkout -b SkysBranch						//Switches the working directory to your branch. *CAP SENSITIVE*.
+git branch								//Shows the available branches. 
+									// -> current branch (SkysBranch) should be green with a star next to it. 
+git remote add origin https://github.com/yoayo112/Change-The-Game.git	//Creates an "origin" variable to be the working dir. And your dir to be remote.
+git push -u origin SkysBranch						//Connects your local "SkysBranch" with remote "SkysBranch" via tracking.
+									// ^^^ Important! Pushes you make will now track with your branch.
+									// ^^^ Note: you don't actually need to push any changes. Tracking will still be setup.
+									// All Done :)
+// If at any point you see:
+
+Fatal HttpRequestException encountered
+Username for 'https://github.com':
+
+//This means github wants you to login to make sure your not some random weirdo pushing to a repository.
+//(I mean, current wierdos excluded ovbiously)
+
+//Enter your username and tap 'Enter'
+
+//Unfortunately, github has recently done away with password authentication (kinda dumb tbh).
+//Soooo, even though it will then say 
+
+Password for 'http://github.com':
+
+//It wont take your password. XD (We love it! <3)
+//What it really wants is a unique token/key value that you make instead. 
+//Navigate to github.com
+//Upper right corner- click your cute little profile pic ;)
+//Click "Settings" from that drop down menu (near the bottom)
+//On the settings page, on the left hand side, literally the last item in that list, click "Developer Settings"
+//Click "Personal Access Tokens" then -> "Tokens (Classic)"
+//Click "Generate new token"
+//I prefer the classic token, since the fine grained repo is still in beta testing. 
+//Add a note, Something like: "Access only granted to gods among men". 
+// ("Suck deez nutzz" is also acceptable)
+//Set the expiration date. 
+//If this is your primary machine, and you will be using it indefinitely you can set no expiration date.
+//Otherwwise, its probably smart to set it to only have temporary access, because this token will be remembered by this local machine. 
+//If I was using a computer in the public library, I would want my key to expire asap.
+//Select all permissions, because clearly we are supreme gods among men and should not be restriced from ultimate power.
+//Click "Generate Token".
+//IMPORTANT// Copy this little fucker. Once you navigate away from this page it will be gone forever!!
+//I like to throw mine in my notes file for the project, a .txt, a comment at the top of my code, a README..
+//If somehow you get logged out, or loose your clipboard, at least you will still have this key. 
+//Ctrl+V this little gremlin back in cmd shell
+
+Password for 'http://github.com':
+
+//and now this program, on this machine, will auto-authorize you for the duration of that token. It will not ask you to log in again.
+// :)
+
+--------
+WORKFLOW
+--------
+
+Open cmd
+cd whatever/your/path/is					//go to your local directory
+git pull 							//Please for the love of god, pull everythime!
