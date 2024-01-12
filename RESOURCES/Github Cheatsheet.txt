@@ -20,6 +20,10 @@ git push -u origin SkysBranch						//Connects your local "SkysBranch" with remot
 									// ^^^ Important! Pushes you make will now track with your branch.
 									// ^^^ Note: you don't actually need to push any changes. Tracking will still be setup.
 									// All Done :)
+-----
+LOGIN
+-----
+							
 // If at any point you see:
 
 Fatal HttpRequestException encountered
@@ -68,4 +72,28 @@ WORKFLOW
 
 Open cmd
 cd whatever/your/path/is					//go to your local directory
-git pull 							//Please for the love of god, pull everythime!
+git pull origin master						//Please for the love of god, pull everytime!
+								//-> currently I have been working on this project most days, often in the middle of the night.
+								//This pull is super important, without this, you might find your branch behind the master.
+								// -> i.e. there are changes on the master that you dont have. and your push may not work.
+								// -> Worse case scenario, you pull, and you are already up to date with the master.
+git status							//If for any reason you want to know where you stand in relation to the master.
+								
+
+MAKE CH-CH-CH-CHANGES (Time may change me-ee, But I can't trace time!)
+//^^ Game Development
+//Please keep files and assets organized! <3 This is like the digital equivalent of being roomates and I will be sad if I have to do your dishes. 
+
+git add *							//* == all files.
+ --OR--
+git add -A							//-A == all directory changes (including file deletion). 
+--OR-- 
+git add <filename>						//<filename> just a single file.
+								//Theres way more things you can do here to implement and control your changes.
+
+git commit -m "The godliest commit ever known to mankind"	//"Suck deez nutzz" also acceptable.
+								//generally its nice to see a breif description of what you added or changed.
+								// i.e. "fixed clipping bug while running" or "added a dope minigame!"
+git push							//your changes now exist ethereally everywhere. Well at least on some server somewhere.
+								//Note: This just pushes changes to YOUR branch. This will not merge changes into the master. 
+
