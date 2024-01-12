@@ -1,7 +1,7 @@
 # Change-The-Game
-A game that I am building and designing using unity, C#, and blender. Implementation and design are based on concepts and creative design by Sam Stagner (@ RonkyKong) who is also responsible for almost all static visual assets. Started in December of 2023.
+A 3rd person, 3d role playing game that built using unity, C#, and blender. Implementation and design are based on concepts and creative design by Sam Stagner (@ RonkyKong) who is also responsible for lots of the static visual assets. Started in December of 2023.
 
-Authors: Schuyler Vercauteren, Samuel Stagner.
+Authors: Schuyler Vercauteren, Samuel Stagner, Sean Thornton, Elija Theander.
 
 UNITY PACKAGES - Make sure these are installed from the Unity Package Manager:
 
