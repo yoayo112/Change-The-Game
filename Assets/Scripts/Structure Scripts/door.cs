@@ -16,7 +16,7 @@ public class door : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        player = GameObject.Find("cowboy").GetComponent<Transform>();
+        player = GameObject.Find("Cowboy_body").GetComponent<Transform>();
         frame = GetComponent<Transform>();
         openDistance = 8;
         isOpen = false;
@@ -28,8 +28,6 @@ public class door : MonoBehaviour
         //find distance
         float xd = Math.Abs(player.position.x - frame.position.x);
         float zd = Math.Abs(player.position.z - frame.position.z);
-        //Debug.Log(xd + "," + zd);
-        Debug.Log(isOpen);
 
         if ((xd <= openDistance && zd <= openDistance) && isOpen == false)
         {
