@@ -63127,7 +63127,7 @@ MonoBehaviour:
   runSpeed: 24
   mouseSensitivity: 2
   cameraHeight: 11.5
-  cameraFollowDistance: 15
+  cameraFollowDistance: 8
 --- !u!1 &460137045811996052
 GameObject:
   m_ObjectHideFlags: 0
