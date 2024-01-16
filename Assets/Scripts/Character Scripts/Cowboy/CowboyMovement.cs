@@ -1,3 +1,7 @@
+//Movement and Rotation of both a prefab body and a floating (pivot point) camera in 3D space.
+//Plus animator/controller triggers.
+//Sky Vercauteren 2024
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,13 +11,14 @@ public class CharacterMovement : MonoBehaviour
     public float walkSpeed = 3f;
     public float runSpeed = 8f;
     public float mouseSensitivity = 2f;
+    public float mouseBias = 2f;
 
     public float cameraHeight = 8f;
     public float cameraFollowDistance = 15f;
 
     private GameObject cameraPivot;
     private char compass;
-    private Transform focus;
+    private bool forward = true;
     private float playerSpeed;
     private float cameraRotateX = 0f;
     private float cameraRotateY = 0f;
@@ -25,18 +30,12 @@ public class CharacterMovement : MonoBehaviour
 
     void Start()
     {
-        //--get components--
+        //set all components
         animator = GameObject.Find("Cowboy_body").GetComponent<Animator>();
         body = GameObject.Find("Cowboy_body").GetComponent<Transform>();
         main = GameObject.Find("COWBOY_PREFAB").GetComponent<Transform>();
         cameraPivot = GameObject.Find("Main Camera");
         compass = 'N';
-        focus = GameObject.Find("Cowboy_Focus").GetComponent<Transform>();
-        focus.position = new Vector3(body.position.x, body.position.y, body.position.z + 1);
-
-        //--hide the mosue cursor. Press Esc during play to show the cursor. --
-        //Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
     }
 
 
@@ -45,72 +44,82 @@ public class CharacterMovement : MonoBehaviour
         //get values 
         Vector3 horizontalInput = Input.GetAxis("Horizontal") * gameObject.transform.right;
         Vector3 verticalInput = Input.GetAxis("Vertical") * gameObject.transform.forward;
+        float HI = Input.GetAxisRaw("Horizontal");
+        float VI = Input.GetAxisRaw("Vertical");
         float mouse_X = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouse_Y = Input.GetAxis("Mouse Y") * mouseSensitivity;
-        Vector3 move = horizontalInput + verticalInput;
-        float normalizedSpeed = Vector3.Dot(move.normalized, move.normalized);
+        float facing = cameraPivot.transform.localRotation.eulerAngles.y;
 
-        //camera movement and character sideways rotation
+        //Body rotation:
+        float currentRotation = body.localRotation.eulerAngles.y;
+        float newRotation = 0f;
+        float mouseFocus = mouse_X * mouseBias;
+        //modify the new orientation according to the vertical input and flip the body around if it's negative. 
+        switch (VI)
+        {
+            case 0f:
+                newRotation = currentRotation;
+                break;
+            case 1f:
+                if (forward == false) { newRotation = 180f - currentRotation; forward = true; }
+                else { newRotation = currentRotation; }
+                break;
+            case -1f:
+                if (forward == true) { newRotation = 180f - currentRotation; forward = false; HI = HI * -1f; }
+                else { newRotation = currentRotation; }
+                break;
+        }
+        //Now modify the new orientation according to horizontal input, increase the angle theta to rotate clockwise, decrease for counter-clockwise.
+        Debug.Log(Mathf.Abs(currentRotation - facing));
+        if(Mathf.Abs(currentRotation - facing) >= 90 && Mathf.Abs(currentRotation - facing) <= 270)
+        {
+            mouseFocus = mouseFocus * -1f;
+        }
+        newRotation = newRotation + HI;
+        //newRotation = newRotation + mouseFocus;
+        //apply the new orientation!
+        body.localRotation = Quaternion.Euler(0f, newRotation, 0f);
 
+        //camera movement
         cameraRotateY += mouse_X;
         cameraRotateX -= mouse_Y;
         cameraRotateX = Mathf.Clamp(cameraRotateX, -60, 90); //limites the up/down rotation of the camera 
         cameraPivot.transform.localRotation = Quaternion.Euler(cameraRotateX, cameraRotateY, 0);
 
         //Determine which direction camera is facing 
-        float facing = cameraPivot.transform.localRotation.eulerAngles.y;
         if (facing <= 305 && facing >= 235) { compass = 'W'; }
         else if (facing >= 145 && facing <= 215) { compass = 'S'; }
         else if (facing >= 55 && facing <= 125) { compass = 'E'; }
         else if (facing <= 35 || facing >= 325) { compass = 'N'; }
 
-        //create a new focus point based on axis inputs to set "LookAt"
-        //limit this to a square around the body
-
-        int range = 4;
-        float newX = focus.position.x;
-        if(newX >= body.position.x + range) { newX = body.position.x + range; }
-        if(newX <= body.position.x - range) { newX = body.position.x - range; }
-        float newZ = focus.position.z;
-        if (newZ >= body.position.z + range) { newZ = body.position.z + range; }
-        if (newZ <= body.position.z - range) { newZ = body.position.z - range; }
-        focus.position = new Vector3(newX, body.position.y, newZ);
-
-        //float xFocus = 2 * Input.GetAxis("Horizontal");                //RAW - movement and camera serperated
-        float xFocus = (2 * Input.GetAxis("Horizontal") + 4 * mouse_X);//BIASED - mouse influences movement. 
-        float yFocus = 2 * Input.GetAxis("Vertical");
-
         //create a new orientation for the camera based on which direction its facing.
         Vector3 newFace = new Vector3(0, body.position.y + cameraHeight, 0);
-        Vector3 newFocus = new Vector3(0, 0, 0);
 
-        //lerp the location of the focus point the prefab should look at.
-        //and lerp the camera so that every 90 degrees it ends up softly behind the prefab.
+        //lerp the camera so that every 90 degrees it ends up softly behind the prefab.
         switch (compass)
         {
             case 'W':
                 newFace = new Vector3(body.position.x + cameraFollowDistance, newFace.y, body.position.z);
-                newFocus = new Vector3(focus.position.x - yFocus, body.position.y, focus.position.z + xFocus);
                 break;
             case 'S':
                 newFace = new Vector3(body.position.x, newFace.y, body.position.z + cameraFollowDistance);
-                newFocus = new Vector3(focus.position.x - xFocus, body.position.y, focus.position.z - yFocus);
                 break;
             case 'E':
                 newFace = new Vector3(body.position.x - cameraFollowDistance, newFace.y, body.position.z);
-                newFocus = new Vector3(focus.position.x + yFocus, body.position.y, focus.position.z - xFocus);
                 break;
             case 'N':
                 newFace = new Vector3(body.position.x, newFace.y, body.position.z - cameraFollowDistance);
-                newFocus = new Vector3(focus.position.x + xFocus, body.position.y, focus.position.z + yFocus);
                 break;
         }
         cameraPivot.transform.position = Vector3.Lerp(cameraPivot.transform.position, newFace, 0.013f);
-        focus.position = Vector3.Lerp(focus.position, newFocus, 0.02f);
 
-        body.LookAt(focus);
-
+        //Rotation and orientation should be done.
+        //Now we just move the body and trigger animations.
         animator.SetFloat("Speed", playerSpeed);
+
+        //calculate movement
+        Vector3 move = horizontalInput + verticalInput;
+        float normalizedSpeed = Vector3.Dot(move.normalized, move.normalized);
 
         //change playerSpeed and Animator Parameters when the "run" button is pressed
         bool moving = (Input.GetButton("Horizontal") || Input.GetButton("Vertical"));
