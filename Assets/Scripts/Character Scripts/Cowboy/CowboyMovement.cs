@@ -11,7 +11,7 @@ public class CharacterMovement : MonoBehaviour
     public float walkSpeed = 3f;
     public float runSpeed = 8f;
     public float mouseSensitivity = 2f;
-    public float mouseBias = 2f;
+    public float mouseBias = 0.05f;
 
     public float cameraHeight = 8f;
     public float cameraFollowDistance = 15f;
@@ -54,31 +54,39 @@ public class CharacterMovement : MonoBehaviour
         float currentRotation = body.localRotation.eulerAngles.y;
         float newRotation = 0f;
         float mouseFocus = mouse_X * mouseBias;
-        //modify the new orientation according to the vertical input and flip the body around if it's negative. 
+        //modify the new orientation according to the vertical input so that its wither moving towards or away from the camera.
         switch (VI)
         {
             case 0f:
                 newRotation = currentRotation;
                 break;
             case 1f:
-                if (forward == false) { newRotation = 180f - currentRotation; forward = true; }
-                else { newRotation = currentRotation; }
+                 newRotation = facing;
                 break;
             case -1f:
-                if (forward == true) { newRotation = 180f - currentRotation; forward = false; HI = HI * -1f; }
-                else { newRotation = currentRotation; }
+                newRotation = facing + 180;
+                //HI = HI * -1;
                 break;
         }
         //Now modify the new orientation according to horizontal input, increase the angle theta to rotate clockwise, decrease for counter-clockwise.
-        Debug.Log(Mathf.Abs(currentRotation - facing));
-        if(Mathf.Abs(currentRotation - facing) >= 90 && Mathf.Abs(currentRotation - facing) <= 270)
+        //newRotation = newRotation + (90 *HI);
+        float newHRotation = 0f;
+        switch (HI)
         {
-            mouseFocus = mouseFocus * -1f;
+            case 0f:
+                newRotation = currentRotation;
+                break;
+            case 1f:
+                newRotation = facing + (90 * HI);
+                break;
+            case -1f:
+                newRotation = facing - (90 * HI);
+                //HI = HI * -1;
+                break;
         }
-        newRotation = newRotation + HI;
-        //newRotation = newRotation + mouseFocus;
+        newRotation = newRotation + newHRotation;
         //apply the new orientation!
-        body.localRotation = Quaternion.Euler(0f, newRotation, 0f);
+        body.localRotation = Quaternion.Lerp(body.localRotation, Quaternion.Euler(body.localRotation.x, newRotation, body.localRotation.z), 0.02f);
 
         //camera movement
         cameraRotateY += mouse_X;
@@ -111,7 +119,7 @@ public class CharacterMovement : MonoBehaviour
                 newFace = new Vector3(body.position.x, newFace.y, body.position.z - cameraFollowDistance);
                 break;
         }
-        cameraPivot.transform.position = Vector3.Lerp(cameraPivot.transform.position, newFace, 0.013f);
+        cameraPivot.transform.position = Vector3.Slerp(cameraPivot.transform.position, newFace, 0.01f);
 
         //Rotation and orientation should be done.
         //Now we just move the body and trigger animations.
