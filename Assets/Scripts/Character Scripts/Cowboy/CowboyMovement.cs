@@ -58,35 +58,51 @@ public class CharacterMovement : MonoBehaviour
         switch (VI)
         {
             case 0f:
-                newRotation = currentRotation;
+                switch(HI)
+                {
+                    case 0f:
+                        newRotation = facing;
+                        break;
+                    case 1f:
+                        newRotation = facing + 90f;
+                        break;
+                    case -1f:
+                        newRotation = facing - 90f;
+                        break;
+                }
                 break;
             case 1f:
-                 newRotation = facing;
+                switch (HI)
+                {
+                    case 0f:
+                        newRotation = facing;
+                        break;
+                    case 1f:
+                        newRotation = facing + 45f;
+                        break;
+                    case -1f:
+                        newRotation = facing - 45f;
+                        break;
+                }
                 break;
             case -1f:
-                newRotation = facing + 180;
-                //HI = HI * -1;
+                switch (HI)
+                {
+                    case 0f:
+                        newRotation = facing + 180f;
+                        break;
+                    case 1f:
+                        newRotation = facing + 135f;
+                        break;
+                    case -1f:
+                        newRotation = facing - 135f;
+                        break;
+                }
                 break;
         }
-        //Now modify the new orientation according to horizontal input, increase the angle theta to rotate clockwise, decrease for counter-clockwise.
-        //newRotation = newRotation + (90 *HI);
-        float newHRotation = 0f;
-        switch (HI)
-        {
-            case 0f:
-                newRotation = currentRotation;
-                break;
-            case 1f:
-                newRotation = facing + (90 * HI);
-                break;
-            case -1f:
-                newRotation = facing - (90 * HI);
-                //HI = HI * -1;
-                break;
-        }
-        newRotation = newRotation + newHRotation;
+
         //apply the new orientation!
-        body.localRotation = Quaternion.Lerp(body.localRotation, Quaternion.Euler(body.localRotation.x, newRotation, body.localRotation.z), 0.02f);
+        body.localRotation = Quaternion.Lerp(body.localRotation, Quaternion.Euler(body.localRotation.x, newRotation, body.localRotation.z), 0.0175f);
 
         //camera movement
         cameraRotateY += mouse_X;
