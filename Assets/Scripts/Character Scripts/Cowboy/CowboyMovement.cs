@@ -6,22 +6,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterMovement : MonoBehaviour
+public class CowboyMovement : MonoBehaviour
 {
+    //exposed movement
     public float walkSpeed = 3f;
     public float runSpeed = 8f;
+    //exposed camera
     public float mouseSensitivity = 2f;
-    public float mouseBias = 0.05f;
-
     public float cameraHeight = 8f;
     public float cameraFollowDistance = 15f;
-
+    public float minFollow = 0;
+    public float maxFollow = 100;
+    public int cameraLerpWidth = 30;
+    //unexposed vars
+    private float fixedCameraHeight = 0f;
     private GameObject cameraPivot;
     private char compass;
-    private bool forward = true;
     private float playerSpeed;
     private float cameraRotateX = 0f;
     private float cameraRotateY = 0f;
+    private float cameraLerpSpeed = 0.009f;
     private Rigidbody rigidBody;
     private Animator animator;
     private Transform body;
@@ -36,6 +40,7 @@ public class CharacterMovement : MonoBehaviour
         main = GameObject.Find("COWBOY_PREFAB").GetComponent<Transform>();
         cameraPivot = GameObject.Find("Main Camera");
         compass = 'N';
+        fixedCameraHeight = cameraHeight;
     }
 
 
@@ -50,18 +55,26 @@ public class CharacterMovement : MonoBehaviour
         float mouse_Y = Input.GetAxis("Mouse Y") * mouseSensitivity;
         float facing = cameraPivot.transform.localRotation.eulerAngles.y;
 
-        //Body rotation:
+        //set Camera Follow Distance based on scroll wheel!! :D
+        if(cameraFollowDistance + 1 > maxFollow) { cameraFollowDistance = maxFollow; }
+        if(cameraFollowDistance - 1 < minFollow) { cameraFollowDistance = minFollow; }
+
+        if (cameraFollowDistance <= 2.5f) { cameraHeight = 14f; }
+        else if(cameraFollowDistance > 2.5f) { cameraHeight = fixedCameraHeight; }
+        cameraFollowDistance += Input.mouseScrollDelta.y * -1f;
+        //cameraLerpSpeed += Input.mouseScrollDelta.y * 0.0007f;
+
+        //Body rotation, create a new value for y that we can lerp/rotate to.
         float currentRotation = body.localRotation.eulerAngles.y;
         float newRotation = 0f;
-        float mouseFocus = mouse_X * mouseBias;
-        //modify the new orientation according to the vertical input so that its wither moving towards or away from the camera.
+        //modify the new orientation according to the vertical input so that its either moving towards or away from the camera.
         switch (VI)
         {
             case 0f:
                 switch(HI)
                 {
                     case 0f:
-                        newRotation = facing;
+                        newRotation = currentRotation;
                         break;
                     case 1f:
                         newRotation = facing + 90f;
@@ -102,40 +115,70 @@ public class CharacterMovement : MonoBehaviour
         }
 
         //apply the new orientation!
-        body.localRotation = Quaternion.Lerp(body.localRotation, Quaternion.Euler(body.localRotation.x, newRotation, body.localRotation.z), 0.0175f);
+        body.localRotation = Quaternion.Lerp(body.localRotation, Quaternion.Euler(body.localRotation.x, newRotation, body.localRotation.z), 0.0075f);
 
-        //camera movement
+        //camera rotation
         cameraRotateY += mouse_X;
         cameraRotateX -= mouse_Y;
-        cameraRotateX = Mathf.Clamp(cameraRotateX, -60, 90); //limites the up/down rotation of the camera 
+        cameraRotateX = Mathf.Clamp(cameraRotateX, -60, 90); //limites the up/down rotation of the camera - it gets crazy out there!
         cameraPivot.transform.localRotation = Quaternion.Euler(cameraRotateX, cameraRotateY, 0);
 
-        //Determine which direction camera is facing 
-        if (facing <= 305 && facing >= 235) { compass = 'W'; }
-        else if (facing >= 145 && facing <= 215) { compass = 'S'; }
-        else if (facing >= 55 && facing <= 125) { compass = 'E'; }
-        else if (facing <= 35 || facing >= 325) { compass = 'N'; }
+        //Determine which direction camera is facing
+        //lowercase moves clockwise. so 'n' = NE. 'e' = SE. 's' = SW. 'w' = NW
+        int width = cameraLerpWidth;
+        if (facing >= 360 - width  || facing <= 0 + width) { compass = 'N'; }
+        else if (facing >= 45 - width && facing <= 45 + width) { compass = 'n'; }
+        else if (facing >= 90 - width && facing <= 90 + width) { compass = 'E'; }
+        else if (facing >= 135 - width && facing <= 135 + width) { compass = 'e'; }
+        else if (facing >= 180 - width && facing <= 180 + width) { compass = 'S'; }
+        else if (facing >= 225 - width && facing <= 225 + width) { compass = 's'; }
+        else if (facing >= 270 - width && facing <= 270 + width) { compass = 'W'; }
+        else if (facing >= 315 - width && facing <= 315 + width) { compass = 'w'; }
 
         //create a new orientation for the camera based on which direction its facing.
-        Vector3 newFace = new Vector3(0, body.position.y + cameraHeight, 0);
-
-        //lerp the camera so that every 90 degrees it ends up softly behind the prefab.
+        float camX = 0f;
+        float camZ = 0f;
+        float angledDistance = cameraFollowDistance / 2;
+        angledDistance += angledDistance / 2;
         switch (compass)
         {
-            case 'W':
-                newFace = new Vector3(body.position.x + cameraFollowDistance, newFace.y, body.position.z);
+            case 'N':
+                camX = body.position.x;
+                camZ = body.position.z - cameraFollowDistance;
                 break;
-            case 'S':
-                newFace = new Vector3(body.position.x, newFace.y, body.position.z + cameraFollowDistance);
+            case 'n':
+                camX = body.position.x - angledDistance;
+                camZ = body.position.z - angledDistance;
                 break;
             case 'E':
-                newFace = new Vector3(body.position.x - cameraFollowDistance, newFace.y, body.position.z);
+                camX = body.position.x - cameraFollowDistance;
+                camZ = body.position.z;
                 break;
-            case 'N':
-                newFace = new Vector3(body.position.x, newFace.y, body.position.z - cameraFollowDistance);
+            case 'e':
+                camX = body.position.x - angledDistance;
+                camZ = body.position.z + angledDistance;
+                break;
+            case 'S':
+                camX = body.position.x;
+                camZ = body.position.z + cameraFollowDistance;
+                break;
+            case 's':
+                camX = body.position.x + angledDistance;
+                camZ = body.position.z + angledDistance;
+                break;
+            case 'W':
+                camX = body.position.x + cameraFollowDistance;
+                camZ = body.position.z;
+                break;
+            case 'w':
+                camX = body.position.x + angledDistance;
+                camZ = body.position.z - angledDistance;
                 break;
         }
-        cameraPivot.transform.position = Vector3.Slerp(cameraPivot.transform.position, newFace, 0.01f);
+        Vector3 newFace = new Vector3(camX, body.position.y + cameraHeight, camZ);
+        
+        //lerp the camera so that every 45 degrees it ends up softly behind the prefab.
+        cameraPivot.transform.position = Vector3.Lerp(cameraPivot.transform.position, newFace, cameraLerpSpeed);
 
         //Rotation and orientation should be done.
         //Now we just move the body and trigger animations.

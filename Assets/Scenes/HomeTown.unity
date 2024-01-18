@@ -8738,18 +8738,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67152511cea9fef41801349a12d309b4, type: 3}
---- !u!114 &298055970
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4453707990003370342}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34d0f05222154784d90d3023f17a6094, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &298055971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9051,14 +9039,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1279692276}
     m_Modifications:
-    - target: {fileID: 4803927449983227334, guid: 6cdde1cd5b3221d4f9d560fb626fd15a, type: 3}
-      propertyPath: m_Size.y
-      value: 0.016
-      objectReference: {fileID: 0}
-    - target: {fileID: 7155665891723094162, guid: 6cdde1cd5b3221d4f9d560fb626fd15a, type: 3}
-      propertyPath: m_Size.y
-      value: 0.016
-      objectReference: {fileID: 0}
     - target: {fileID: 52510186529227366, guid: 4a69a0d8447e01142a1b41535f981774, type: 3}
       propertyPath: m_Name
       value: LOG_CABIN-prefab (4)
@@ -9114,6 +9094,14 @@ PrefabInstance:
     - target: {fileID: 3583828172012033114, guid: 4a69a0d8447e01142a1b41535f981774, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4803927449983227334, guid: 6cdde1cd5b3221d4f9d560fb626fd15a, type: 3}
+      propertyPath: m_Size.y
+      value: 0.016
+      objectReference: {fileID: 0}
+    - target: {fileID: 7155665891723094162, guid: 6cdde1cd5b3221d4f9d560fb626fd15a, type: 3}
+      propertyPath: m_Size.y
+      value: 0.016
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -27465,14 +27453,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1279692276}
     m_Modifications:
-    - target: {fileID: 4803927449983227334, guid: 6cdde1cd5b3221d4f9d560fb626fd15a, type: 3}
-      propertyPath: m_Size.y
-      value: 0.016
-      objectReference: {fileID: 0}
-    - target: {fileID: 7155665891723094162, guid: 6cdde1cd5b3221d4f9d560fb626fd15a, type: 3}
-      propertyPath: m_Size.y
-      value: 0.016
-      objectReference: {fileID: 0}
     - target: {fileID: 52510186529227366, guid: 4a69a0d8447e01142a1b41535f981774, type: 3}
       propertyPath: m_Name
       value: LOG_CABIN-prefab (1)
@@ -27516,6 +27496,14 @@ PrefabInstance:
     - target: {fileID: 3583828172012033114, guid: 4a69a0d8447e01142a1b41535f981774, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4803927449983227334, guid: 6cdde1cd5b3221d4f9d560fb626fd15a, type: 3}
+      propertyPath: m_Size.y
+      value: 0.016
+      objectReference: {fileID: 0}
+    - target: {fileID: 7155665891723094162, guid: 6cdde1cd5b3221d4f9d560fb626fd15a, type: 3}
+      propertyPath: m_Size.y
+      value: 0.016
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -27805,14 +27793,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1279692276}
     m_Modifications:
-    - target: {fileID: 4803927449983227334, guid: 6cdde1cd5b3221d4f9d560fb626fd15a, type: 3}
-      propertyPath: m_Size.y
-      value: 0.016
-      objectReference: {fileID: 0}
-    - target: {fileID: 7155665891723094162, guid: 6cdde1cd5b3221d4f9d560fb626fd15a, type: 3}
-      propertyPath: m_Size.y
-      value: 0.016
-      objectReference: {fileID: 0}
     - target: {fileID: 52510186529227366, guid: 4a69a0d8447e01142a1b41535f981774, type: 3}
       propertyPath: m_Name
       value: LOG_CABIN-prefab (2)
@@ -27856,6 +27836,14 @@ PrefabInstance:
     - target: {fileID: 3583828172012033114, guid: 4a69a0d8447e01142a1b41535f981774, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4803927449983227334, guid: 6cdde1cd5b3221d4f9d560fb626fd15a, type: 3}
+      propertyPath: m_Size.y
+      value: 0.016
+      objectReference: {fileID: 0}
+    - target: {fileID: 7155665891723094162, guid: 6cdde1cd5b3221d4f9d560fb626fd15a, type: 3}
+      propertyPath: m_Size.y
+      value: 0.016
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -51516,14 +51504,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1279692276}
     m_Modifications:
-    - target: {fileID: 4803927449983227334, guid: 6cdde1cd5b3221d4f9d560fb626fd15a, type: 3}
-      propertyPath: m_Size.y
-      value: 0.016
-      objectReference: {fileID: 0}
-    - target: {fileID: 7155665891723094162, guid: 6cdde1cd5b3221d4f9d560fb626fd15a, type: 3}
-      propertyPath: m_Size.y
-      value: 0.016
-      objectReference: {fileID: 0}
     - target: {fileID: 52510186529227366, guid: 4a69a0d8447e01142a1b41535f981774, type: 3}
       propertyPath: m_Name
       value: LOG_CABIN-prefab
@@ -51567,6 +51547,14 @@ PrefabInstance:
     - target: {fileID: 3583828172012033114, guid: 4a69a0d8447e01142a1b41535f981774, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4803927449983227334, guid: 6cdde1cd5b3221d4f9d560fb626fd15a, type: 3}
+      propertyPath: m_Size.y
+      value: 0.016
+      objectReference: {fileID: 0}
+    - target: {fileID: 7155665891723094162, guid: 6cdde1cd5b3221d4f9d560fb626fd15a, type: 3}
+      propertyPath: m_Size.y
+      value: 0.016
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -54491,14 +54479,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1279692276}
     m_Modifications:
-    - target: {fileID: 4803927449983227334, guid: 6cdde1cd5b3221d4f9d560fb626fd15a, type: 3}
-      propertyPath: m_Size.y
-      value: 0.016
-      objectReference: {fileID: 0}
-    - target: {fileID: 7155665891723094162, guid: 6cdde1cd5b3221d4f9d560fb626fd15a, type: 3}
-      propertyPath: m_Size.y
-      value: 0.016
-      objectReference: {fileID: 0}
     - target: {fileID: 52510186529227366, guid: 4a69a0d8447e01142a1b41535f981774, type: 3}
       propertyPath: m_Name
       value: LOG_CABIN-prefab (3)
@@ -54542,6 +54522,14 @@ PrefabInstance:
     - target: {fileID: 3583828172012033114, guid: 4a69a0d8447e01142a1b41535f981774, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4803927449983227334, guid: 6cdde1cd5b3221d4f9d560fb626fd15a, type: 3}
+      propertyPath: m_Size.y
+      value: 0.016
+      objectReference: {fileID: 0}
+    - target: {fileID: 7155665891723094162, guid: 6cdde1cd5b3221d4f9d560fb626fd15a, type: 3}
+      propertyPath: m_Size.y
+      value: 0.016
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -63138,9 +63126,11 @@ MonoBehaviour:
   walkSpeed: 10
   runSpeed: 24
   mouseSensitivity: 2
-  mouseBias: 0.05
   cameraHeight: 11.5
   cameraFollowDistance: 8
+  minFollow: 0
+  maxFollow: 100
+  cameraLerpWidth: 30
 --- !u!1 &460137045811996052
 GameObject:
   m_ObjectHideFlags: 0
@@ -65658,7 +65648,6 @@ GameObject:
   - component: {fileID: 3605331154632891262}
   - component: {fileID: 3531384195065767540}
   - component: {fileID: 298055971}
-  - component: {fileID: 298055970}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
