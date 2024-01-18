@@ -16,15 +16,15 @@ AvatarMask:
   - m_Path: Cowboy_Rig
     m_Weight: 0
   - m_Path: Cowboy_Rig/DEF-shoulder.L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Cowboy_Rig/DEF-shoulder.R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Cowboy_Rig/DEF-spine
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Cowboy_Rig/DEF-spine/DEF-spine.001
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Cowboy_Rig/DEF-spine/DEF-spine.001/DEF-spine.002
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Cowboy_Rig/DEF-spine/DEF-spine.001/DEF-spine.002/DEF-spine.003
     m_Weight: 1
   - m_Path: Cowboy_Rig/DEF-spine/DEF-spine.001/DEF-spine.002/DEF-spine.003/DEF-spine.004
