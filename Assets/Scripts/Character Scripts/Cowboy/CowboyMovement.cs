@@ -9,23 +9,24 @@ using UnityEngine;
 public class CowboyMovement : MonoBehaviour
 {
     //exposed movement
-    public float walkSpeed = 3f;
-    public float runSpeed = 8f;
+    public float walkSpeed = 2f;
+    public float runSpeed = 4f;
     //exposed camera
     public float mouseSensitivity = 2f;
-    public float cameraHeight = 8f;
-    public float cameraFollowDistance = 15f;
+    public float cameraHeight = 2.05f;
+    public float cameraFollowDistance = 1.5f;
     public float minFollow = 0;
-    public float maxFollow = 100;
-    public int cameraLerpWidth = 30;
+    public float maxFollow = 20;
+    public int cameraLerpWidth = 10;
+    public float cameraLerpSpeed = 0.005f;
     //unexposed vars
     private float fixedCameraHeight = 0f;
+    private float fixedCameraFollow = 0f;
     private GameObject cameraPivot;
     private char compass;
     private float playerSpeed;
     private float cameraRotateX = 0f;
     private float cameraRotateY = 0f;
-    private float cameraLerpSpeed = 0.009f;
     private Rigidbody rigidBody;
     private Animator animator;
     private Transform body;
@@ -41,6 +42,7 @@ public class CowboyMovement : MonoBehaviour
         cameraPivot = GameObject.Find("Main Camera");
         compass = 'N';
         fixedCameraHeight = cameraHeight;
+        fixedCameraFollow = cameraFollowDistance;
     }
 
 
@@ -59,8 +61,8 @@ public class CowboyMovement : MonoBehaviour
         if(cameraFollowDistance + 1 > maxFollow) { cameraFollowDistance = maxFollow; }
         if(cameraFollowDistance - 1 < minFollow) { cameraFollowDistance = minFollow; }
 
-        if (cameraFollowDistance <= 2.5f) { cameraHeight = 14f; }
-        else if(cameraFollowDistance > 2.5f) { cameraHeight = fixedCameraHeight; }
+        if (cameraFollowDistance <= (fixedCameraFollow/7f)) { cameraHeight = fixedCameraHeight * 1.25f; }
+        else if(cameraFollowDistance > 0.25f) { cameraHeight = fixedCameraHeight; }
         cameraFollowDistance += Input.mouseScrollDelta.y * -1f;
         //cameraLerpSpeed += Input.mouseScrollDelta.y * 0.0007f;
 
