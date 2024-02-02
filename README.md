@@ -9,5 +9,10 @@ UNITY PACKAGES - Make sure these are installed from the Unity Package Manager:
 
 + Mathematics - "Unity's C# SIMD math library providing vector types and math functions with a shader like syntax."
 
+Packages I found rad:
 
++ Kaldera Prefab Painter (lite) 
 
++ Terrain Tools
+
++ Cinamachine
