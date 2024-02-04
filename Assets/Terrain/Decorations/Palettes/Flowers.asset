@@ -129,8 +129,8 @@ MonoBehaviour:
       - {fileID: 494152695292617649, guid: 92b61769d3280af479f2bbc963241b8b, type: 3}
       Rotation:
         Constant: {x: 0, y: 0, z: 0}
-        Min: {x: 0, y: 0, z: 0}
-        Max: {x: 5, y: 360, z: 5}
+        Min: {x: -90, y: 0, z: 0}
+        Max: {x: -90, y: 360, z: 5}
         Mode: 1
       Scale:
         Mode: 3
