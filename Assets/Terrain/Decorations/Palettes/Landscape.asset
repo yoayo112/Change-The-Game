@@ -22,12 +22,12 @@ MonoBehaviour:
       Rotation:
         Constant: {x: 0, y: 0, z: 0}
         Min: {x: 0, y: 0, z: 0}
-        Max: {x: 0, y: 360, z: 0}
+        Max: {x: 360, y: 360, z: 360}
         Mode: 1
       Scale:
         Mode: 3
         MinScale: {x: 0.1, y: 0.1, z: 0.1}
-        MaxScale: {x: 3, y: 3, z: 3}
+        MaxScale: {x: 0.8, y: 0.8, z: 0.8}
         UnitformScaling: 1
       AdvancedOptions:
         AllowPlacementCollisions: 0
@@ -49,12 +49,12 @@ MonoBehaviour:
       Rotation:
         Constant: {x: 0, y: 0, z: 0}
         Min: {x: 0, y: 0, z: 0}
-        Max: {x: 0, y: 360, z: 0}
+        Max: {x: 360, y: 360, z: 360}
         Mode: 1
       Scale:
         Mode: 3
         MinScale: {x: 0.1, y: 0.1, z: 0.1}
-        MaxScale: {x: 3, y: 3, z: 3}
+        MaxScale: {x: 0.8, y: 0.8, z: 0.8}
         UnitformScaling: 1
       AdvancedOptions:
         AllowPlacementCollisions: 0
@@ -81,7 +81,7 @@ MonoBehaviour:
       Scale:
         Mode: 3
         MinScale: {x: 0.1, y: 0.1, z: 0.1}
-        MaxScale: {x: 3, y: 3, z: 3}
+        MaxScale: {x: 0.8, y: 0.8, z: 0.8}
         UnitformScaling: 1
       AdvancedOptions:
         AllowPlacementCollisions: 0
@@ -108,7 +108,7 @@ MonoBehaviour:
       Scale:
         Mode: 3
         MinScale: {x: 0.1, y: 0.1, z: 0.1}
-        MaxScale: {x: 3, y: 3, z: 3}
+        MaxScale: {x: 0.8, y: 0.8, z: 0.8}
         UnitformScaling: 1
       AdvancedOptions:
         AllowPlacementCollisions: 0
