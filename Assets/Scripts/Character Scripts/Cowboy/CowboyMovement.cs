@@ -31,6 +31,7 @@ public class CowboyMovement : MonoBehaviour
     private Animator animator;
     private Transform body;
     private Transform main;
+    private Door[] doors;
 
 
     void Start()
@@ -43,6 +44,7 @@ public class CowboyMovement : MonoBehaviour
         compass = 'N';
         fixedCameraHeight = cameraHeight;
         fixedCameraFollow = cameraFollowDistance;
+        doors = FindObjectsOfType<Door>();
     }
 
 
@@ -219,5 +221,35 @@ public class CowboyMovement : MonoBehaviour
                 animator.SetTrigger("movingHat");
             }
         }
+
+        //Door open/close
+        
+        if(Input.GetButtonDown("Interact"))
+        {
+            Door d = getClosestDoor(doors);
+            d.setSwing(true);
+        }
+
+    }
+
+    private Door getClosestDoor(Door[] all)
+    {
+        //according to some folks online, the most resource friendly way to find the real distance between points is by using squares.
+        Door closestDoor = null;
+        float closestDistance = Mathf.Infinity;
+        Vector3 location = body.position;
+        foreach (Door d in all)
+        {
+            Transform door = d.GetComponent<Transform>();
+            Vector3 direction = door.position - location;
+            float dSqrToTarget = direction.sqrMagnitude;
+            if (dSqrToTarget < closestDistance)
+            {
+                closestDistance = dSqrToTarget;
+                closestDoor = d;
+            }
+        }
+
+        return closestDoor;
     }
 }
