@@ -4,8 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Perch
   - Perch_1
+  - Perch_2
+  - Perch_3
+  - Perch_4
   layers:
   - Default
   - TransparentFX
