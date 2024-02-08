@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BirdScript : MonoBehaviour
 {
-
+    public string perchTag = "";
     public float flyspeed = 1;
     public int minWaitTime = 5;
     public int maxWaitTime = 10;
@@ -18,12 +18,11 @@ public class BirdScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        bird = GameObject.Find("BIRD").GetComponent<Transform>();
-        GameObject body = GameObject.Find("BIRD_animated");
-        animator = body.GetComponent<Animator>();
-        perches = GameObject.FindGameObjectsWithTag("Perch");
+        bird = GetComponent<Transform>();
+        animator = GetComponentInChildren<Animator>();
+        perches = GameObject.FindGameObjectsWithTag(perchTag);
         flyTimer = new Timer(fly, 5f);
-        target = body.GetComponent<Transform>();
+        target = bird;
         moving = false;
     }
 
@@ -43,7 +42,7 @@ public class BirdScript : MonoBehaviour
             if (Vector3.Angle(bird.forward, diff) != 0)
             {
                 Quaternion rotation = Quaternion.LookRotation(diff, Vector3.up);
-                bird.rotation = Quaternion.Slerp(bird.rotation, rotation, 0.1f);
+                bird.rotation = Quaternion.Slerp(bird.rotation, rotation, 0.05f);
             }
             //move bird to new perch - or do nothing if target == current position. 
             else

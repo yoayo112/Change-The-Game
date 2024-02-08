@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4988553060043782512
+--- !u!1 &3647923724567365828
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,7 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6548743298807891829}
+  - component: {fileID: 4342524328436762353}
   m_Layer: 0
   m_Name: Perch
   m_TagString: Perch
@@ -16,22 +16,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6548743298807891829
+--- !u!4 &4342524328436762353
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4988553060043782512}
+  m_GameObject: {fileID: 3647923724567365828}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 11.829428, y: 11.82943, z: 11.829428}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8031611518490625852}
+  m_Father: {fileID: 8281983001503421926}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7276251087790278075
+--- !u!1 &4449026289230782486
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -39,54 +39,55 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8031611518490625852}
-  - component: {fileID: 6530960193952219267}
+  - component: {fileID: 8281983001503421926}
+  - component: {fileID: 3887371259445205032}
   m_Layer: 0
-  m_Name: BIRD_prefab
+  m_Name: BIRD_Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8031611518490625852
+--- !u!4 &8281983001503421926
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7276251087790278075}
+  m_GameObject: {fileID: 4449026289230782486}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 56.707, y: 0.623, z: 62.382}
   m_LocalScale: {x: 0.08453493, y: 0.08453493, z: 0.08453493}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8627985049825880105}
-  - {fileID: 6548743298807891829}
+  - {fileID: 5608474370215688776}
+  - {fileID: 4342524328436762353}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!114 &6530960193952219267
+--- !u!114 &3887371259445205032
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7276251087790278075}
+  m_GameObject: {fileID: 4449026289230782486}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73430b40d1adcb54594ea10440b141df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  perchTag: Perch
   flyspeed: 6
   minWaitTime: 5
   maxWaitTime: 22
---- !u!1001 &8085786305297764290
+--- !u!1001 &5359271208375016867
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 8031611518490625852}
+    m_TransformParent: {fileID: 8281983001503421926}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 37e0eaf1689061746b24880c51f78a15, type: 3}
       propertyPath: m_LocalPosition.x
@@ -142,20 +143,25 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: -7373597460687651037, guid: 37e0eaf1689061746b24880c51f78a15, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6696059056363351933}
+      addedObject: {fileID: 1731044897132470953}
   m_SourcePrefab: {fileID: 100100000, guid: 37e0eaf1689061746b24880c51f78a15, type: 3}
---- !u!1 &7610454315488030945 stripped
+--- !u!4 &5608474370215688776 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 37e0eaf1689061746b24880c51f78a15, type: 3}
+  m_PrefabInstance: {fileID: 5359271208375016867}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6049544766714454656 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7373597460687651037, guid: 37e0eaf1689061746b24880c51f78a15, type: 3}
-  m_PrefabInstance: {fileID: 8085786305297764290}
+  m_PrefabInstance: {fileID: 5359271208375016867}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &6696059056363351933
+--- !u!64 &1731044897132470953
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7610454315488030945}
+  m_GameObject: {fileID: 6049544766714454656}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -171,8 +177,3 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -5755197145248551033, guid: 37e0eaf1689061746b24880c51f78a15, type: 3}
---- !u!4 &8627985049825880105 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 37e0eaf1689061746b24880c51f78a15, type: 3}
-  m_PrefabInstance: {fileID: 8085786305297764290}
-  m_PrefabAsset: {fileID: 0}
