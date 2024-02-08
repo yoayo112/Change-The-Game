@@ -119,7 +119,7 @@ public class CowboyMovement : MonoBehaviour
         }
 
         //apply the new orientation!
-        body.localRotation = Quaternion.Lerp(body.localRotation, Quaternion.Euler(body.localRotation.x, newRotation, body.localRotation.z), 0.0075f);
+        body.localRotation = Quaternion.Lerp(body.localRotation, Quaternion.Euler(body.localRotation.x, newRotation, body.localRotation.z), 0.02f);
 
         //camera rotation
         cameraRotateY += mouse_X;
