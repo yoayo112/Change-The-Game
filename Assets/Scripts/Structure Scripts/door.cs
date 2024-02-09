@@ -5,7 +5,10 @@ using System;
 
 public class Door : MonoBehaviour
 {
+    public AudioClip opensound;
+    public AudioClip closesound;
 
+    private bool audioplaying;
     private Animator animator;
     private Transform player;
     private Transform frame;
@@ -18,10 +21,14 @@ public class Door : MonoBehaviour
         swing = s;
     }
     private Timer openWait;
+    private AudioSource audio;
 
     // Start is called before the first frame update
     void Start()
     {
+        audio = GetComponent<AudioSource>();
+        audio.clip = opensound;
+        audioplaying = false;
         animator = GetComponent<Animator>();
         player = GameObject.Find("Cowboy_body").GetComponent<Transform>();
         frame = GetComponent<Transform>().parent;
@@ -35,6 +42,10 @@ public class Door : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(audio.isPlaying == false)
+        {
+            audioplaying = false;
+        }
         if (swing == true)
         {
             //find distance
@@ -44,22 +55,41 @@ public class Door : MonoBehaviour
             if (xd <= openDistance && zd <= openDistance)
             {
                 Vector3 diff = frame.position - player.position;
-                if (Vector3.Angle(player.forward, diff) >= 0.5)
-                {
-                    Quaternion rotation = Quaternion.LookRotation(diff, Vector3.up);
-                    player.rotation = Quaternion.Slerp(player.rotation, rotation, 0.7f);
-                }
-                else if(Math.Abs(Vector3.Angle(player.forward, diff)) < 0.5)
+                
                 {
                     openWait.Update();
                     Animator cowboyAnim = GameObject.Find("Cowboy_body").GetComponent<Animator>();
                     if (isOpen == false && opened == false)
                     {
                         cowboyAnim.SetTrigger("open");
+                        if (audio.clip != opensound)
+                        {
+                            audio.Stop();
+                            audio.clip = opensound;
+                            audio.Play();
+                            audioplaying = true;
+                        }
+                        if (audioplaying == false)
+                        {
+                            audio.Play();
+                            audioplaying = true;
+                        }
                         opened = true;
                     }
                     else if(isOpen == true && opened == true && swing == true)
                     {
+                        if (audio.clip != closesound)
+                        {
+                            audio.Stop();
+                            audio.clip = closesound;
+                            audio.Play();
+                            audioplaying = true;
+                        }
+                        if (audioplaying == false)
+                        {
+                            audio.Play();
+                            audioplaying = true;
+                        }
                         animator.SetTrigger("close");
                         cowboyAnim.SetTrigger("close");
                         opened = false;
@@ -78,6 +108,7 @@ public class Door : MonoBehaviour
             animator.SetTrigger("open");
             isOpen = true;
             swing = false;
+            
         }
         openWait = new Timer(openDoor, 1.3f);
     }

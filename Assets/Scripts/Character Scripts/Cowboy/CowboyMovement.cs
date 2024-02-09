@@ -19,6 +19,9 @@ public class CowboyMovement : MonoBehaviour
     public float maxFollow = 20;
     public int cameraLerpWidth = 10;
     public float cameraLerpSpeed = 0.005f;
+    //exposed audio
+    public AudioClip runsound;
+    public AudioClip walksound;
     //unexposed vars
     private float fixedCameraHeight = 0f;
     private float fixedCameraFollow = 0f;
@@ -32,6 +35,8 @@ public class CowboyMovement : MonoBehaviour
     private Transform body;
     private Transform main;
     private Door[] doors;
+    private AudioSource audio;
+    private bool audioplaying = false;
 
 
     void Start()
@@ -45,6 +50,7 @@ public class CowboyMovement : MonoBehaviour
         fixedCameraHeight = cameraHeight;
         fixedCameraFollow = cameraFollowDistance;
         doors = FindObjectsOfType<Door>();
+        audio = GameObject.Find("Cowboy_body").GetComponent<AudioSource>();
     }
 
 
@@ -119,7 +125,7 @@ public class CowboyMovement : MonoBehaviour
         }
 
         //apply the new orientation!
-        body.localRotation = Quaternion.Lerp(body.localRotation, Quaternion.Euler(body.localRotation.x, newRotation, body.localRotation.z), 0.02f);
+        body.localRotation = Quaternion.Lerp(body.localRotation, Quaternion.Euler(body.localRotation.x, newRotation, body.localRotation.z), 0.1f);
 
         //camera rotation
         cameraRotateY += mouse_X;
@@ -196,17 +202,45 @@ public class CowboyMovement : MonoBehaviour
         bool moving = (Input.GetButton("Horizontal") || Input.GetButton("Vertical"));
         if (Input.GetButton("Run") && moving)
         {
+            //movement
             main.transform.Translate(body.forward * runSpeed * Time.deltaTime);
             playerSpeed = Mathf.Lerp(playerSpeed, normalizedSpeed * runSpeed, 0.05f);
+            //audio
+            if(audio.clip != runsound)
+            {
+                audio.Stop();
+                audio.clip = runsound;
+                audio.Play();
+            }
+            if (audioplaying == false)
+            {
+                audio.Play();
+                audioplaying = true;
+            }
         }
         else if(moving) //this is the standard walk behaviour 
         {
+            //movement
             main.transform.Translate(body.forward * walkSpeed * Time.deltaTime);
             playerSpeed = Mathf.Lerp(playerSpeed, normalizedSpeed * walkSpeed, 0.05f);
+            //audio
+            if(audio.clip != walksound)
+            {
+                audio.Stop();
+                audio.clip = walksound;
+                audio.Play();
+            }
+            if (audioplaying == false)
+            {
+                audio.Play();
+                audioplaying = true;
+            }
         }
         else //stopped
         {
             playerSpeed = Mathf.Lerp(playerSpeed, normalizedSpeed * 0, 0.05f);
+            audio.Stop();
+            audioplaying = false;
         }
 
         //"Mlady"
