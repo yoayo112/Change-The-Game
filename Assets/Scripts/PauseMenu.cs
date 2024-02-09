@@ -11,11 +11,41 @@ public class PauseMenu : MonoBehaviour
     public bool PAUSED = false;
     private string buttonText = "||";
     private AudioSource music;
+    private AudioSource[] allSounds;
+    private bool starting = true;
+    private void setStarting()
+    {
+        starting = false;
+        music.Play();
+    }
+    private float[] targetVolumes;
+    private Timer firstMoments;
 
     void Start()
     {
+        firstMoments = new Timer(setStarting, 8f);
         music = GetComponent<AudioSource>();
         music.ignoreListenerPause = true;
+        music.Stop();
+        allSounds = FindObjectsOfType<AudioSource>();
+        targetVolumes = new float[allSounds.Length];
+        for(int i = 0; i < allSounds.Length; i++)
+        {
+            targetVolumes[i] = allSounds[i].volume;
+            allSounds[i].volume = 0;
+        }
+    }
+
+    void Update()
+    {
+        if(starting)
+        {
+            firstMoments.Update();
+            for(int i = 0; i < allSounds.Length; i++)
+            {
+                allSounds[i].volume = Mathf.Lerp(allSounds[i].volume, targetVolumes[i], 0.01f);
+            }
+        }
     }
 
     void OnGUI()
