@@ -6,7 +6,7 @@ using UnityEngine;
 public class Timer 
 {
     private Action action;
-    private float time;
+    public float time;
     private bool isDestroyed;
 
     public Timer(Action a, float t)
