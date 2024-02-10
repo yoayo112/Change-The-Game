@@ -1,0 +1,77 @@
+Demo-Build V2.0
+Changelog:
+- Started the hometown over. new scene.
+SCALE:
+- Everything is roughly 10% of previous build.
+- Refactored lighting, shading, aliasing, and rendering detail.
+	+ shadows without holes.
+	+ cleaner lines.
+	+ more acurate absorbtion of light by materials.
+	+ softer/warmer lighting overall.
+- Refactored physics -> items now have weight and force porportional to their size.
+- Adjusted movement mechanics -> more control over cowboy.
+- Adjusted camera lerp and focus mechanics: round lerp pattern and double the angle focuses (every 45*). This should feel way smoother now.
+- Adjusted camera and movement script to reflect scaled changes/physics values.
+	+ I like the camera, I think its soft/fluid and allows you to break away from having the character center screen -> but its not perfect, and I am open to feedback!
+BORDER:
+- Added angled risers for distance illusion: smaller/higher trees = further away.
+- Added 2D distant border forest (manipulated screenshot of trees we have already).
+	-> combined with the risers, looking at the edge of the map should feel like the forest "stretches on indefinitely" instead of just a wall of trees.
+** Sam rebuilt tree assets! Looking much nicer!
+TERRAIN:
+- Less terrain detail to give hills/landscape a angular/polygonal feel.
+- Lanscaping overhaul!
+	** Sam built Mariposa Lilies!
+	** Sam built Indian paintbrush!
+	** Sam built my personal favorite: some excellent hollyhocks.
+	+ Rocks, Logs, and trees -> better size/angle randomization. Careful aesthetic placement.
+	+ Mariposas, Paintbrush -> same placement/randomization.
+	+ Hollyhocks: individual realistic placement along sunny walls and surfaces.
+	+ Grass adjustments. Size ranges and coloring -> Consistent small grass with "patches" of taller browner grass.
+	+ Added a cart!
+	+ Added "flag arch" on entrance and exit.
+	+ Adjusted barrel sizes/variety.
+ANIMATION:
+- Reanimated Cowboy walk: smoother, arms in, more bounce. hips less exaggerated. Better mesh weighting!!
+- Reanimated Cowboy run: leaning more forward. more bounce, arms in. feels way more natural -> still kinda "Cartoony" ;)
+- Reanimated door open -> fixed scaling bug.
+- Added cowboy door open animation (space bar - left click is "interact")
+	+ though lining him up/rotating him with the door proved way more challenging then expected. -left it as a draft for now. 
+** Sam built a cool bluebird! 
+- Bird flap animation!
+- Bird idle (head tilt/cock) animation!
+- Bird preen animation!
+- Scripted bird flight based on "perch" locations.
+- Added ~ 200 perches within 3 "layers".
+- Added smaller, recolored birds -> redwing blackbirds.
+SOUND DESIGN:
+- Added terrain ambience (birds livecapture from snowy range between 2018-2021): 5 layers of bird ambience from very close to very far.
+- Added localized water to fountain (livecapture from snowy range: I think libby creek).
+- Added walk sound and run sound: Foley:
+	+ Layer one = Boot + cutting board -> mimick footfall of cowboy.
+	+ Layer two = Pins/Keys shake into close mic. -> "jangle"
+	^^ For some reason the walk came out a much lower pitch then the run. messing with pitch seems to screw up synchronicity - left it as a draft.
+- Added door open sound to door animation. Foley: door handle to the TV room :p.
+- Added door close sound. Foley: door to my bedroom had a bit more weight to it to give a better thump.
+- Added MUSIC!
+	+ Remix of "Koncharee" a song I made with Rich Lindsey and Allie Briere and a cellist from like lithuania. 
+		- removed main synth line. 
+		- removed entire B part with bigger house drop/drums
+		- arranged the cello and vocal lines together and remixed the production.
+	+ this was just for fun. -> in Rich and I's release of this song, we included some of the exact same birds and water livecapture, so when I was going through old music, I thought of the game! I thought it was a perfect way to pay homage to both projects!
+	*** NOTE: This is just "demo music" and I think the real game should have a much more carefully composed score with specific charachter and location themes.
+MISCELLANEOUS:
+- general debugging and optimization.
+- general reorginaization of directory and files.
+- Added a Pause Menu!
+	+ Upper left corner of the game
+	+ Clicking it pauses time in the game (Time.timescale = 0;)
+	+ Clicking it does NOT stop the game from running. 
+		-- One example of this is the camera! Even though time is stopped you can still look around or examine the cowboy from different angles. Notice hes not breathing!
+	+ Clicking it brings up a bigger menu that includes:
+		-- Music Volume: NOT sound volume. fountain, birds, footsteps and door will be uneffected by this fader.
+		-- "Exit". because no one wants to do like "ctrl-tab" to exit every time.
+		-- resume: closes the sub menu and resumes time.
+
+
+.. I think thats everything but I probably forgot something tbh. Thanks for reading and validating my work :) Even though it will probably just be me in the future. Future sky, you're killing it and I love you. And I'm sorry for inevitably fucking something up which is probably why you are reading this. 

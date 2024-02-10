@@ -125,72 +125,27 @@ public class CowboyMovement : MonoBehaviour
         }
 
         //apply the new orientation!
-        body.localRotation = Quaternion.Lerp(body.localRotation, Quaternion.Euler(body.localRotation.x, newRotation, body.localRotation.z), 0.1f);
+        body.localRotation = Quaternion.Lerp(body.localRotation, Quaternion.Euler(body.localRotation.x, newRotation, body.localRotation.z), 0.075f);
 
         //camera rotation
         cameraRotateY += mouse_X;
         cameraRotateX -= mouse_Y;
         cameraRotateX = Mathf.Clamp(cameraRotateX, -60, 90); //limites the up/down rotation of the camera - it gets crazy out there!
-        cameraPivot.transform.localRotation = Quaternion.Euler(cameraRotateX, cameraRotateY, 0);
-
-        //Determine which direction camera is facing
-        //lowercase moves clockwise. so 'n' = NE. 'e' = SE. 's' = SW. 'w' = NW
-        int width = cameraLerpWidth;
-        if (facing >= 360 - width  || facing <= 0 + width) { compass = 'N'; }
-        else if (facing >= 45 - width && facing <= 45 + width) { compass = 'n'; }
-        else if (facing >= 90 - width && facing <= 90 + width) { compass = 'E'; }
-        else if (facing >= 135 - width && facing <= 135 + width) { compass = 'e'; }
-        else if (facing >= 180 - width && facing <= 180 + width) { compass = 'S'; }
-        else if (facing >= 225 - width && facing <= 225 + width) { compass = 's'; }
-        else if (facing >= 270 - width && facing <= 270 + width) { compass = 'W'; }
-        else if (facing >= 315 - width && facing <= 315 + width) { compass = 'w'; }
-
-        //create a new orientation for the camera based on which direction its facing.
-        float camX = 0f;
-        float camZ = 0f;
-        float angledDistance = cameraFollowDistance / 2;
-        angledDistance += angledDistance / 2;
-        switch (compass)
-        {
-            case 'N':
-                camX = body.position.x;
-                camZ = body.position.z - cameraFollowDistance;
-                break;
-            case 'n':
-                camX = body.position.x - angledDistance;
-                camZ = body.position.z - angledDistance;
-                break;
-            case 'E':
-                camX = body.position.x - cameraFollowDistance;
-                camZ = body.position.z;
-                break;
-            case 'e':
-                camX = body.position.x - angledDistance;
-                camZ = body.position.z + angledDistance;
-                break;
-            case 'S':
-                camX = body.position.x;
-                camZ = body.position.z + cameraFollowDistance;
-                break;
-            case 's':
-                camX = body.position.x + angledDistance;
-                camZ = body.position.z + angledDistance;
-                break;
-            case 'W':
-                camX = body.position.x + cameraFollowDistance;
-                camZ = body.position.z;
-                break;
-            case 'w':
-                camX = body.position.x + angledDistance;
-                camZ = body.position.z - angledDistance;
-                break;
-        }
-        Vector3 newFace = new Vector3(camX, body.position.y + cameraHeight, camZ);
-        
-        //lerp the camera so that every 45 degrees it ends up softly behind the prefab.
-        cameraPivot.transform.position = Vector3.Lerp(cameraPivot.transform.position, newFace, cameraLerpSpeed);
-
+        Quaternion newCameraRotation = Quaternion.Euler(cameraRotateX, cameraRotateY, 0);
+        cameraPivot.transform.localRotation = newCameraRotation;
         //Rotation and orientation should be done.
+
+        //Body Movement: no lerping :(
+        //ok so the newCameraRotation is in euler degrees (i.e. 90)
+        //we want the z position to be multiplied by this rotation, but not x and y so well just set them to 0 (0 * any angle == 0)
+        //tbh I didnt realize that you could just multiply a euler by a distance to get a curve?
+        //but then we want it relative to the body so ++ body position. 
+        cameraPivot.transform.position = newCameraRotation * (new Vector3(0,0,-cameraFollowDistance)) + body.position;
+        //but of course this means the height will be 0. Or well, the "height" of the bottom of the cowboy. so in a seperate operation:
+        cameraPivot.transform.position = (new Vector3(cameraPivot.transform.position.x, body.transform.position.y + cameraHeight, cameraPivot.transform.position.z));
+        //which seems like overkill, but oh well.
+
+        
         //Now we just move the body and trigger animations.
         animator.SetFloat("Speed", playerSpeed);
 
