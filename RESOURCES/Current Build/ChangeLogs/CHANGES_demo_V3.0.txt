@@ -1,0 +1,5 @@
+- Destroyed unique lerp camera :(
+- standard conventional boring camera instead.
+
+- fixed bug in birds: now total timer wait includes both a random wait time AND total fly time.
+	+ no more mid air changes or hovering. 
