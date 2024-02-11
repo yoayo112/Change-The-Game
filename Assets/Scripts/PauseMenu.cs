@@ -46,6 +46,10 @@ public class PauseMenu : MonoBehaviour
                 allSounds[i].volume = Mathf.Lerp(allSounds[i].volume, targetVolumes[i], 0.01f);
             }
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            togglePause();
+        }
     }
 
     void OnGUI()
@@ -63,21 +67,32 @@ public class PauseMenu : MonoBehaviour
         float gridx = menuRect.width / 6;
         float gridy = menuRect.height / 4;
 
-        //first is a label for the slider
-        GUI.Label(new Rect(gridx*2, gridy, gridx*4, gridy), "Music Volume");
+        //First is some labels for the controls.
+        int b = 17;
+        GUI.Label(new Rect(gridx*2, b+10, gridx*3,20),"CONTROLS:" );
+        GUI.Label(new Rect(gridx * 2, b*3, gridx * 3, 20),"Move - W,A,S,D" );
+        GUI.Label(new Rect(gridx * 2, b*4, gridx * 3, 20), "Camera - Mouse position");
+        GUI.Label(new Rect(gridx * 2, b*5, gridx * 3, 20), "Zoom - Mouse Scroll Wheel");
+        GUI.Label(new Rect(gridx * 2, b*6, gridx * 3, 20), "Run - Left Shift");
+        GUI.Label(new Rect(gridx * 2, b*7, gridx * 3, 20), "Interact - 'E' and Left Mouse Click");
+        GUI.Label(new Rect(gridx * 2, b*8, gridx * 3, 20), "Tip Hat - Left Ctrl.");
+        GUI.Label(new Rect(gridx * 2, b*9, gridx * 3, 20), "Pause - Esc.");
+
+        //Next is a label for the slider
+        GUI.Label(new Rect(gridx*2, gridy*2, gridx*2, 25), "Music Volume");
         //grab current volume and add a slider
         float volume = music.volume;
-        volume = GUI.HorizontalSlider(new Rect(gridx*2, gridy+30, gridx*2, 25), volume, 0f, 1.0f);
+        volume = GUI.HorizontalSlider(new Rect(gridx*2, gridy*2 + b, gridx*2, 25), volume, 0f, 1.0f);
         music.volume = volume;
 
         //provide an exit option
-        if (GUI.Button(new Rect(gridx*2, gridy * 2, gridx *2, 40), "Exit"))
+        if (GUI.Button(new Rect(gridx*2, gridy * 3, gridx *2, 40), "Exit"))
         {
             Application.Quit();
         }
 
         //or resume game
-        if(GUI.Button(new Rect(gridx*2, gridy *3, gridx*2, 25), "Resume"))
+        if(GUI.Button(new Rect(gridx*2, gridy *3 + b*3, gridx*2, 25), "Resume"))
         {
             togglePause();
         }

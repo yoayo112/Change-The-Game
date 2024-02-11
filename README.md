@@ -3,6 +3,15 @@ A 3rd person, 3d role playing game that built using unity, C#, and blender. Impl
 
 Authors: Schuyler Vercauteren, Samuel Stagner, Sean Thornton, Elijah Theander.
 
+CONTROLS:
+Move - W,A,S,D
+Camera - Mouse position
+Zoom - Mouse Scroll Wheel
+Run - Left Shift
+Interact - 'E' and Left Mouse Click
+Tip Hat - Left Ctrl.
+
+
 UNITY PACKAGES - Make sure these are installed from the Unity Package Manager:
 
 + Universal Render Pipeline (Universal RP) - Unity's scriptable render pipeline."URP provides artist-friendly workflows that let you quickly and easily create optimized graphics across a range of platforms, from mobile to high-end consoles and PCs."
