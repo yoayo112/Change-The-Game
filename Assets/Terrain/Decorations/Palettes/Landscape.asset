@@ -26,8 +26,8 @@ MonoBehaviour:
         Mode: 1
       Scale:
         Mode: 3
-        MinScale: {x: 0.1, y: 0.1, z: 0.1}
-        MaxScale: {x: 0.8, y: 0.8, z: 0.8}
+        MinScale: {x: 1, y: 1, z: 1}
+        MaxScale: {x: 3, y: 3, z: 3}
         UnitformScaling: 1
       AdvancedOptions:
         AllowPlacementCollisions: 0
@@ -53,8 +53,8 @@ MonoBehaviour:
         Mode: 1
       Scale:
         Mode: 3
-        MinScale: {x: 0.1, y: 0.1, z: 0.1}
-        MaxScale: {x: 0.8, y: 0.8, z: 0.8}
+        MinScale: {x: 1, y: 1, z: 1}
+        MaxScale: {x: 3, y: 3, z: 3}
         UnitformScaling: 1
       AdvancedOptions:
         AllowPlacementCollisions: 0
@@ -80,8 +80,8 @@ MonoBehaviour:
         Mode: 1
       Scale:
         Mode: 3
-        MinScale: {x: 0.1, y: 0.1, z: 0.1}
-        MaxScale: {x: 0.8, y: 0.8, z: 0.8}
+        MinScale: {x: 1, y: 1, z: 1}
+        MaxScale: {x: 3, y: 3, z: 3}
         UnitformScaling: 1
       AdvancedOptions:
         AllowPlacementCollisions: 0
@@ -107,8 +107,8 @@ MonoBehaviour:
         Mode: 1
       Scale:
         Mode: 3
-        MinScale: {x: 0.1, y: 0.1, z: 0.1}
-        MaxScale: {x: 0.8, y: 0.8, z: 0.8}
+        MinScale: {x: 1, y: 1, z: 1}
+        MaxScale: {x: 3, y: 3, z: 3}
         UnitformScaling: 1
       AdvancedOptions:
         AllowPlacementCollisions: 0

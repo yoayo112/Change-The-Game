@@ -11,30 +11,32 @@ public class CowboyMovement : MonoBehaviour
     //exposed movement
     public float walkSpeed = 2f;
     public float runSpeed = 4f;
+
     //exposed camera
     public float mouseSensitivity = 2f;
     public float cameraHeight = 2.05f;
     public float cameraFollowDistance = 1.5f;
     public float minFollow = 0;
     public float maxFollow = 20;
-    public int cameraLerpWidth = 10;
-    public float cameraLerpSpeed = 0.005f;
+
     //exposed audio
     public AudioClip runsound;
     public AudioClip walksound;
+
     //unexposed vars
     private float fixedCameraHeight = 0f;
     private float fixedCameraFollow = 0f;
     private GameObject cameraPivot;
-    private char compass;
     private float playerSpeed;
+    public float getPlayerSpeed()
+    {
+        return playerSpeed;
+    }
     private float cameraRotateX = 0f;
     private float cameraRotateY = 0f;
-    private Rigidbody rigidBody;
     private Animator animator;
     private Transform body;
     private Transform main;
-    private Door[] doors;
     private AudioSource audio;
     private bool audioplaying = false;
 
@@ -46,17 +48,15 @@ public class CowboyMovement : MonoBehaviour
         body = GameObject.Find("Cowboy_body").GetComponent<Transform>();
         main = GameObject.Find("COWBOY_PREFAB").GetComponent<Transform>();
         cameraPivot = GameObject.Find("Main Camera");
-        compass = 'N';
         fixedCameraHeight = cameraHeight;
         fixedCameraFollow = cameraFollowDistance;
-        doors = FindObjectsOfType<Door>();
         audio = GameObject.Find("Cowboy_body").GetComponent<AudioSource>();
     }
 
 
     void Update()
     {
-        //get values 
+        //get Inputs!
         Vector3 horizontalInput = Input.GetAxis("Horizontal") * gameObject.transform.right;
         Vector3 verticalInput = Input.GetAxis("Vertical") * gameObject.transform.forward;
         float HI = Input.GetAxisRaw("Horizontal");
@@ -136,9 +136,7 @@ public class CowboyMovement : MonoBehaviour
         //Rotation and orientation should be done.
 
         //Body Movement: no lerping :(
-        //ok so the newCameraRotation is in euler degrees (i.e. 90)
-        //we want the z position to be multiplied by this rotation, but not x and y so well just set them to 0 (0 * any angle == 0)
-        //tbh I didnt realize that you could just multiply a euler by a distance to get a curve?
+        //multiply the z position (not x and y) by the eurler degrees of the new camera angle.
         //but then we want it relative to the body so ++ body position. 
         cameraPivot.transform.position = newCameraRotation * (new Vector3(0,0,-cameraFollowDistance)) + body.position;
         //but of course this means the height will be 0. Or well, the "height" of the bottom of the cowboy. so in a seperate operation:
@@ -197,48 +195,5 @@ public class CowboyMovement : MonoBehaviour
             audio.Stop();
             audioplaying = false;
         }
-
-        //"Mlady"
-        if (Input.GetButtonDown("Hat"))
-        {
-            if(playerSpeed < 1.5)
-            {
-                animator.SetTrigger("Hat");
-            }
-            else
-            {
-                animator.SetTrigger("movingHat");
-            }
-        }
-
-        //Door open/close
-        
-        if(Input.GetButtonDown("Interact"))
-        {
-            Door d = getClosestDoor(doors);
-            d.setSwing(true);
-        }
-
-    }
-
-    private Door getClosestDoor(Door[] all)
-    {
-        //according to some folks online, the most resource friendly way to find the real distance between points is by using squares.
-        Door closestDoor = null;
-        float closestDistance = Mathf.Infinity;
-        Vector3 location = body.position;
-        foreach (Door d in all)
-        {
-            Transform door = d.GetComponent<Transform>();
-            Vector3 direction = door.position - location;
-            float dSqrToTarget = direction.sqrMagnitude;
-            if (dSqrToTarget < closestDistance)
-            {
-                closestDistance = dSqrToTarget;
-                closestDoor = d;
-            }
-        }
-
-        return closestDoor;
     }
 }
