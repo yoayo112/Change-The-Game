@@ -1,12 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class CowboyActions : MonoBehaviour
 {
+    //internal vars
     private Animator animator;
     private Door[] doors;
     private Transform body;
+    private bool COMBAT;
+    public void setCombat(bool t)
+    {
+        COMBAT = t;
+    }
+    private ParentConstraint constraint;
+    private List<ConstraintSource> sources;
+    Timer holster;
+
+    //exposed vars
+    public  RuntimeAnimatorController combatController;
+    public  RuntimeAnimatorController movementController;
+    
 
 
     // Start is called before the first frame update
@@ -14,12 +29,26 @@ public class CowboyActions : MonoBehaviour
     {
         animator = GameObject.Find("Cowboy_body").GetComponent<Animator>();
         body = GameObject.Find("Cowboy_body").GetComponent<Transform>();
+        constraint = GameObject.Find("Gun").GetComponent<ParentConstraint>();
+        sources = new List<ConstraintSource>(constraint.sourceCount);
+        constraint.GetSources(sources);
         doors = FindObjectsOfType<Door>();
+        holster = new Timer(putAway, 0f);
+        COMBAT = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (COMBAT)
+        {
+            animator.runtimeAnimatorController = combatController;
+            if (holster != null) { holster.Update(); }
+        }
+        else
+        {
+            animator.runtimeAnimatorController = movementController;
+        }
         //"Mlady"
         if (Input.GetButtonDown("Hat"))
         {
@@ -34,12 +63,25 @@ public class CowboyActions : MonoBehaviour
             }
         }
 
-        //Door open/close
+        //Main interact switch
         if (Input.GetButtonDown("Interact"))
         {
-            Door d = getClosestDoor(doors);
-            d.setSwing(true);
+            //Door open/close
+            if(doors.Length > 0)
+            {
+                Door d = getClosestDoor(doors);
+                d.setSwing(true);
+            }
+            
+            if(COMBAT)
+            {
+                holster = new Timer(putAway, 3f);
+                getOut();
+                animator.SetTrigger("attack");
+            }
         }
+
+        
     }
 
     //finds which door is closest to the cowboy.
@@ -61,5 +103,27 @@ public class CowboyActions : MonoBehaviour
             }
         }
         return closestDoor;
+    }
+
+    private void putAway()
+    {
+        ConstraintSource holst = sources[0];
+        ConstraintSource hand = sources[1];
+        holst.weight = 1;
+        hand.weight = 0;
+        sources[0] = holst;
+        sources[1] = hand;
+        constraint.SetSources(sources);
+    }
+
+    private void getOut()
+    {
+        ConstraintSource holst = sources[0];
+        ConstraintSource hand = sources[1];
+        holst.weight = 0;
+        hand.weight = 1;
+        sources[0] = holst;
+        sources[1] = hand;
+        constraint.SetSources(sources);
     }
 }

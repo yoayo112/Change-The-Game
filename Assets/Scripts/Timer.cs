@@ -8,6 +8,17 @@ public class Timer
     private Action action;
     public float time;
     private bool isDestroyed;
+    public bool exists()
+    {
+        if(time > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     public Timer(Action a, float t)
     {
