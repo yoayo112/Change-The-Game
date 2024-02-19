@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 
-namespace CollisionBear.WorldEditor.Lite
+namespace CollisionBear.WorldEditor
 {
     public class KalderaAssetPostProcessor : AssetPostprocessor
     {

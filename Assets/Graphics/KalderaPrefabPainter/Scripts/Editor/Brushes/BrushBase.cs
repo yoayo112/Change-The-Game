@@ -1,13 +1,12 @@
-﻿using CollisionBear.WorldEditor.Lite.Utils;
-using CollisionBear.WorldEditor.Utils.Lite;
+﻿using CollisionBear.WorldEditor.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite.Brushes
+namespace CollisionBear.WorldEditor.Brushes
 {
-    public abstract class BrushBase
+    public abstract class BrushBase : IBrushButton
     {
         private const float CompassRadius = 5f;
         private static readonly Vector3 CompassScale = new Vector3(CompassRadius, CompassRadius, CompassRadius);
@@ -45,7 +44,7 @@ namespace CollisionBear.WorldEditor.Lite.Brushes
         protected static readonly Color HandleOutlineColor = new Color(1f, 0.5f, 0.8f, 0.8f);
         protected static readonly Color HandleBrushColor = new Color(1f, 0.5f, 0.8f, 0.1f);
 
-        public readonly int Index;
+        public int Index;
 
         public Vector3 BrushPosition;
         public float Rotation;
@@ -57,15 +56,16 @@ namespace CollisionBear.WorldEditor.Lite.Brushes
 
         public abstract string Name { get; }
         public abstract KeyCode HotKey { get; }
+        public bool ShiftPrefix => true;
 
-        protected abstract string ToolTip { get; }
+        public abstract string ToolTip { get; }
         protected abstract string ButtonImagePath { get; }
 
         private GUIContent ButtonContent;
 
-        public BrushBase(int index)
+        public void OnButtonPress(PaletteWindow paletteWindow)
         {
-            Index = index;
+            paletteWindow.SetBrushType(this);
         }
 
         public GUIContent GetButtonContent() 
@@ -160,7 +160,7 @@ namespace CollisionBear.WorldEditor.Lite.Brushes
             return PlaceObjects(position, parentCollider, settings, placer);
         }
 
-        public virtual PlacementCollection GeneratePlacementForBrush(Vector3 position, SelectionSettings selectionSettings)
+        public virtual PlacementCollection GeneratePlacementForBrush(Vector3 position, SelectionSettings selectionSettings, ScenePlacer placer)
         {
             var result = new PlacementCollection();
 
@@ -173,7 +173,7 @@ namespace CollisionBear.WorldEditor.Lite.Brushes
                 return result;
             }
 
-            UpdatePlacementPoints(position, selectionSettings, result);
+            UpdatePlacementPoints(position, selectionSettings, result, placer);
             return result;
         }
 
@@ -183,7 +183,7 @@ namespace CollisionBear.WorldEditor.Lite.Brushes
 
         protected virtual GUIContent LoadGUIContent() {
             var image = KalderaEditorUtils.LoadAssetPath(ButtonImagePath);
-            return new GUIContent(image, Name + "\n" + ToolTip + "\nShft + " + HotKey);
+            return new GUIContent(image, $"{Name}\n{ToolTip}\n[Shft + {HotKey}]");
         }
 
         protected bool HasDrag(Vector3? startPosition, Vector3? endPosition)
@@ -275,9 +275,9 @@ namespace CollisionBear.WorldEditor.Lite.Brushes
             return start + (Quaternion.Euler(0, angle, 0) * Vector3.forward * distance);
         }
 
-        protected virtual void UpdatePlacementPoints(Vector3 position, SelectionSettings selectionSettings, PlacementCollection placementCollection)
+        protected virtual void UpdatePlacementPoints(Vector3 position, SelectionSettings selectionSettings, PlacementCollection placementCollection, ScenePlacer placer)
         {
-            var placementPoints = GetPlacementOffsetValues(position, selectionSettings)
+            var placementPoints = GetPlacementOffsetValues(position, selectionSettings, placer)
                 .Take(selectionSettings.ObjectLimit)
                 .DefaultIfEmpty(Vector2.zero);
 
@@ -356,7 +356,7 @@ namespace CollisionBear.WorldEditor.Lite.Brushes
             }
         }
 
-        public virtual void CycleVariant(int steps, ScenePlacer placer)
+        public virtual void CycleVariant(Vector2 delta, ScenePlacer placer)
         {
             // Default implemetation is to randomize the placement
             placer.GeneratePlacement();
@@ -397,7 +397,7 @@ namespace CollisionBear.WorldEditor.Lite.Brushes
 
         protected virtual Vector3 GetItemRotation(Vector3 position, PaletteItem item, GameObject prefabObject) => item.GetRotation(prefabObject);
 
-        protected abstract List<Vector2> GetPlacementOffsetValues(Vector3 position, SelectionSettings selectionSettings);
+        protected abstract List<Vector2> GetPlacementOffsetValues(Vector3 position, SelectionSettings selectionSettings, ScenePlacer placer);
 
         private PaletteItem GetRandomItem(List<PaletteItem> selectedItems) => selectedItems[Random.Range(0, selectedItems.Count)];
 

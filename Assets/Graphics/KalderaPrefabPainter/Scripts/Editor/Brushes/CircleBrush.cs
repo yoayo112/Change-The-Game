@@ -1,9 +1,10 @@
-﻿using CollisionBear.WorldEditor.Lite.Generation;
+﻿using CollisionBear.WorldEditor.Generation;
 using UnityEditor;
 using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite.Brushes
+namespace CollisionBear.WorldEditor.Brushes
 {
+    [System.Serializable]
     public class CircleBrush : AreaBrushBase
     {
         public class CircleGenerationBounds : IGenerationBounds
@@ -17,11 +18,11 @@ namespace CollisionBear.WorldEditor.Lite.Brushes
 
         public override string Name => "Circle brush";
         public override KeyCode HotKey => KeyCode.R;
+        public override string ToolTip => "Places multiple objects (always at least 1) in a circle";
 
-        protected override string ToolTip => "Places multiple objects (always at least 1) in a circle";
         protected override string ButtonImagePath => "Icons/IconGridCircle.png";
 
-        public CircleBrush(int index) : base(index)
+        public CircleBrush()
         {
             GenerationBounds = new CircleGenerationBounds();
         }

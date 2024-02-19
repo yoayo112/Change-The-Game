@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite
+namespace CollisionBear.WorldEditor
 {
     class KalderaSpawnEffectsSettings : Object
     {

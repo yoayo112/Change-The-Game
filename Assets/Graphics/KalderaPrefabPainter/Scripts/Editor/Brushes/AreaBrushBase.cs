@@ -1,11 +1,10 @@
-﻿using CollisionBear.WorldEditor.Lite.Generation;
-using CollisionBear.WorldEditor.Lite.Utils;
-using CollisionBear.WorldEditor.Utils.Lite;
+﻿using CollisionBear.WorldEditor.Generation;
+using CollisionBear.WorldEditor.Utils;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite.Brushes
+namespace CollisionBear.WorldEditor.Brushes
 {
     public class AreaBrushSizePreset
     {
@@ -36,10 +35,10 @@ namespace CollisionBear.WorldEditor.Lite.Brushes
         public const float BrushSpacingMin = 0.2f;
         public const float BrushSpacingMax = 10.0f;
 
+        [SerializeField]
         protected AreaBrushSettings Settings = new AreaBrushSettings();
-        protected IGenerationBounds GenerationBounds;
 
-        public AreaBrushBase(int index) : base(index) { }
+        protected IGenerationBounds GenerationBounds;
 
         public override void StartPlacement(Vector3 position, ScenePlacer placer)
         {
@@ -93,11 +92,11 @@ namespace CollisionBear.WorldEditor.Lite.Brushes
 
             using (new EditorGUILayout.HorizontalScope()) {
                 EditorGUILayout.LabelField(KalderaEditorUtils.BrushDistributionContent, EditorStyles.boldLabel, GUILayout.Width(KalderaEditorUtils.OptionLabelWidth));
-                EditorGUILayout.LabelField(ScenePlacer.GetDistributionModes()[placer.SelectionSettings.SelectedDistributionIndex].Name);
+                EditorGUILayout.LabelField(placer.GetDistributionModes()[placer.SelectionSettings.SelectedDistributionIndex].Name);
             }
 
             using (new EditorGUILayout.HorizontalScope()) {
-                foreach(var distributionMode in ScenePlacer.GetDistributionModes()) {
+                foreach(var distributionMode in placer.GetDistributionModes()) {
                     EditorCustomGUILayout.SetGuiBackgroundColorState(placer.CurrentDistribution == distributionMode);
                     if (GUILayout.Button(distributionMode.GetGUIContent(), GUILayout.Width(KalderaEditorUtils.IconButtonSize), GUILayout.Height(KalderaEditorUtils.IconButtonSize))) {
                         placer.SelectionSettings.SelectedDistributionIndex = distributionMode.Index;
@@ -129,10 +128,10 @@ namespace CollisionBear.WorldEditor.Lite.Brushes
             return false;
         }
 
-        protected override List<Vector2> GetPlacementOffsetValues(Vector3 position, SelectionSettings selectionSettings)
+        protected override List<Vector2> GetPlacementOffsetValues(Vector3 position, SelectionSettings selectionSettings, ScenePlacer placer)
         {
             var spacing = selectionSettings.GetSelectedItemSize() * (1f / Settings.ObjectDensity);
-            return ScenePlacer
+            return placer
                 .GetDistributionModes()[selectionSettings.SelectedDistributionIndex]
                 .GetPoints(Settings.BrushSize, spacing, GenerationBounds);
         }

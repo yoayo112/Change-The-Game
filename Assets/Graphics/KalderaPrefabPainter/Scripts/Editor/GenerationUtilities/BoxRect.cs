@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite.Generation
+namespace CollisionBear.WorldEditor.Generation
 {
     public class BoxRect
     {

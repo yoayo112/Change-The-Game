@@ -1,9 +1,7 @@
-﻿using CollisionBear.WorldEditor.Lite.Extensions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite
+namespace CollisionBear.WorldEditor
 {
     [System.Serializable]
     public class SelectionSettings

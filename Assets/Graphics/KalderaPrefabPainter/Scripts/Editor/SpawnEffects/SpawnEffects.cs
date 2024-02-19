@@ -6,7 +6,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace CollisionBear.WorldEditor.Lite
+namespace CollisionBear.WorldEditor
 {
 
     public static class SpawnEffects

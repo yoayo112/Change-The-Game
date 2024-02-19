@@ -1,14 +1,15 @@
-﻿using CollisionBear.WorldEditor.Lite.Utils;
-using CollisionBear.WorldEditor.Utils.Lite;
+﻿using CollisionBear.WorldEditor.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite.Brushes
+namespace CollisionBear.WorldEditor.Brushes
 {
+    [System.Serializable]
     public class SingleBrush : BrushBase
     {
+        [System.Serializable]
         public class SingleBrushSettings
         {
             public bool MaintainRotation = false;
@@ -16,12 +17,11 @@ namespace CollisionBear.WorldEditor.Lite.Brushes
 
         public override string Name => "Paint brush";
         public override KeyCode HotKey => KeyCode.Q;
-        protected override string ToolTip => "Always place a single object";
+        public override string ToolTip => "Always place a single object";
         protected override string ButtonImagePath => "Icons/IconGridPoint.png";
 
+        [SerializeField]
         private SingleBrushSettings Settings = new SingleBrushSettings();
-
-        public SingleBrush(int index) : base(index) { }
 
         public override void DrawBrushEditor(ScenePlacer placer)
         {
@@ -78,7 +78,7 @@ namespace CollisionBear.WorldEditor.Lite.Brushes
             }
         }
 
-        public override void CycleVariant(int steps, ScenePlacer placer)
+        public override void CycleVariant(Vector2 delta, ScenePlacer placer)
         {
             foreach (var placement in placer.PlacementCollection.Placements) {
                 var validObjects = placement.Item.ValidObjects();
@@ -87,12 +87,23 @@ namespace CollisionBear.WorldEditor.Lite.Brushes
                 if (selectedVariantIndex == -1) {
                     continue;
                 }
-                var nextIndex = (int)Mathf.Repeat(selectedVariantIndex + steps, validObjects.Count);
+                var nextIndex = (int)Mathf.Repeat(selectedVariantIndex + GetMouseWheelDeltaSteps(delta), validObjects.Count);
                 placement.ReplacePlacementObject(nextIndex, BrushPosition, ScaleFactor);
             }
         }
 
-        protected override List<Vector2> GetPlacementOffsetValues(Vector3 position, SelectionSettings _)
+        private int GetMouseWheelDeltaSteps(Vector2 delta) => Mathf.Clamp((int)HighestValue(delta), -1, 1);
+
+        private float HighestValue(Vector2 delta)
+        {
+            if(Mathf.Abs(delta.x) > Mathf.Abs(delta.y)) {
+                return delta.x;
+            } else {
+                return delta.y;
+            }
+        }
+
+        protected override List<Vector2> GetPlacementOffsetValues(Vector3 position, SelectionSettings _s, ScenePlacer _p)
         {
             return new List<Vector2> { Vector2.zero };
         }

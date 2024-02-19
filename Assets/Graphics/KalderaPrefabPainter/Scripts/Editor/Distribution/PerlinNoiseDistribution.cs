@@ -1,9 +1,9 @@
-using CollisionBear.WorldEditor.Lite.Generation;
+using CollisionBear.WorldEditor.Generation;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite.Distribution {
+namespace CollisionBear.WorldEditor.Distribution {
 
     public class PerlinNoiseDistribution : DistributionBase
     {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite
+namespace CollisionBear.WorldEditor
 {
     public abstract class SelectableAsset : ScriptableObject 
     {

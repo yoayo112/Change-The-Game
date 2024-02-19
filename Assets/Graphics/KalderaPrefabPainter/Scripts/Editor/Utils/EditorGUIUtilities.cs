@@ -1,10 +1,10 @@
-﻿using CollisionBear.WorldEditor.Lite.Extensions;
+﻿using CollisionBear.WorldEditor.Extensions;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using static CollisionBear.WorldEditor.Lite.PaletteEditor;
+using static CollisionBear.WorldEditor.PaletteEditor;
 
-namespace CollisionBear.WorldEditor.Utils.Lite
+namespace CollisionBear.WorldEditor.Utils
 {
     public static class EditorCustomGUILayout
     {
@@ -77,6 +77,7 @@ namespace CollisionBear.WorldEditor.Utils.Lite
                     SpriteGuiStyle.normal.background = null;
                 }
 
+                SpriteGuiStyle.normal.textColor = Color.white;
                 SpriteGuiStyle.border = new RectOffset(2, 2, 2, 2);
                 SpriteGuiStyle.alignment = TextAnchor.MiddleCenter;
 

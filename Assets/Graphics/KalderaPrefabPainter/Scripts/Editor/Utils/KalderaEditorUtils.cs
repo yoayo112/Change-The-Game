@@ -2,7 +2,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite.Utils
+namespace CollisionBear.WorldEditor.Utils
 {
     public static class KalderaEditorUtils
     {
@@ -30,8 +30,8 @@ namespace CollisionBear.WorldEditor.Lite.Utils
 
         public const string IconsBasePath = "Assets/KalderaPrefabPainter/Images/";
 
-        public const string PluginName = "Kaldera Prefab Painter Lite";
-        public const string Version = "1.3.5";
+        public const string PluginName = "Kaldera Prefab Painter Lie";
+        public const string Version = "1.3.8";
 
         public const string WindowBasePath = "Window/" + PluginName;
         public const string AssetBasePath = "Kaldera Prefab Painter";
@@ -77,6 +77,8 @@ namespace CollisionBear.WorldEditor.Lite.Utils
 
         public static readonly GUIContent VersionContent;
         public static readonly GUIContent ReleaseContent;
+
+        public static readonly Texture2D WarningIconTexture;
 
         public static readonly Mesh PlaneMesh = new Mesh() {
             vertices = new Vector3[] {
@@ -138,6 +140,8 @@ namespace CollisionBear.WorldEditor.Lite.Utils
             PaletteLabelContent = new GUIContent("Palette");
 
             VersionContent = new GUIContent($"{PluginName} - Version {Version}");
+
+            WarningIconTexture = LoadAssetPath("Icons/IconWarning.png");
 
             var onTopShader = Shader.Find("WorldEditor/OnTopShader");
             CompassMaterial = new Material(onTopShader) {

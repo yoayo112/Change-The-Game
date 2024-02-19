@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite.Brushes
+namespace CollisionBear.WorldEditor.Brushes
 {
+    [System.Serializable]
     public class DummyBrush : BrushBase
     {
         private string BrushName;
@@ -14,13 +15,13 @@ namespace CollisionBear.WorldEditor.Lite.Brushes
 
         public override KeyCode HotKey => BrushHotKey;
 
-        protected override string ToolTip => BrushToolTip;
+        public override string ToolTip => BrushToolTip;
 
         protected override string ButtonImagePath => ImagePath;
 
         public override bool Disabled => true;
 
-        public DummyBrush(int index, string brushName, KeyCode hotkey, string toolTip, string imagePath): base(index)
+        public DummyBrush(string brushName, KeyCode hotkey, string toolTip, string imagePath)
         {
             BrushName = brushName;
             BrushHotKey = hotkey;
@@ -30,6 +31,6 @@ namespace CollisionBear.WorldEditor.Lite.Brushes
 
         public override void DrawBrushEditor(ScenePlacer placer) { }
 
-        protected override List<Vector2> GetPlacementOffsetValues(Vector3 position, SelectionSettings selectionSettings) => EmptyPointList;
+        protected override List<Vector2> GetPlacementOffsetValues(Vector3 position, SelectionSettings selectionSettings, ScenePlacer placer) => EmptyPointList;
     }
 }

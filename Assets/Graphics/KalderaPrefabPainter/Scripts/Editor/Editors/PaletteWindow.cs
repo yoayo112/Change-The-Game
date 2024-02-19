@@ -1,7 +1,6 @@
-﻿using CollisionBear.WorldEditor.Lite.Brushes;
-using CollisionBear.WorldEditor.Lite.Extensions;
-using CollisionBear.WorldEditor.Lite.Utils;
-using CollisionBear.WorldEditor.Utils.Lite;
+﻿using CollisionBear.WorldEditor.Brushes;
+using CollisionBear.WorldEditor.Extensions;
+using CollisionBear.WorldEditor.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -9,7 +8,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace CollisionBear.WorldEditor.Lite
+namespace CollisionBear.WorldEditor
 {
     public class PaletteWindow : EditorWindow
     {
@@ -305,7 +304,7 @@ namespace CollisionBear.WorldEditor.Lite
 
             // Cycle prefab variant tool 
             if (currentEvent.shift && currentEvent.isScrollWheel) {
-                ScenePlacer.CurrentBrush.CycleVariant(GetMouseWheelDeltaSteps((int)currentEvent.delta.y), ScenePlacer);
+                ScenePlacer.CurrentBrush.CycleVariant(currentEvent.delta, ScenePlacer);
                 ScenePlacer.MovePosition(currentEvent.mousePosition, ScenePlacer.PlacementPosition);
                 currentEvent.Use();
                 return;
@@ -335,8 +334,6 @@ namespace CollisionBear.WorldEditor.Lite
 
         private bool IsSpaceKey(Event currentEvent) => currentEvent.isKey && currentEvent.keyCode == KeyCode.Space && currentEvent.type == EventType.KeyDown;
 
-        private int GetMouseWheelDeltaSteps(int steps) => Mathf.Clamp(steps, -1, 1);
-
         private void OnGuiClearBrush(Event currentEvent)
         {
             // Clear 
@@ -365,10 +362,12 @@ namespace CollisionBear.WorldEditor.Lite
                             currentEvent.Use();
                         }
                     }
-
-                    foreach (var brush in ScenePlacer.GetBrushMapping()) {
+                }
+   
+                foreach (var brush in ScenePlacer.GetBrushMapping()) {
+                    if (currentEvent.shift) {
                         if (currentEvent.keyCode == brush.HotKey) {
-                            SetBrushTypeFromHotkey(brush, currentEvent);
+                            PressBrushFromHotkey(brush, currentEvent);
                         }
                     }
                 }
@@ -379,9 +378,9 @@ namespace CollisionBear.WorldEditor.Lite
             }
         }
 
-        public void SetBrushTypeFromHotkey(BrushBase brush, Event currentEvent)
+        public void PressBrushFromHotkey(IBrushButton button, Event currentEvent)
         {
-            SetBrushType(brush);
+            button.OnButtonPress(this);
             NotifyChange();
             currentEvent.Use();
         }
@@ -510,9 +509,10 @@ namespace CollisionBear.WorldEditor.Lite
             ScenePlacer.SelectionSettings.PlacementModeIndex = placementModeIndex;
         }
 
-        private void SetBrushType(BrushBase brush)
+        public void SetBrushType(BrushBase brush)
         {
             ScenePlacer.SelectionSettings.SelectedBrushIndex = brush.Index;
+            Repaint();
         }
 
         private bool ValidatePlacementSettings()
@@ -646,6 +646,7 @@ namespace CollisionBear.WorldEditor.Lite
             var buttonsInRow = GetButtonCountInRow(windowWidth, KalderaEditorUtils.IconButtonSize);
 
             var totalIndex = 0;
+            var currentIndex = 0;
             var currentRow = 0;
 
             EditorGUILayout.LabelField(GetGroupName(group));
@@ -657,7 +658,9 @@ namespace CollisionBear.WorldEditor.Lite
                             break;
                         }
 
-                        DrawItem(palette, group, rowIndex, totalIndex);
+                        if (DrawItem(palette, group, rowIndex, currentIndex)) {
+                            currentIndex++;
+                        }
 
                         totalIndex++;
                     }
@@ -668,10 +671,10 @@ namespace CollisionBear.WorldEditor.Lite
             }
         }
 
-        private void DrawItem(Palette palette, PaletteGroup group, int rowIndex, int totalIndex)
+        private bool DrawItem(Palette palette, PaletteGroup group, int rowIndex, int totalIndex)
         {
             if (!group.Items[totalIndex].HasVariants()) {
-                return;
+                return false;
             }
 
             var drawRectatangle = GetRectForPosition(rowIndex, KalderaEditorUtils.IconButtonSize);
@@ -683,7 +686,7 @@ namespace CollisionBear.WorldEditor.Lite
 
             var guiContent = PreviewRenderingUtility.GetGuiContentForItem(paletteItem);
             if (guiContent == null) {
-                return;
+                return false;
             }
 
             if (GUI.Button(drawRectatangle, guiContent, StylesUtility.IconButtonStyle)) {
@@ -695,6 +698,8 @@ namespace CollisionBear.WorldEditor.Lite
                     OpenPrefabItem(paletteItem);
                 }
             }
+
+            return true;
         }
 
         private void DrawVersionFooter()
@@ -772,7 +777,7 @@ namespace CollisionBear.WorldEditor.Lite
         {
             using (new EditorGUILayout.HorizontalScope()) {
                 EditorGUILayout.LabelField(KalderaEditorUtils.SelectToolsContent, EditorStyles.boldLabel, GUILayout.Width(KalderaEditorUtils.OptionLabelWidth));
-                var currentIndex = Mathf.Min(ScenePlacer.SelectionSettings.SelectedBrushIndex, ScenePlacer.GetBrushMapping().Count - 1);
+                var currentIndex = Mathf.Min(ScenePlacer.SelectionSettings.SelectedBrushIndex, ScenePlacer.GetBrushMapping().Length - 1);
                 EditorGUILayout.LabelField(ScenePlacer.GetBrushMapping()[currentIndex].Name);
 
             }
@@ -785,21 +790,21 @@ namespace CollisionBear.WorldEditor.Lite
             var totalIndex = 0;
             var currentRow = 0;
 
-            while (totalIndex < brushes.Count) {
-
+            while (totalIndex < brushes.Length) {
                 using (new GUI.GroupScope(GUILayoutUtility.GetRect(windowWidth, KalderaEditorUtils.IconButtonSize))) {
                     for (int rowIndex = 0; rowIndex < buttonsInRow; rowIndex++) {
-                        if (totalIndex >= brushes.Count) {
+                        if (totalIndex >= brushes.Length) {
                             break;
                         }
+
                         var brush = brushes[totalIndex];
 
-                        EditorCustomGUILayout.SetGuiBackgroundColorState(ScenePlacer.SelectionSettings.SelectedBrushIndex == brush.Index);
+                        EditorCustomGUILayout.SetGuiBackgroundColorState(ScenePlacer.CurrentBrush == brush);
                         var drawRectatangle = GetRectForPosition(rowIndex, KalderaEditorUtils.IconButtonSize);
 
                         using (new EditorGUI.DisabledGroupScope(brush.Disabled)) {
                             if (GUI.Button(drawRectatangle, brush.GetButtonContent())) {
-                                SetBrushType(brush);
+                                brush.OnButtonPress(this);
                                 NotifyChange();
                             }
                         }

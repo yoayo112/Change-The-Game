@@ -1,10 +1,11 @@
-using CollisionBear.WorldEditor.Lite.Utils;
+using CollisionBear.WorldEditor.Utils;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite.Brushes
+namespace CollisionBear.WorldEditor.Brushes
 {
+    [System.Serializable]
     public class EraserBrush : BrushBase
     {
         private static readonly List<PlacementInformation> EmptyPlacementList = new List<PlacementInformation>();
@@ -28,18 +29,15 @@ namespace CollisionBear.WorldEditor.Lite.Brushes
 
         public override string Name => "Eraser brush";
         public override KeyCode HotKey => KeyCode.U;
+        public override string ToolTip => "Erases prefabs in the selected area";
 
-        protected override string ToolTip => "Erases prefabs in the selected area";
         protected override string ButtonImagePath => "Icons/IconEraser.png";
 
         private bool IsActive;
         private bool IsDragging;
 
+        [SerializeField]
         private EraserBrushSettings Settings = new EraserBrushSettings();
-
-        public EraserBrush(int index) : base(index)
-        {
-        }
 
         public override bool ShowBrush(ScenePlacer scenePlacer) => IsActive;
 
@@ -66,9 +64,9 @@ namespace CollisionBear.WorldEditor.Lite.Brushes
 
         public override void DrawAdditionalSettings(ScenePlacer placer, SelectionSettings settings) { }
 
-        protected override void UpdatePlacementPoints(Vector3 position, SelectionSettings selectionSettings, PlacementCollection placementCollection) { }
+        protected override void UpdatePlacementPoints(Vector3 position, SelectionSettings selectionSettings, PlacementCollection placementCollection, ScenePlacer placer) { }
 
-        protected override List<Vector2> GetPlacementOffsetValues(Vector3 position, SelectionSettings selectionSettings) => EmptyPointList;
+        protected override List<Vector2> GetPlacementOffsetValues(Vector3 position, SelectionSettings selectionSettings, ScenePlacer placer) => EmptyPointList;
 
         protected override List<PlacementInformation> PlacementsToPlace(ScenePlacer placer) => EmptyPlacementList;
 

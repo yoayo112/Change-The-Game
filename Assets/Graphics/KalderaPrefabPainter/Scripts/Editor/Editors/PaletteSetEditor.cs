@@ -1,10 +1,10 @@
-﻿using CollisionBear.WorldEditor.Lite.Extensions;
-using CollisionBear.WorldEditor.Lite.Utils;
+﻿using CollisionBear.WorldEditor.Extensions;
+using CollisionBear.WorldEditor.Utils;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite
+namespace CollisionBear.WorldEditor
 {
     [CustomEditor(typeof(PaletteSet))]
     public class PaletteSetEditor : Editor

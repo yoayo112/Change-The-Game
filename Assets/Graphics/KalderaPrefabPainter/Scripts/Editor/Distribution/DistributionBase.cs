@@ -1,10 +1,10 @@
-using CollisionBear.WorldEditor.Lite.Generation;
-using CollisionBear.WorldEditor.Lite.Utils;
+using CollisionBear.WorldEditor.Generation;
+using CollisionBear.WorldEditor.Utils;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite.Distribution
+namespace CollisionBear.WorldEditor.Distribution
 {
     public abstract class DistributionBase
     {

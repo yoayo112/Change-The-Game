@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite.Utils
+namespace CollisionBear.WorldEditor.Utils
 {
     public class PreviewRenderingUtility
     {

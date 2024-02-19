@@ -1,10 +1,10 @@
-﻿using CollisionBear.WorldEditor.Lite.Extensions;
-using CollisionBear.WorldEditor.Lite.Utils;
+﻿using CollisionBear.WorldEditor.Extensions;
+using CollisionBear.WorldEditor.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite
+namespace CollisionBear.WorldEditor
 {
     [System.Serializable]
     public class RotationInformation

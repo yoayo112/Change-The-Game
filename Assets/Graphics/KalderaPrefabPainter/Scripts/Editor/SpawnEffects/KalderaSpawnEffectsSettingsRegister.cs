@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite {
+namespace CollisionBear.WorldEditor {
     public static class KalderaSpawnEffectsSettingsRegister {
         private static readonly GUIContent UseSpawnEffectContent = new GUIContent("Use Spawn effect", "Plays a quick spawn effect when placing Prefabs");
         private static readonly GUIContent SpawnDelayContent = new GUIContent("Spawn delay", "Delay between spawned Prefab batches");

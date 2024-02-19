@@ -1,52 +1,87 @@
-﻿using CollisionBear.WorldEditor.Lite.Brushes;
-using CollisionBear.WorldEditor.Lite.Distribution;
-using CollisionBear.WorldEditor.Lite.Extensions;
+﻿using CollisionBear.WorldEditor.Brushes;
+using CollisionBear.WorldEditor.Distribution;
+using CollisionBear.WorldEditor.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite
+namespace CollisionBear.WorldEditor
 {
     [System.Serializable]
     public class ScenePlacer
     {
-        private static List<BrushBase> Brushes;
-        private static List<IPlacementMode> PlacementModes;
-        private static List<DistributionBase> Distributions;
-        private static GUIContent[] PlacementModeGUIContent;
+        [SerializeField]
+        private ParentObjectPlacementMode ParentObjectPlacementMode = new ParentObjectPlacementMode();
+        [SerializeField]
+        private LayerObjectPlacementMode LayerObjectPlacementMode = new LayerObjectPlacementMode();
+
+        [SerializeField]
+        private SingleBrush SingleBrush = new SingleBrush();
+        [SerializeField]
+        private DummyBrush LineBrush = new DummyBrush("Line brush", KeyCode.None, "[Only in full version]\nPlaces multiple objects in a line from where you start drag to the end", "Icons/IconGridLine.png");
+
+        [SerializeField]
+        private DummyBrush PathBrush = new DummyBrush("Path brush", KeyCode.None, "[Only in full version]\nPlaces multiple objects in a path along the mouse drag", "Icons/IconPathTool.png");
+
+        [SerializeField]
+        private CircleBrush CircleBrush = new CircleBrush();
+        [SerializeField]
+        private DummyBrush SquareBrush = new DummyBrush("Square brush", KeyCode.None, "[Only in full version]\nPlaces multiple objects (always at least 1) in a square", "Icons/IconGridSquare.png");
+
+        [SerializeField]
+        private DummyBrush SprayBrush = new DummyBrush("Spray brush", KeyCode.None, "[Only in full version]\nSlowly plots down objects while keeping the mouse button pressed", "Icons/IconGridSpray.png");
+        [SerializeField]
+        private EraserBrush EraserBrush = new EraserBrush();
+        [SerializeField]
+        private ClearButton ClearButton = new ClearButton();
+
+        private IBrushButton[] Brushes;
+        private IPlacementMode[] PlacementModes;
+        private List<DistributionBase> Distributions;
+        private GUIContent[] PlacementModeGUIContent;
 
         private List<PaletteItem> PreviousSelection;
 
-        public static IReadOnlyList<BrushBase> GetBrushMapping() { 
+
+        public IBrushButton[] GetBrushMapping() { 
             if(Brushes == null) {
-                Brushes = new List<BrushBase> {
-                    new SingleBrush(index: 0),
-                    new DummyBrush(index: 1, "Line brush", KeyCode.None, "[Only in full version]\nPlaces multiple objects in a line from where you start drag to the end", "Icons/IconGridLine.png"),
-                    new DummyBrush(index: 2, "Path brush", KeyCode.None, "[Only in full version]\nPlaces multiple objects in a path along the mouse drag", "Icons/IconPathTool.png"),
-                    new CircleBrush(index: 3),
-                    new DummyBrush(index: 4, "Square brush", KeyCode.None, "[Only in full version]\nPlaces multiple objects (always at least 1) in a square", "Icons/IconGridSquare.png"),
-                    new DummyBrush(index: 5, "Spray brush", KeyCode.None, "[Only in full version]\nSlowly plots down objects while keeping the mouse button pressed", "Icons/IconGridSpray.png"),
-                    new EraserBrush(index: 6)
+                SingleBrush.Index   = 0;
+                LineBrush.Index     = 1;
+                PathBrush.Index     = 2;
+                CircleBrush.Index   = 3;
+                SquareBrush.Index   = 4;
+                SprayBrush.Index    = 5;
+                EraserBrush.Index   = 6;
+
+                Brushes = new IBrushButton[] {
+                    SingleBrush,
+                    LineBrush,
+                    PathBrush,
+                    CircleBrush,
+                    SquareBrush,
+                    SprayBrush,
+                    EraserBrush,
+                    ClearButton
                 };
             }
                 
             return Brushes;
         }
 
-        public static IReadOnlyList<IPlacementMode> GetPlacementModes() {
+        public IPlacementMode[] GetPlacementModes() {
             if(PlacementModes == null) {
-                PlacementModes = new List<IPlacementMode> {
+                PlacementModes = new IPlacementMode[] {
                     new AnyColliderMode(),
-                    new ParentObjectPlacementMode(),
-                    new LayerObjectPlacementMode()
+                    ParentObjectPlacementMode,
+                    LayerObjectPlacementMode
                 };
             }
 
             return PlacementModes;
         }
 
-        public static IReadOnlyList<DistributionBase> GetDistributionModes()  { 
+        public IReadOnlyList<DistributionBase> GetDistributionModes()  { 
             if(Distributions == null) {
                 Distributions = new List<DistributionBase> {
                     new RandomDistribution(0),
@@ -58,7 +93,7 @@ namespace CollisionBear.WorldEditor.Lite
             return Distributions;
         }
 
-        public static GUIContent[] GetPlacementModeGuiContent() {
+        public GUIContent[] GetPlacementModeGuiContent() {
             if (PlacementModeGUIContent == null) {
                 
                 PlacementModeGUIContent = GetPlacementModes()
@@ -89,16 +124,27 @@ namespace CollisionBear.WorldEditor.Lite
         public void OnEnable()
         {
             CurrentPlacementMode = GetPlacementModes()[SelectionSettings.PlacementModeIndex];
-            CurrentBrush = GetBrushMapping()[SelectionSettings.SelectedBrushIndex];
+            CurrentBrush = GetCurrentbrushFromIndex(SelectionSettings.SelectedBrushIndex);
             CurrentDistribution = GetDistributionModes()[SelectionSettings.SelectedDistributionIndex];
         }
 
         public void NotifyChange()
         {
-            CurrentBrush = GetBrushMapping()[SelectionSettings.SelectedBrushIndex];
+            CurrentBrush = GetCurrentbrushFromIndex(SelectionSettings.SelectedBrushIndex);
             CurrentBrush.OnSelected(this);
             CurrentDistribution = GetDistributionModes()[SelectionSettings.SelectedDistributionIndex];
             GeneratePlacementInformation(SelectionSettings, ScreenPosition, PlacementPosition);
+        }
+
+        private BrushBase GetCurrentbrushFromIndex(int index)
+        {
+            var result = GetBrushMapping()[index];
+
+            if (result is BrushBase brushBase) {
+                return brushBase;
+            } else {
+                return null;
+            }
         }
 
         public void ClearSelection()
@@ -195,7 +241,7 @@ namespace CollisionBear.WorldEditor.Lite
         {
             DestroyPlacementObjects();
 
-            PlacementCollection = CurrentBrush.GeneratePlacementForBrush(worldPosition, settings);
+            PlacementCollection = CurrentBrush.GeneratePlacementForBrush(worldPosition, settings, this);
             RotatatePlacement(CurrentBrush.Rotation);
 
             if(IsHidden) {

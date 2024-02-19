@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite.Utils
+namespace CollisionBear.WorldEditor.Utils
 {
     public static class DistanceUtility
     {

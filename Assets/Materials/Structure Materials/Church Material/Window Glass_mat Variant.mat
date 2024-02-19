@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Window Glass_mat Variant
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 6a947032441993e42bfc5a42d21612ab, type: 3}
   m_Parent: {fileID: 2100000, guid: 679cc29f11eaaa34dbd68e5bc693d5b7, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -30,14 +30,17 @@ Material:
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap:
-    RenderType: Opaque
+  stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs: []
     m_Ints: []
-    m_Floats: []
-    m_Colors: []
+    m_Floats:
+    - _Metallic: 0.589
+    - _Smooth: 0.575
+    - _fresnal: 0.94
+    m_Colors:
+    - _Color: {r: 0.8207547, g: 0.65475345, b: 0.16647384, a: 0.9882353}
   m_BuildTextureStacks: []

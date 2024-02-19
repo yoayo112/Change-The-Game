@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 
-namespace CollisionBear.WorldEditor.Lite.Extensions
+namespace CollisionBear.WorldEditor.Extensions
 {
     public static class ObjectExtension
     {

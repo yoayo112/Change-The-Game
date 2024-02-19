@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite.Generation
+namespace CollisionBear.WorldEditor.Generation
 {
     public interface IGenerationBounds
     {

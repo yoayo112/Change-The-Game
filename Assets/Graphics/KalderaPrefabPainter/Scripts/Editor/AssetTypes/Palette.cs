@@ -1,8 +1,8 @@
-﻿using CollisionBear.WorldEditor.Lite.Utils;
+﻿using CollisionBear.WorldEditor.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite
+namespace CollisionBear.WorldEditor
 {
     [CreateAssetMenu(fileName = "New Prefab Palette", menuName = KalderaEditorUtils.AssetBasePath + "/Prefab Palette")]
     public class Palette : SelectableAsset

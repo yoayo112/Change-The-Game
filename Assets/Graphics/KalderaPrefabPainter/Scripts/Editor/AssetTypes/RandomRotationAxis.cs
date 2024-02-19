@@ -1,4 +1,4 @@
-﻿namespace CollisionBear.WorldEditor.Lite
+﻿namespace CollisionBear.WorldEditor
 {
     [System.Serializable]
     public class RandomRotationAxis

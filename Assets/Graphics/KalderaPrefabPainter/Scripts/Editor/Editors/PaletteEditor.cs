@@ -1,11 +1,10 @@
-﻿using CollisionBear.WorldEditor.Lite.Utils;
-using CollisionBear.WorldEditor.Utils.Lite;
+﻿using CollisionBear.WorldEditor.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace CollisionBear.WorldEditor.Lite
+namespace CollisionBear.WorldEditor
 {
     [CustomEditor(typeof(Palette))]
     public class PaletteEditor : Editor
@@ -388,8 +387,16 @@ namespace CollisionBear.WorldEditor.Lite
         private void DrawPrefabSelect(PaletteItem item, int index)
         {
             using (var check = new EditorGUI.ChangeCheckScope()) {
-                var guiContent = PreviewRenderingUtility.GetPreviewTexture(item.GameObjectVariants[index]);
-                item.GameObjectVariants[index] = EditorCustomGUILayout.ObjectFieldWithPreview(item.GameObjectVariants[index], guiContent, 128);
+                try {
+                    var previewTexture = PreviewRenderingUtility.GetPreviewTexture(item.GameObjectVariants[index]);
+                    item.GameObjectVariants[index] = EditorCustomGUILayout.ObjectFieldWithPreview(item.GameObjectVariants[index], previewTexture, 128);
+
+                } catch(System.Exception e) {
+                    var previewTexture = KalderaEditorUtils.WarningIconTexture;
+
+                    item.GameObjectVariants[index] = EditorCustomGUILayout.ObjectFieldWithPreview(item.GameObjectVariants[index], previewTexture, 128);
+                    Debug.LogWarning($"Error: {e.Message}");
+                }
 
                 if (check.changed) {
                     if (item.Name == string.Empty && item.GameObjectVariants[index] != null) {
