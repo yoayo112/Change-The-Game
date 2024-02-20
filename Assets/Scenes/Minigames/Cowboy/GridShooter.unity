@@ -644,6 +644,7 @@ MonoBehaviour:
   targetSpawnRate: 1
   maxTargetTime: 2
   target: {fileID: 355267047074708502, guid: 38d563cdb5d8f564e8222537f02bd8e4, type: 3}
+  bangScreen: {fileID: 5842610717355312315, guid: 8d7baa4472a50bd43ac72a9f9a72ae41, type: 3}
   maxAmmo: 6
   reloadTime: 0.5
 --- !u!1660057539 &9223372036854775807

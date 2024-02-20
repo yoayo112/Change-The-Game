@@ -9,6 +9,7 @@ public class GridShooter : MonoBehaviour
     public float targetSpawnRate = 5f; // A target should spawn every x seconds.
     public float maxTargetTime = 2f; // How long a target lasts before dissapearing.
     public GameObject target; //Reference to the target prefab
+    public GameObject bangScreen; //Reference to Bang! prefab
     private float targetSpawnCooldown; // Counter for spawning targets
     private int missedTargets; //How many targets have died to being around too long.
     private int hitTargets; //How many targets player has hit
@@ -193,7 +194,9 @@ public class GridShooter : MonoBehaviour
     void FireWeapon()
     {
         currentAmmo--;
-
+        GameObject clone;
+        clone = Instantiate(bangScreen,gridPositions[aimPos],transform.rotation);
+        Destroy(clone, 0.1f);
         if(hasTarget[aimPos])
         {
             hitTargets++;
