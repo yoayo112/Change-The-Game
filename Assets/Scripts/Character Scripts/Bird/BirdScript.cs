@@ -15,6 +15,7 @@ public class BirdScript : MonoBehaviour
     private Animator animator;
     private Timer flyTimer;
 
+
     // Start is called before the first frame update
     void Start()
     {

@@ -40,6 +40,7 @@ public class CowboyActions : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //COMBAT = true;
         if (COMBAT)
         {
             animator.runtimeAnimatorController = combatController;
