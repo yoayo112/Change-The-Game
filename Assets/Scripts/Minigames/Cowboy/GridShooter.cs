@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Test : MonoBehaviour
+public class GridShooter : MonoBehaviour
 {
 
     public float targetSpawnRate = 5f; // A target should spawn every x seconds.
@@ -71,6 +71,8 @@ public class Test : MonoBehaviour
         }
 
         UpdateTargets();
+
+        HandleInputs();
     }
 
     void UpdateTargets()
@@ -204,48 +206,54 @@ public class Test : MonoBehaviour
     IEnumerator Reload()
     {
         isReloading = true;
+        Debug.Log("Reloading...");
         yield return new WaitForSeconds(reloadTime);
         currentAmmo = maxAmmo;
         isReloading = false;
+        Debug.Log("Reloading finished.");
     }
-
-    public void OnRight()
+    void HandleInputs()
     {
-        UpdateAimHorizontal("R");
-    }
-    public void OnLeft()
-    {
-        UpdateAimHorizontal("L");
-    }
-    public void OnUp()
-    {
-        UpdateAimVertical("U");
-    }
-    public void OnDown()
-    {
-        UpdateAimVertical("D");
-    }
-    public void OnReload()
-    {
-        if(!isReloading)
+        if(Input.GetButtonDown("GridRight"))
         {
-            StartCoroutine(Reload());
+            UpdateAimHorizontal("R");
         }
-    }
-    public void OnFire()
-    {
-        if(currentAmmo > 0)
+        if(Input.GetButtonDown("GridLeft"))
         {
-            FireWeapon();
+            UpdateAimHorizontal("L");
         }
-        else
+        if(Input.GetButtonDown("GridUp"))
+        {
+            UpdateAimVertical("U");
+        }
+        if(Input.GetButtonDown("GridDown"))
+        {
+            UpdateAimVertical("D");
+        }
+        if(Input.GetButtonDown("GridReload"))
         {
             if(!isReloading)
             {
-                StartCoroutine(Reload());
+                if(currentAmmo < maxAmmo)
+                {
+                    StartCoroutine(Reload());
+                }
+            }
+        }
+        if(Input.GetButtonDown("GridFire"))
+        {
+            if(currentAmmo > 0)
+            {
+                FireWeapon();
+            }
+            else
+            {
+                if(!isReloading)
+                {
+                    StartCoroutine(Reload());
+                }
             }
         }
     }
-
 
 }
