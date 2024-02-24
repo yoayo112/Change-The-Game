@@ -45,6 +45,13 @@ public class GridShooter : MonoBehaviour
     private float reloadProgress = 0f; 
     private bool isReloading = false; // Reload coroutine running?
 
+    //-------------------------------------------------------------------------------------
+    //  Audio handling
+    //-------------------------------------------------------------------------------------
+    public AudioSource audioSource;
+    public AudioClip[] audioClipArray;
+    public float volume = 0.5f;
+
     void Start() // Called before first frame update.
     {
         SetupGrid();
@@ -183,6 +190,7 @@ public class GridShooter : MonoBehaviour
     {
         currentAmmo--;
         SetAmmoDisplay();
+        audioSource.PlayOneShot(audioClipArray[0],volume);
         GameObject clone = Instantiate(bangSprite,gridPositions[aimPos],transform.rotation);
         Destroy(clone, 0.1f);
 
@@ -198,6 +206,7 @@ public class GridShooter : MonoBehaviour
         isReloading = true;
         currentAmmo = 0;
         SetAmmoDisplay();
+        audioSource.PlayOneShot(audioClipArray[1], volume);
         yield return new WaitForSeconds(reloadTime);
         currentAmmo = maxAmmo;
         SetAmmoDisplay();
@@ -256,6 +265,7 @@ public class GridShooter : MonoBehaviour
             }
             else
             {
+                audioSource.PlayOneShot(audioClipArray[2], volume);
                 if(!isReloading)
                 {
                     StartCoroutine(Reload());
