@@ -8,8 +8,10 @@ public class TypingGame : MonoBehaviour
     // Word bank needed
     public Text wordOutput = null;
 
+    private string typedWord = string.Empty;
     private string remainingWord = string.Empty;
-    private string currentWord = "test";
+    private string currentWord = "this is a longer test.";
+
 
 
 
@@ -22,13 +24,14 @@ public class TypingGame : MonoBehaviour
     private void SetCurrentWord()
     {
         // Get word from bank
+        typedWord = string.Empty;
         SetRemainingWord(currentWord);
     }
 
     private void SetRemainingWord(string newString)
     {
         remainingWord = newString;
-        wordOutput.text = remainingWord;
+        DisplayWord();
     }
 
 
@@ -53,7 +56,9 @@ public class TypingGame : MonoBehaviour
     {
         if(IsCorrectLetter(typedLetter))
         {
+            typedWord += typedLetter;
             RemoveLetter();
+            DisplayWord();
 
             if (isWordComplete())
                 SetCurrentWord();
@@ -66,14 +71,21 @@ public class TypingGame : MonoBehaviour
         return remainingWord.IndexOf(letter) == 0;
     }
 
-    private void RemoveLetter()
-    {
-        string newString = remainingWord.Remove(0, 1);
-        SetRemainingWord(newString);
-    }
+
 
     private bool isWordComplete()
     {
         return remainingWord.Length == 0;
+    }
+
+    private void DisplayWord()
+    {
+        wordOutput.text = "<color=green>" + typedWord + "</color>" + remainingWord;
+    }
+
+    private void RemoveLetter()
+    {
+        string newString = remainingWord.Remove(0, 1);
+        SetRemainingWord(newString);
     }
 }
