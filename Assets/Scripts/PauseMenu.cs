@@ -49,6 +49,15 @@ public class PauseMenu : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             togglePause();
+
+            if (Cursor.lockState == CursorLockMode.None)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
         }
     }
 
@@ -95,6 +104,11 @@ public class PauseMenu : MonoBehaviour
         if(GUI.Button(new Rect(gridx*2, gridy *3 + b*3, gridx*2, 25), "Resume"))
         {
             togglePause();
+
+            if(Cursor.lockState == CursorLockMode.None)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
         }
         
     }
