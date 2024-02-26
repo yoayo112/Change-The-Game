@@ -13,10 +13,11 @@ public class CowboyMovement_v3 : MonoBehaviour
     public Transform followCam;
     public CinemachineFreeLook virtualCam;
 
+    [Header("Camera Settings")]
     public float maxZoomOut = 1.5f; //150% of start value.
     public float maxZoomIn = 0.5f; //50% of start value.
     public float zoomIncrement = 0.1f; //What percentage value each zoom input will increment by.
-    public float zoomLerpTime = 0.05f;
+    public float zoomLerpTime = 0.5f;
 
     //Camera orbit radii.
     private float topStartRad, midStartRad, botStartRad;
@@ -84,11 +85,6 @@ public class CowboyMovement_v3 : MonoBehaviour
         topMinRad = topStartRad * maxZoomIn;
         midMinRad = midStartRad * maxZoomIn;
         botMinRad = botStartRad * maxZoomIn;
-
-        Debug.Log("Start radii (top,mid,bot): " + topStartRad + "," + midStartRad + "," + botStartRad);
-        Debug.Log("Max Radii:" + topMaxRad + "," + midMaxRad + "," + botMaxRad);
-        Debug.Log("Min Radii:" + topMinRad + "," + midMinRad + "," + botMinRad);
-
     }
 
     void Update()
@@ -204,7 +200,6 @@ public class CowboyMovement_v3 : MonoBehaviour
 
     private void UpdateCamRadius(string dir)
     {
-        Debug.Log(dir);
         float temp = 0f;
 
         if(dir == "Zoom_in")
