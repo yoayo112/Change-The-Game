@@ -5,14 +5,30 @@ using Cinemachine;
 
 public class CowboyMovement_v3 : MonoBehaviour
 {
+    //--------------------------------------------------------
+    //  Camera
+    //--------------------------------------------------------
+    //Exposed
+    [Header("Camera Members")]
+    public Transform followCam;
+    public CinemachineFreeLook virtualCam;
+
+    public float maxZoomOut = 1.5f; //150% of start value.
+    public float maxZoomIn = 0.5f; //50% of start value.
+    public float zoomIncrement = 0.1f; //What percentage value each zoom input will increment by.
+    public float zoomLerpTime = 0.05f;
+
+    //Camera orbit radii.
+    private float topStartRad, midStartRad, botStartRad;
+    private float topMaxRad, midMaxRad, botMaxRad;
+    private float topMinRad, midMinRad, botMinRad;
+    private float topCurRad, midCurRad, botCurRad; //Current Values
 
     //--------------------------------------------------------
     //  Movement
     //--------------------------------------------------------
     //Exposed
     [Header("Movement Members")]
-    [Tooltip("Insert Main Camera here.")]
-    public Transform followCam;
     public CharacterController controller;
     [Header("Movement Settings")]
     public float walkSpeed = 2f;
@@ -52,6 +68,27 @@ public class CowboyMovement_v3 : MonoBehaviour
         running = false;
         runHasToggled = false;
         Cursor.lockState = CursorLockMode.Locked;
+
+        topStartRad = virtualCam.m_Orbits[0].m_Radius;
+        midStartRad = virtualCam.m_Orbits[1].m_Radius;
+        botStartRad = virtualCam.m_Orbits[2].m_Radius;
+
+        topCurRad = topStartRad;
+        midCurRad = midStartRad;
+        botCurRad = botStartRad;
+
+        topMaxRad = topStartRad * maxZoomOut;
+        midMaxRad = midStartRad * maxZoomOut;
+        botMaxRad = botStartRad * maxZoomOut;
+
+        topMinRad = topStartRad * maxZoomIn;
+        midMinRad = midStartRad * maxZoomIn;
+        botMinRad = botStartRad * maxZoomIn;
+
+        Debug.Log("Start radii (top,mid,bot): " + topStartRad + "," + midStartRad + "," + botStartRad);
+        Debug.Log("Max Radii:" + topMaxRad + "," + midMaxRad + "," + botMaxRad);
+        Debug.Log("Min Radii:" + topMinRad + "," + midMinRad + "," + botMinRad);
+
     }
 
     void Update()
@@ -62,6 +99,20 @@ public class CowboyMovement_v3 : MonoBehaviour
         
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
+
+        float mouseScroll = Input.GetAxis("Mouse ScrollWheel");
+
+        if(mouseScroll != 0f)
+        {
+            if(mouseScroll > 0)
+            {
+                UpdateCamRadius("Zoom_in");
+            }
+            else
+            {
+                UpdateCamRadius("Zoom_out");
+            }
+        }
 
         Vector3 move = hInput + vInput;
         normalizedSpeed = Vector3.Dot(move.normalized,move.normalized);
@@ -93,6 +144,7 @@ public class CowboyMovement_v3 : MonoBehaviour
             playerSpeed = 0f;
             audio.Stop();
         }
+        
     }
 
     private void UpdateMovement()
@@ -148,5 +200,54 @@ public class CowboyMovement_v3 : MonoBehaviour
         {
             audio.Play();
         }
+    }
+
+    private void UpdateCamRadius(string dir)
+    {
+        Debug.Log(dir);
+        float temp = 0f;
+
+        if(dir == "Zoom_in")
+        {
+            temp = topCurRad - (topStartRad * zoomIncrement);
+            if(temp >= topMinRad)
+            {
+                topCurRad = Mathf.Lerp(topCurRad, temp, zoomLerpTime);
+            }
+
+            temp = midCurRad - (midStartRad * zoomIncrement);
+            if(temp >= midMinRad)
+            {
+                midCurRad = Mathf.Lerp(midCurRad, temp, zoomLerpTime);
+            }
+            temp = botCurRad - (botStartRad * zoomIncrement);
+            if(temp >= botMinRad)
+            {
+                botCurRad = Mathf.Lerp(botCurRad, temp, zoomLerpTime);
+            }
+        }
+        
+        if(dir == "Zoom_out")
+        {
+            temp = topCurRad + (topStartRad * zoomIncrement);
+            if(temp <= topMaxRad)
+            {
+                topCurRad = Mathf.Lerp(topCurRad, temp, zoomLerpTime);
+            }
+            temp = midCurRad + (midStartRad * zoomIncrement);
+            if(temp <= midMaxRad)
+            {
+                midCurRad = Mathf.Lerp(midCurRad, temp, zoomLerpTime);
+            }
+            temp = botCurRad + (botStartRad * zoomIncrement);
+            if(temp <= botMaxRad)
+            {
+                botCurRad = Mathf.Lerp(botCurRad, temp, zoomLerpTime);
+            }
+        }
+
+        virtualCam.m_Orbits[0].m_Radius = topCurRad;
+        virtualCam.m_Orbits[1].m_Radius = midCurRad;
+        virtualCam.m_Orbits[2].m_Radius = botCurRad;
     }
 }
