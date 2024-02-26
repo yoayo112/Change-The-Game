@@ -1,117 +1,279 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using TMPro;
 
 public class GridShooter : MonoBehaviour
 {
-
-    public float targetSpawnRate = 5f; // A target should spawn every x seconds.
-    public float maxTargetTime = 2f; // How long a target lasts before dissapearing.
-    public GameObject target; //Reference to the target prefab
-    public GameObject bangScreen; //Reference to Bang! prefab
-    private float targetSpawnCooldown; // Counter for spawning targets
-    private int missedTargets; //How many targets have died to being around too long.
-    private int hitTargets; //How many targets player has hit
+    //-----------------------------------------------------------------------------------
+    //  General Game class members
+    //-----------------------------------------------------------------------------------
+    public GameObject gridSprite; // Reference to rope grid prefab
+    private GameObject grid; // This instances rope grid.
+    public TMP_Text hitsDisplay;
+    public TMP_Text effectivenessDisplay;
     private Dictionary<int,Vector3> gridPositions = new Dictionary<int,Vector3>(); // Vector3 positions for grid
-    private Dictionary<int,GameObject> currentTargets = new Dictionary<int,GameObject>(); //Contains target instances
-    private Dictionary<int,bool> hasTarget = new Dictionary<int,bool>(); // Does grid at spot have target?
-    private Dictionary<int,float> timeAlive = new Dictionary<int,float>();// how long has target been up
-    private int aimPos; // Current Grid the red selection box is on.
+    private int totalTargets;
+    private int hitTargets; //How many targets player has hit
+    private int missedTargets; //How many targets missed to old age
+    private float minigameEffectiveness;
+    private bool gameRunning = false;
+    //-----------------------------------------------------------------------------------
+    //  Target specific class members
+    //-----------------------------------------------------------------------------------
+    public GameObject targetSprite; //Reference to the target prefab
+    private TargetGrid targets; //Object that holds information about game targets.
+    public float targetSpawnRate = 5f; // How often targets within a group can spawn
+    public float groupSpawnRate = 1f; // How often a group can start spawning
+    private bool isSpawning = false; // Is a target group spawning right now?
+    public float maxTargetTime = 2f; // How long a target lasts before dissapearing.
+    private int[][] targetGroup; // Vector holding target groups
 
-    private int currentAmmo;
-    public int maxAmmo = 6;
-    public float reloadTime = 2f;
-    private bool isReloading = false;
+    //------------------------------------------------------------------------------------
+    //  Weapon specific class members
+    //------------------------------------------------------------------------------------
+    public GameObject reticleSprite; // Reference to reticle prefab
+    private GameObject reticle; // This instances reticle.
+    public GameObject bangSprite; //Reference to Bang! prefab
+    public TMP_Text ammoDisplay; // UI element for current ammo
+    public Slider reloadProgressBar; // UI progress bar for reload
+    private int aimPos; // Current Grid the reticle is at.
+    private int currentAmmo; // current ammo.
+    public int maxAmmo = 6; // maximum ammo.
+    public float reloadTime = 2f; // How long to reload.
+    private float reloadProgress = 0f; 
+    private bool isReloading = false; // Reload coroutine running?
 
-    // Start is called before the first frame update
-    void Start()
+    //-------------------------------------------------------------------------------------
+    //  Audio handling
+    //-------------------------------------------------------------------------------------
+    public AudioSource audioSource;
+    public AudioClip[] audioClipArray;
+    public float volume = 0.5f;
+
+    void Start() // Called before first frame update.
     {
-        //Top Row
-        gridPositions.Add(1, new Vector3(-2.9f, 2.9f,0f));
-        gridPositions.Add(2, new Vector3(0f,    2.9f,0f));
-        gridPositions.Add(3, new Vector3(2.9f,  2.9f,0f));
-        //Middle Row
-        gridPositions.Add(4, new Vector3(-2.9f, 0f,0f));
-        gridPositions.Add(5, new Vector3(0f,    0f,0f));
-        gridPositions.Add(6, new Vector3(2.9f,  0f,0f));
-        //Bottom Row
-        gridPositions.Add(7, new Vector3(-2.9f, -2.9f,0f));
-        gridPositions.Add(8, new Vector3(0f,    -2.9f,0f));
-        gridPositions.Add(9, new Vector3(2.9f,  -2.9f,0f));
+        SetupGrid();
+        SetupTargetGroup();
+
 
         aimPos = 5;
-        transform.position = gridPositions[aimPos];
-        targetSpawnCooldown = targetSpawnRate; //Start off by spawning a target.
+        SetAim(aimPos);
 
-        for(int i = 1; i <= 9; i++) //Instantiate dicts.
-        {
-            hasTarget.Add(i,false);
-            timeAlive.Add(i,0f);
-        }
-
+        targets = new TargetGrid(maxTargetTime, targetSprite,gridPositions,reticleSprite.transform.rotation);
         missedTargets = 0;
         hitTargets = 0;
+        totalTargets = 0;
+        minigameEffectiveness = 0f;
 
         currentAmmo = maxAmmo;
+        SetAmmoDisplay();
 
         Time.timeScale = 1.0f;
+        gameRunning = false;
     }
 
-    // Update is called once per frame
-    void Update()
+    void Update() //Called once per frame.
     {
-        if(targetSpawnCooldown < targetSpawnRate)
+        if(gameRunning)
         {
-            targetSpawnCooldown += Time.deltaTime;
-        }
-        else
-        {
-            targetSpawnCooldown = 0f;
-            CreateTarget();
-        }
-
-        UpdateTargets();
-
-        HandleInputs();
-    }
-
-    void UpdateTargets()
-    {
-        for(int i = 1; i <= 9; i++)
-        {
-            if(hasTarget[i])
+            if(!isSpawning)
             {
-                timeAlive[i] += Time.deltaTime;
+                StartCoroutine(CreateTargetGroup(targetGroup));
+            }
 
-                if(timeAlive[i] > maxTargetTime) //Target is dying of old age.
+            if(isReloading)
+            {
+                reloadProgress += Time.deltaTime;
+                reloadProgressBar.value = reloadProgress/reloadTime;
+            }
+
+            AgeTargets();
+            HandleInputs();
+        }
+    }
+
+    //--------------------------------------------------------------------------------------------
+    // Mutators
+    //--------------------------------------------------------------------------------------------
+    private void SetAim(int pos)
+    {
+        reticle.transform.position = gridPositions[pos];
+    }
+
+    private void SetAmmoDisplay()
+    {
+        ammoDisplay.text = currentAmmo + "/" + maxAmmo;
+    }
+
+    private void SetHitsDisplay()
+    {
+        hitsDisplay.text = "Hits: " + hitTargets;
+    }
+
+    private void SetEffectivenessDisplay()
+    {
+        effectivenessDisplay.text = "Effectiveness: " + minigameEffectiveness;
+    }
+
+    //---------------------------------------------------------------------------------------------
+    //  Event Subscriptions
+    //---------------------------------------------------------------------------------------------
+    public void OnTimeOver()
+    {
+        StopAllCoroutines();
+        isSpawning = false;
+        isReloading = false;
+        gameRunning = false;
+        targets.KillAll();
+        minigameEffectiveness = (float)hitTargets/(float)totalTargets;
+        SetEffectivenessDisplay();
+
+        ResetState();
+    }
+    public void OnStartClicked()
+    {
+        Debug.Log("Start clicked entered.");
+        if(!gameRunning)
+        {
+            hitTargets = 0;
+            SetHitsDisplay();
+            minigameEffectiveness = 0f;
+            gameRunning = true;
+            Debug.Log("Start Clicked ending");
+        }
+    }
+    //--------------------------------------------------------------------------------------------
+    //  General Game Methods
+    //--------------------------------------------------------------------------------------------
+    private void AgeTargets()
+    {
+        for(int pos = 1; pos <= 9; pos++)
+        {
+            if(targets.HasTarget(pos))
+            {
+                targets.AddTime(pos,Time.deltaTime);
+
+                if(targets.TooOld(pos)) //Target is dying of old age.
                 {
                     missedTargets++;
-                    Debug.Log("Miss: " + missedTargets);
-                    KillTarget(i);
+                    targets.KillTarget(pos);
                 }
             }
         }
     }
-    void KillTarget(int pos)
-    {
-        timeAlive[pos] = 0f;
-        hasTarget[pos] = false;
-        Destroy(currentTargets[pos]);
-    }
-    void CreateTarget()
-    {
-        int rand = Random.Range(1,10);
 
-        if(!hasTarget[rand])
+    IEnumerator CreateTargetGroup(int[][] targetGroup)
+    {
+        isSpawning = true;
+        Debug.Log("Spawning Target Group...");
+
+        foreach(int[] group in targetGroup)
         {
-            currentTargets[rand] = Instantiate(target,gridPositions[rand],transform.rotation);
-            hasTarget[rand] = true;
-            timeAlive[rand] = 0f;
+            foreach(int pos in group)
+            {
+                targets.CreateTarget(pos);
+                totalTargets++;
+                yield return new WaitForSeconds(targetSpawnRate);
+            }
+            
+            yield return new WaitForSeconds(groupSpawnRate);
+        }
+
+        isSpawning = false;
+        Debug.Log("Group Spawning Finished!");
+    }
+
+    
+    void FireWeapon()
+    {
+        currentAmmo--;
+        SetAmmoDisplay();
+        audioSource.PlayOneShot(audioClipArray[0],volume);
+        GameObject clone = Instantiate(bangSprite,gridPositions[aimPos],transform.rotation);
+        Destroy(clone, 0.1f);
+
+        if(targets.HasTarget(aimPos))
+        {
+            hitTargets++;
+            SetHitsDisplay();
+            targets.KillTarget(aimPos);
         }
     }
+    IEnumerator Reload()
+    {
+        isReloading = true;
+        currentAmmo = 0;
+        SetAmmoDisplay();
+        audioSource.PlayOneShot(audioClipArray[1], volume);
+        yield return new WaitForSeconds(reloadTime);
+        currentAmmo = maxAmmo;
+        SetAmmoDisplay();
+        isReloading = false;
+        reloadProgress = 0f;
+        reloadProgressBar.value = 0f;
+    }
 
-    void UpdateAimHorizontal(string dir)
+    private void ResetState()
+    {
+        aimPos = 5;
+        SetAim(aimPos);
+
+        currentAmmo = maxAmmo;
+        SetAmmoDisplay();
+        missedTargets = 0;
+        totalTargets = 0;
+    }
+
+    //----------------------------------------------------------------------
+    //  Input Handling
+    //----------------------------------------------------------------------
+    void HandleInputs()
+    {
+        if(Input.GetButtonDown("GridRight"))
+        {
+            UpdateAimHorizontal("R");
+        }
+        if(Input.GetButtonDown("GridLeft"))
+        {
+            UpdateAimHorizontal("L");
+        }
+        if(Input.GetButtonDown("GridUp"))
+        {
+            UpdateAimVertical("U");
+        }
+        if(Input.GetButtonDown("GridDown"))
+        {
+            UpdateAimVertical("D");
+        }
+        if(Input.GetButtonDown("GridReload"))
+        {
+            if(!isReloading)
+            {
+                if(currentAmmo < maxAmmo)
+                {
+                    StartCoroutine(Reload());
+                }
+            }
+        }
+        if(Input.GetButtonDown("GridFire"))
+        {
+            if(currentAmmo > 0)
+            {
+                FireWeapon();
+            }
+            else
+            {
+                audioSource.PlayOneShot(audioClipArray[2], volume);
+                if(!isReloading)
+                {
+                    StartCoroutine(Reload());
+                }
+            }
+        }
+    }
+    private void UpdateAimHorizontal(string dir)
     {
         if(dir == "R")
         {
@@ -149,7 +311,7 @@ public class GridShooter : MonoBehaviour
                     break;
             }
         }
-        transform.position = gridPositions[aimPos];
+        SetAim(aimPos);
     }
     void UpdateAimVertical(string dir)
     {
@@ -189,74 +351,39 @@ public class GridShooter : MonoBehaviour
                     break;
             }
         }
-        transform.position = gridPositions[aimPos];
+        SetAim(aimPos);
     }
-    void FireWeapon()
+    
+    //--------------------------------------------------------------------------
+    //  Initial setup
+    //--------------------------------------------------------------------------
+    private void SetupGrid()
     {
-        currentAmmo--;
-        GameObject clone;
-        clone = Instantiate(bangScreen,gridPositions[aimPos],transform.rotation);
-        Destroy(clone, 0.1f);
-        if(hasTarget[aimPos])
-        {
-            hitTargets++;
-            Debug.Log("Hits: " + hitTargets);
-            KillTarget(aimPos);
-        }
-    }
+        //Top Row
+        gridPositions.Add(1, new Vector3(-2.9f, 2.9f,0f));
+        gridPositions.Add(2, new Vector3(0f,    2.9f,0f));
+        gridPositions.Add(3, new Vector3(2.9f,  2.9f,0f));
+        //Middle Row
+        gridPositions.Add(4, new Vector3(-2.9f, 0f,0f));
+        gridPositions.Add(5, new Vector3(0f,    0f,0f));
+        gridPositions.Add(6, new Vector3(2.9f,  0f,0f));
+        //Bottom Row
+        gridPositions.Add(7, new Vector3(-2.9f, -2.9f,0f));
+        gridPositions.Add(8, new Vector3(0f,    -2.9f,0f));
+        gridPositions.Add(9, new Vector3(2.9f,  -2.9f,0f));
 
-    //Create a coroutine for Reloading
-    IEnumerator Reload()
-    {
-        isReloading = true;
-        Debug.Log("Reloading...");
-        yield return new WaitForSeconds(reloadTime);
-        currentAmmo = maxAmmo;
-        isReloading = false;
-        Debug.Log("Reloading finished.");
+        grid = Instantiate(gridSprite, gridPositions[5], transform.rotation);
+        reticle = Instantiate(reticleSprite, gridPositions[5], transform.rotation);
     }
-    void HandleInputs()
+    private void SetupTargetGroup()
     {
-        if(Input.GetButtonDown("GridRight"))
+        targetGroup = new int[][]
         {
-            UpdateAimHorizontal("R");
-        }
-        if(Input.GetButtonDown("GridLeft"))
-        {
-            UpdateAimHorizontal("L");
-        }
-        if(Input.GetButtonDown("GridUp"))
-        {
-            UpdateAimVertical("U");
-        }
-        if(Input.GetButtonDown("GridDown"))
-        {
-            UpdateAimVertical("D");
-        }
-        if(Input.GetButtonDown("GridReload"))
-        {
-            if(!isReloading)
-            {
-                if(currentAmmo < maxAmmo)
-                {
-                    StartCoroutine(Reload());
-                }
-            }
-        }
-        if(Input.GetButtonDown("GridFire"))
-        {
-            if(currentAmmo > 0)
-            {
-                FireWeapon();
-            }
-            else
-            {
-                if(!isReloading)
-                {
-                    StartCoroutine(Reload());
-                }
-            }
-        }
+            new int[]{1,2,3},
+            new int[]{4,5,6},
+            new int[]{7,8,9},
+            new int[]{1,5,9},
+            new int[]{7,5,3}
+        };
     }
-
 }

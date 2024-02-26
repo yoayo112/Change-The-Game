@@ -282,7 +282,7 @@ GameObject:
   - component: {fileID: 892292693}
   - component: {fileID: 892292692}
   m_Layer: 5
-  m_Name: Output
+  m_Name: TextRemaining
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -340,7 +340,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Word
+  m_Text: Text
 --- !u!222 &892292693
 CanvasRenderer:
   m_ObjectHideFlags: 0

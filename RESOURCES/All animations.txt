@@ -1,0 +1,20 @@
+
+OVERWORLD:
+
+walk
+run
+idle
+door open
+door close
+(sit?)
+(stand?)
+(greeting?)
+
+
+COMBAT:
+
+combat idle
+attack
+get hurt
+die
+(use item?)
