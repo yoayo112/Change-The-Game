@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class CowboyMovement_v3 : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class CowboyMovement_v3 : MonoBehaviour
     //Exposed
     [Header("Movement Members")]
     [Tooltip("Insert Main Camera here.")]
-    public Transform cam;
+    public Transform followCam;
     public CharacterController controller;
     [Header("Movement Settings")]
     public float walkSpeed = 2f;
@@ -97,8 +98,8 @@ public class CowboyMovement_v3 : MonoBehaviour
     private void UpdateMovement()
     {
         //Have character model face direction of input.
-        float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,targetAngle,ref turnSmoothVelocity, turnSmoothTime);
+        float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + followCam.eulerAngles.y;
+        float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,targetAngle, ref turnSmoothVelocity, turnSmoothTime);
 
         transform.rotation = Quaternion.Euler(0f, angle, 0f);
 

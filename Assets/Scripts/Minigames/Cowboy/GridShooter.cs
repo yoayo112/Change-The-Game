@@ -9,6 +9,7 @@ public class GridShooter : MonoBehaviour
     //-----------------------------------------------------------------------------------
     //  General Game class members
     //-----------------------------------------------------------------------------------
+    [Header("General Members")]
     public GameObject gridSprite; // Reference to rope grid prefab
     private GameObject grid; // This instances rope grid.
     public TMP_Text hitsDisplay;
@@ -22,8 +23,10 @@ public class GridShooter : MonoBehaviour
     //-----------------------------------------------------------------------------------
     //  Target specific class members
     //-----------------------------------------------------------------------------------
+    [Header("Target Members")]
     public GameObject targetSprite; //Reference to the target prefab
     private TargetGrid targets; //Object that holds information about game targets.
+    [Header("Target Spawn Settings")]
     public float targetSpawnRate = 5f; // How often targets within a group can spawn
     public float groupSpawnRate = 1f; // How often a group can start spawning
     private bool isSpawning = false; // Is a target group spawning right now?
@@ -33,11 +36,13 @@ public class GridShooter : MonoBehaviour
     //------------------------------------------------------------------------------------
     //  Weapon specific class members
     //------------------------------------------------------------------------------------
+    [Header("Weapon Members")]
     public GameObject reticleSprite; // Reference to reticle prefab
     private GameObject reticle; // This instances reticle.
     public GameObject bangSprite; //Reference to Bang! prefab
     public TMP_Text ammoDisplay; // UI element for current ammo
     public Slider reloadProgressBar; // UI progress bar for reload
+    [Header("Weapon Settings")]
     private int aimPos; // Current Grid the reticle is at.
     private int currentAmmo; // current ammo.
     public int maxAmmo = 6; // maximum ammo.
@@ -48,6 +53,7 @@ public class GridShooter : MonoBehaviour
     //-------------------------------------------------------------------------------------
     //  Audio handling
     //-------------------------------------------------------------------------------------
+    [Header("Audio Members and Settings")]
     public AudioSource audioSource;
     public AudioClip[] audioClipArray;
     public float volume = 0.5f;
