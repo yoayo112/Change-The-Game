@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,12 +9,10 @@ public class TypingGame : MonoBehaviour
     public Text wordOutput = null;
 
     private string typedWord = string.Empty;
+    private char currentLetter;
     private string remainingWord = string.Empty;
     private string currentWord = "this is a longer test.";
-
-
-
-
+    private bool isWordComplete = false;
 
     private void Start()
     {
@@ -24,8 +22,10 @@ public class TypingGame : MonoBehaviour
     private void SetCurrentWord()
     {
         // Get word from bank
+        isWordComplete = false;
         typedWord = string.Empty;
-        SetRemainingWord(currentWord);
+        currentLetter = currentWord[0];
+        SetRemainingWord(currentWord.Remove(0, 1));
     }
 
     private void SetRemainingWord(string newString)
@@ -33,8 +33,6 @@ public class TypingGame : MonoBehaviour
         remainingWord = newString;
         DisplayWord();
     }
-
-
 
     private void Update()
     {
@@ -56,11 +54,8 @@ public class TypingGame : MonoBehaviour
     {
         if(IsCorrectLetter(typedLetter))
         {
-            typedWord += typedLetter;
             RemoveLetter();
-            DisplayWord();
-
-            if (isWordComplete())
+            if (isWordComplete)
                 SetCurrentWord();
 
         }
@@ -68,24 +63,36 @@ public class TypingGame : MonoBehaviour
 
     private bool IsCorrectLetter(string letter)
     {
-        return remainingWord.IndexOf(letter) == 0;
-    }
-
-
-
-    private bool isWordComplete()
-    {
-        return remainingWord.Length == 0;
+        return currentLetter == letter[0];
     }
 
     private void DisplayWord()
     {
-        wordOutput.text = "<color=green>" + typedWord + "</color>" + remainingWord;
+        char dispCurrentLetter;
+        if (char.IsWhiteSpace(currentLetter))
+            dispCurrentLetter = '█';
+        else
+            dispCurrentLetter = currentLetter;
+
+        wordOutput.text = "<color=green>" + typedWord + "</color><color=yellow>" + dispCurrentLetter + "</color>" + remainingWord;
     }
 
     private void RemoveLetter()
     {
-        string newString = remainingWord.Remove(0, 1);
-        SetRemainingWord(newString);
+        if (remainingWord.Length == 0)
+            isWordComplete = true;
+        else
+        {
+            typedWord += currentLetter;
+            GetNextLetter();
+            string newString = remainingWord.Remove(0, 1);
+            SetRemainingWord(newString);
+        }
+    }
+
+    private void GetNextLetter()
+    {
+
+            currentLetter = remainingWord[0];
     }
 }
