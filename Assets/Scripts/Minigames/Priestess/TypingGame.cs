@@ -8,6 +8,7 @@ public class TypingGame : MonoBehaviour
     // Word bank needed
     public Text wordOutput = null;
     public Text mistakesOutput = null;
+    public float lockoutTime = 5f;
 
     //-------------------------------------------------------------------------------------
     //  Audio handling
@@ -23,6 +24,7 @@ public class TypingGame : MonoBehaviour
     private string currentWord = "this is a longer test.";
     private bool isWordComplete = false;
     private int mistakes = 0;
+    private bool inputLockout = false;
 
 
     private void Start()
@@ -64,15 +66,18 @@ public class TypingGame : MonoBehaviour
 
     private void EnterLetter(string typedLetter)
     {
-        if (IsCorrectLetter(typedLetter))
+        if (!inputLockout)
         {
-            RemoveLetter();
-            if (isWordComplete)
-                SetCurrentWord();
+            if (IsCorrectLetter(typedLetter))
+            {
+                RemoveLetter();
+                if (isWordComplete)
+                    SetCurrentWord();
 
+            }
+            else
+                AddMistake();
         }
-        else
-            AddMistake();
     }
 
     private bool IsCorrectLetter(string letter)
@@ -116,6 +121,7 @@ public class TypingGame : MonoBehaviour
         //Camera Shake
         UpdateMistakeDisplay();
         audioSource.PlayOneShot(audioClipArray[0], volume);
+        StartCoroutine(LockInput());
 
     }
 
@@ -123,4 +129,15 @@ public class TypingGame : MonoBehaviour
     {
         mistakesOutput.text = "Mistakes: " + mistakes;
     }
+
+    IEnumerator LockInput()
+    {
+        //Currently not working
+
+        inputLockout = true;
+        yield return new WaitForSeconds(lockoutTime);
+        inputLockout = false;
+
+    }
 }
+
