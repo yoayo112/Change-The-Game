@@ -8,7 +8,7 @@ public class TypingGame : MonoBehaviour
     // Word bank needed
     public Text wordOutput = null;
     public Text mistakesOutput = null;
-    public float lockoutTime = 5f;
+    public float lockoutTime = 1f;
 
     //-------------------------------------------------------------------------------------
     //  Audio handling
@@ -18,125 +18,122 @@ public class TypingGame : MonoBehaviour
     public AudioClip[] audioClipArray;
     public float volume = 0.5f;
 
-    private string typedWord = string.Empty;
-    private char currentLetter;
-    private string remainingWord = string.Empty;
-    private string currentWord = "this is a longer test.";
-    private bool isWordComplete = false;
-    private int mistakes = 0;
-    private bool inputLockout = false;
-
-
-    private void Start()
-    {
-        SetCurrentWord();
-        UpdateMistakeDisplay();
-    }
-
-    private void SetCurrentWord()
-    {
-        // Get word from bank
-        isWordComplete = false;
-        typedWord = string.Empty;
-        currentLetter = currentWord[0];
-        SetRemainingWord(currentWord.Remove(0, 1));
-    }
-
-    private void SetRemainingWord(string newString)
-    {
-        remainingWord = newString;
-        DisplayWord();
-    }
+    private string _typedWord = string.Empty;
+    private char _currentLetter;
+    private string _remainingWord = string.Empty;
+    private string _currentWord = "this is a longer test.";
+    private bool _isWordComplete = false;
+    private int _mistakes = 0;
+    private bool _isLocked = false;
 
     private void Update()
     {
         CheckInput();
     }
 
-    private void CheckInput()
+    private void Start()
+    {
+        Set_Current_Word();
+        Update_Mistake_Display();
+    }
+
+    private void Set_Current_Word()
+    {
+        // Get word from bank
+        _isWordComplete = false;
+        _typedWord = string.Empty;
+        _currentLetter = _currentWord[0];
+        Set_Remaining_Word(_currentWord.Remove(0, 1));
+    }
+
+    private void Set_Remaining_Word(string newString_)
+    {
+        _remainingWord = newString_;
+        Display_Word();
+    }
+
+    private void Check_Input()
     {
         if(Input.anyKeyDown)
         {
-            string keysPressed = Input.inputString;
+            string keysPressed_ = Input.inputString;
 
-            if (keysPressed.Length == 1)
-                EnterLetter(keysPressed);
+            if (keysPressed_.Length == 1)
+                Enter_Letter(keysPressed_);
         }
     }
 
-    private void EnterLetter(string typedLetter)
+    private void Enter_Letter(string typedLetter_)
     {
-        if (!inputLockout)
+        if (!_isLocked)
         {
-            if (IsCorrectLetter(typedLetter))
+            if (Is_Correct_Letter(typedLetter_))
             {
-                RemoveLetter();
-                if (isWordComplete)
-                    SetCurrentWord();
+                Remove_Letter();
+                if (_isWordComplete)
+                    Set_Current_Word();
 
             }
             else
-                AddMistake();
+                Add_Mistake();
         }
     }
 
-    private bool IsCorrectLetter(string letter)
+    private bool Is_Correct_Letter(string letter_)
     {
-        return currentLetter == char.ToLower(letter[0]);
+        return _currentLetter == char.ToLower(letter_[0]);
     }
 
-    private void DisplayWord()
+    private void Display_Word()
     {
-        char dispCurrentLetter;
-        if (char.IsWhiteSpace(currentLetter))
-            dispCurrentLetter = '█';
+        char dispCurrentLetter_;
+        if (char.IsWhiteSpace(_currentLetter))
+            dispCurrentLetter_ = '█';
         else
-            dispCurrentLetter = currentLetter;
+            dispCurrentLetter_ = _currentLetter;
 
-        wordOutput.text = "<color=green>" + typedWord + "</color><color=yellow>" + dispCurrentLetter + "</color>" + remainingWord;
+        wordOutput.text = "<color=green>" + _typedWord + "</color><color=yellow>" + dispCurrentLetter_ + "</color>" + _remainingWord;
     }
 
-    private void RemoveLetter()
+    private void Remove_Letter()
     {
-        if (remainingWord.Length == 0)
-            isWordComplete = true;
+        if (_remainingWord.Length == 0)
+            _isWordComplete = true;
         else
         {
-            typedWord += currentLetter;
-            GetNextLetter();
-            string newString = remainingWord.Remove(0, 1);
-            SetRemainingWord(newString);
+            _typedWord += _currentLetter;
+            Next_Letter();
+            string newString = _remainingWord.Remove(0, 1);
+            Set_Remaining_Word(newString);
         }
     }
 
-    private void GetNextLetter()
+    private void Next_Letter()
     {
-
-            currentLetter = remainingWord[0];
+            _currentLetter = _remainingWord[0];
     }
 
-    private void AddMistake()
+    private void Add_Mistake()
     {
-        mistakes++;
+        _mistakes++;
         //Camera Shake
-        UpdateMistakeDisplay();
+        Update_Mistake_Display();
         audioSource.PlayOneShot(audioClipArray[0], volume);
-        StartCoroutine(LockInput());
+        StartCoroutine(Lock_Input());
 
     }
 
-    private void UpdateMistakeDisplay()
+    private void Update_Mistake_Display()
     {
-        mistakesOutput.text = "Mistakes: " + mistakes;
+        mistakesOutput.text = "Mistakes: " + _mistakes;
     }
 
     IEnumerator LockInput()
     {
-        //Currently not working
 
-        inputLockout = true;
+        _isLocked = true;
         yield return new WaitForSeconds(lockoutTime);
-        inputLockout = false;
+        _isLocked = false;
 
     }
 }
