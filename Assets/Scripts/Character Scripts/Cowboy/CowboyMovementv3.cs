@@ -50,7 +50,7 @@ public class CowboyMovement_v3 : MonoBehaviour
         animator = GameObject.Find("Cowboy_body").GetComponent<Animator>();
         running = false;
         runHasToggled = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
