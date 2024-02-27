@@ -7,16 +7,19 @@ public class TypingGame : MonoBehaviour
 {
     // Word bank needed
     public Text wordOutput = null;
+    public Text mistakesOutput = null;
 
     private string typedWord = string.Empty;
     private char currentLetter;
     private string remainingWord = string.Empty;
     private string currentWord = "this is a longer test.";
     private bool isWordComplete = false;
+    private int mistakes = -1;
 
     private void Start()
     {
         SetCurrentWord();
+        AddMistake();
     }
 
     private void SetCurrentWord()
@@ -52,18 +55,20 @@ public class TypingGame : MonoBehaviour
 
     private void EnterLetter(string typedLetter)
     {
-        if(IsCorrectLetter(typedLetter))
+        if (IsCorrectLetter(typedLetter))
         {
             RemoveLetter();
             if (isWordComplete)
                 SetCurrentWord();
 
         }
+        else
+            AddMistake();
     }
 
     private bool IsCorrectLetter(string letter)
     {
-        return currentLetter == letter[0];
+        return currentLetter == char.ToLower(letter[0]);
     }
 
     private void DisplayWord()
@@ -94,5 +99,14 @@ public class TypingGame : MonoBehaviour
     {
 
             currentLetter = remainingWord[0];
+    }
+
+    private void AddMistake()
+    {
+        mistakes++;
+        //Camera Shake
+        //Sound Effect
+        mistakesOutput.text = "Mistakes: " + mistakes;
+        
     }
 }
