@@ -28,7 +28,7 @@ public class TypingGame : MonoBehaviour
 
     private void Update()
     {
-        CheckInput();
+        Check_Input();
     }
 
     private void Start()
@@ -128,7 +128,7 @@ public class TypingGame : MonoBehaviour
         mistakesOutput.text = "Mistakes: " + _mistakes;
     }
 
-    IEnumerator LockInput()
+    IEnumerator Lock_Input()
     {
 
         _isLocked = true;
