@@ -53,9 +53,10 @@ public class CowboyActions : MonoBehaviour
         //"Mlady"
         if (Input.GetButtonDown("Hat"))
         {
-            float playerSpeed = GameObject.Find("Cowboy_body").GetComponent<CowboyMovement>().getPlayerSpeed();
+            float playerSpeed = GameObject.Find("COWBOY_PREFAB").GetComponent<CowboyMovement_v3>().GetPlayerSpeed();
             if (playerSpeed < 1.5)
             {
+                Debug.Log("Setting trigger hat");
                 animator.SetTrigger("Hat");
             }
             else

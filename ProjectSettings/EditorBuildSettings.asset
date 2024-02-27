@@ -4,6 +4,12 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Overworld/HomeTown_v2.unity
+    guid: fd9cb89318b641447a88c9479ae664af
+  - enabled: 1
+    path: Assets/Scenes/Overworld/Church_inside.unity
+    guid: fec70de82b5784a41a3d2314f05f728a
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 4089fdf3b100c5141ae40aeef9faa37e, type: 2}
