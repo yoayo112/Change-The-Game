@@ -9,17 +9,26 @@ public class TypingGame : MonoBehaviour
     public Text wordOutput = null;
     public Text mistakesOutput = null;
 
+    //-------------------------------------------------------------------------------------
+    //  Audio handling
+    //-------------------------------------------------------------------------------------
+    [Header("Audio Members and Settings")]
+    public AudioSource audioSource;
+    public AudioClip[] audioClipArray;
+    public float volume = 0.5f;
+
     private string typedWord = string.Empty;
     private char currentLetter;
     private string remainingWord = string.Empty;
     private string currentWord = "this is a longer test.";
     private bool isWordComplete = false;
-    private int mistakes = -1;
+    private int mistakes = 0;
+
 
     private void Start()
     {
         SetCurrentWord();
-        AddMistake();
+        UpdateMistakeDisplay();
     }
 
     private void SetCurrentWord()
@@ -105,8 +114,13 @@ public class TypingGame : MonoBehaviour
     {
         mistakes++;
         //Camera Shake
-        //Sound Effect
+        UpdateMistakeDisplay();
+        audioSource.PlayOneShot(audioClipArray[0], volume);
+
+    }
+
+    private void UpdateMistakeDisplay()
+    {
         mistakesOutput.text = "Mistakes: " + mistakes;
-        
     }
 }
