@@ -82,8 +82,7 @@ public class TypingGame : MonoBehaviour
         //Camera Shake
         Update_Mistake_Display();
         audioSource.PlayOneShot(audioClipArray[0], volume);
-        StartCoroutine(Lock_Input());
-
+        StartCoroutine(Lock_Mistake());
     }
 
     private void Update_Mistake_Display()
@@ -105,27 +104,20 @@ public class TypingGame : MonoBehaviour
     }
 
     private void Enter_Letter(string typedLetter_)
-        //When letter is typed, addes letter to typed Line if correct, or adds mistake otherwise.
+        //When letter is typed, addes letter to typed Line if correct, or adds mistake otherwise. Will not add mistake if on lockout
     {
-        if (!_isLocked)
-        {
-            if (Is_Correct_Letter(typedLetter_))
-            {
-                Remove_Letter();
-                if (_isLineComplete)
-                    Next_Line();
+        if (Is_Correct_Letter(typedLetter_))
+            Next_Letter();
 
-            }
-            else
-                Add_Mistake();
-        }
+        else if (!_isLocked)
+            Add_Mistake();
     }
 
-    private void Remove_Letter()
+    private void Next_Letter()
     //Adds typed letter to _typedLine, gets new _currentLetter from _remainingLine, and removes letter from _remainingLine
     {
         if (_remainingLine.Length == 0)
-            _isLineComplete = true;
+            Next_Line();
         else
         {
             _typedLine += _currentLetter;
@@ -141,7 +133,7 @@ public class TypingGame : MonoBehaviour
         Set_Current_Line();
     }
 
-    IEnumerator Lock_Input()
+    IEnumerator Lock_Mistake()
         //Locks out player input for lockoutTime seconds
     {
         _isLocked = true;
