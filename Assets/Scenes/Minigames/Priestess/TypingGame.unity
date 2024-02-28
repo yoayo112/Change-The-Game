@@ -153,8 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f730b67cf7cf99e4bb3c85efc085910e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typedLineOutput: {fileID: 0}
-  availableLineOutput: {fileID: 0}
+  typedLineOutput: {fileID: 288231260}
+  availableLineOutput: {fileID: 938773119}
   mistakesOutput: {fileID: 533910870}
   lockoutTime: 1
   audioSource: {fileID: 9609470}
@@ -451,8 +451,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4283650912
+  m_fontColor: {r: 0.3773585, g: 0.3257387, b: 0.3257387, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -542,7 +542,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.16509432, b: 0.16509432, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
