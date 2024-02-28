@@ -110,7 +110,9 @@ public class TypingGame : MonoBehaviour
         {
             string keysPressed_ = Input.inputString;
 
-            if (keysPressed_.Length == 1)
+            if (keysPressed_ == "\b")
+                Back_Space();
+            else if (keysPressed_.Length == 1)
                 Attempt_Letter(keysPressed_);
         }
     }
@@ -155,13 +157,24 @@ public class TypingGame : MonoBehaviour
 
         Display_Typed_Line();
         Display_Available_Lines();
+    }
 
+    private void Back_Space()
+    {
+        _typedCount--;
+        _typedLine = _typedLine.Remove(_typedLine.Length - 1);
 
-
+        for (int i = 0; i < _availableLines.Length; i++)
+        {
+            if (_typedLine == _availableLines[i].Remove(_typedCount, _availableLines[i].Length - _typedCount))
+                _isActiveAvailableLines[i] = true;
+        }
+        Display_Typed_Line();
+        Display_Available_Lines();
     }
 
     IEnumerator Lock_Mistake()
-        //Locks out player input for lockoutTime seconds
+        //Locks out player mistakes for lockoutTime seconds
     {
         _isLocked = true;
         yield return new WaitForSeconds(lockoutTime);
@@ -188,7 +201,5 @@ public class TypingGame : MonoBehaviour
         else
             return char.ToString(character);
     }
-
-
 }
 
