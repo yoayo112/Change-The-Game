@@ -1,44 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
+
 
 public class CowboyCombat : MonoBehaviour
 {
-    public float armor = 1f;
-    public float attackPower = 2f;
-    public float health = 10f;
-    public float energy = 10f;
-    public float speed = 1f;
+    private float armor = 0.1f;
+    private float attackPower = 20f;
+    private float health = 100f;
+    private float energy = 100f;
+    private float speed = 10f;
     private int myIndex = 0;
-    public DealDamage d_event;
-
-    public void doAttack()
+    
+    private void OnEnable()
     {
-        //get targeted enemy
-        int[] enemyIndexes = { 0, 1 };
-        attack(enemyIndexes);
+        CombatEventManager.onDamage += Take_Damage;
+    }
+    private void OnDisable()
+    {
+        CombatEventManager.onDamage -= Take_Damage;
     }
 
-    public void attack(int[] targets)
+    public void Do_Attack()
     {
+        //get targeted enemy
+        Debug.Log("Button Clicked");
+        int[] enemyIndexes = { 0, 1 };
+
         //trigger minigame
         float effectiveness = 0.5f;
 
-        float damage = attackPower * (effectiveness +1);
+        float damage = attackPower * (effectiveness + 1);
         //generate damage
-        
-        d_event.Invoke(targets, damage);
-        
-        //d_event = null;
+
+        Debug.Log("Attacking with " + damage + " damage.");
+
+        CombatEventManager.Take_Damage(enemyIndexes, damage);
     }
 
-    public void onDamage(int[] targets, float damage)
+
+    public void Take_Damage(int[] targets, float damage)
     {
-        if (0 == myIndex)
+        if (targets.Contains(myIndex))
         {
+            
             //decrement health
-            health -= (int) (damage / armor) * 100;
+            health -= (int) (damage * (1 - armor));
+            Debug.Log("Taking " + damage + " damage. New health is " + health + ".");
             //animate
         }
         //else do nothing.
@@ -48,11 +59,5 @@ public class CowboyCombat : MonoBehaviour
     public void heal()
     {
         
-    }
-
-    void Start()
-    {
-        d_event = new DealDamage();
-        d_event.AddListener(onDamage);
     }
 }

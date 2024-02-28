@@ -68,7 +68,7 @@ public class CowboyMovement_v3 : MonoBehaviour
         animator = GameObject.Find("Cowboy_body").GetComponent<Animator>();
         running = false;
         runHasToggled = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
 
         topStartRad = virtualCam.m_Orbits[0].m_Radius;
         midStartRad = virtualCam.m_Orbits[1].m_Radius;
