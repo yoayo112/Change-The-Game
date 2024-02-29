@@ -41,6 +41,10 @@ public class TypingGame : MonoBehaviour
     private string[] _availableLines = { "you can type this line", "you can also type this", "you even can type this" };
     private bool[] _isActiveAvailableLines = { true, true, true };
 
+    //-------------------------------------------------------------------------------------
+    //  Unity Methods
+    //-------------------------------------------------------------------------------------
+
     private void Update()
     {
         Check_Input();
@@ -48,57 +52,14 @@ public class TypingGame : MonoBehaviour
 
     private void Start()
     {
-        Display_Available_Lines();
-        Display_Typed_Line();
-        Update_Mistake_Display();
+        Update_Available_Lines();
+        Update_Typed_Line();
+        Update_Mistake_Counter();
     }
 
     //-------------------------------------------------------------------------------------
     //  Mutators
     //-------------------------------------------------------------------------------------
-
-
-    private void Display_Typed_Line()
-    //Updates typedLineOutput with _typedLine
-    {
-        typedLineOutput.text = _dispTypedLine;
-    }
-
-    private void Display_Available_Lines()
-    //Updates availableLineOutput with available lines, and progress on them.
-    {
-        string dispCurrentLetter_ = string.Empty;
-        string dispRemainingLine_ = string.Empty;
-
-        availableLineOutput.text = string.Empty;
-        for (int i = 0; i < _availableLines.Length; i++)
-        {
-            if (_isActiveAvailableLines[i])
-            {
-                dispCurrentLetter_ = Space_To_Underscore(_availableLines[i][_typedCount]);
-                dispRemainingLine_ = _availableLines[i].Remove(0, _typedCount + 1);
-                availableLineOutput.text += "<color=green>" + _typedLine + "</color><color=yellow>" + dispCurrentLetter_ + "</color>" + dispRemainingLine_ + "\n";
-            }
-            else
-                availableLineOutput.text += "<color=grey>" + _availableLines[i] + "</color>\n";
-        }
-    }
-
-    private void Add_Mistake()
-    //Increments mistake counter, plays sound, and locks player input
-    {
-        _mistakeCount++;
-        //Camera Shake
-        Update_Mistake_Display();
-        audioSource.PlayOneShot(audioClipArray[0], volume);
-        StartCoroutine(Lock_Mistake());
-    }
-
-    private void Update_Mistake_Display()
-    //Updates mistake counter
-    {
-        mistakesOutput.text = "Mistakes: " + _mistakeCount;
-    }
 
     private void Check_Input()
     //Pulls the player input if it is a single key press and calls Enter_Letter
@@ -154,7 +115,6 @@ public class TypingGame : MonoBehaviour
             _dispTypedLine += typedLetter_ + "\n";
             for (int i = 0; i < _isActiveAvailableLines.Length; i++)
                 _isActiveAvailableLines[i] = true;
-
         }
         else
         {
@@ -162,8 +122,18 @@ public class TypingGame : MonoBehaviour
             _dispTypedLine += typedLetter_;
         }
 
-        Display_Typed_Line();
-        Display_Available_Lines();
+        Update_Typed_Line();
+        Update_Available_Lines();
+    }
+
+    private void Add_Mistake()
+    //Increments mistake counter, plays sound, and locks player input
+    {
+        _mistakeCount++;
+        //Camera Shake
+        Update_Mistake_Counter();
+        audioSource.PlayOneShot(audioClipArray[0], volume);
+        StartCoroutine(Lock_Mistake());
     }
 
     private void Back_Space()
@@ -172,7 +142,7 @@ public class TypingGame : MonoBehaviour
         if (_typedCount >= 0)
             _typedLine = _typedLine.Remove(_typedLine.Length - 1);
         else
-        { 
+        {
             _typedCount++;
             return;
         }
@@ -201,15 +171,15 @@ public class TypingGame : MonoBehaviour
                 done_ = true;
             }
             if (done_)
-            { 
-                 _dispTypedLine = _dispTypedLine.Remove(i, 1);
-                 _dispTypedLine = _dispTypedLine.Insert(i, newChar_);
-                 break;
+            {
+                _dispTypedLine = _dispTypedLine.Remove(i, 1);
+                _dispTypedLine = _dispTypedLine.Insert(i, newChar_);
+                break;
             }
         }
-        
-        Display_Typed_Line();
-        Display_Available_Lines();
+
+        Update_Typed_Line();
+        Update_Available_Lines();
     }
 
     IEnumerator Lock_Mistake()
@@ -218,6 +188,39 @@ public class TypingGame : MonoBehaviour
         _isLocked = true;
         yield return new WaitForSeconds(lockoutTime);
         _isLocked = false;
+    }
+
+
+    private void Update_Typed_Line()
+    //Updates typedLineOutput with _typedLine
+    {
+        typedLineOutput.text = _dispTypedLine;
+    }
+
+    private void Update_Available_Lines()
+    //Updates availableLineOutput with available lines, and progress on them.
+    {
+        string dispCurrentLetter_ = string.Empty;
+        string dispRemainingLine_ = string.Empty;
+
+        availableLineOutput.text = string.Empty;
+        for (int i = 0; i < _availableLines.Length; i++)
+        {
+            if (_isActiveAvailableLines[i])
+            {
+                dispCurrentLetter_ = Space_To_Underscore(_availableLines[i][_typedCount]);
+                dispRemainingLine_ = _availableLines[i].Remove(0, _typedCount + 1);
+                availableLineOutput.text += "<color=green>" + _typedLine + "</color><color=yellow>" + dispCurrentLetter_ + "</color>" + dispRemainingLine_ + "\n";
+            }
+            else
+                availableLineOutput.text += "<color=grey>" + _availableLines[i] + "</color>\n";
+        }
+    }
+
+    private void Update_Mistake_Counter()
+    //Updates mistake counter
+    {
+        mistakesOutput.text = "Mistakes: " + _mistakeCount;
     }
 
     //-------------------------------------------------------------------------------------
