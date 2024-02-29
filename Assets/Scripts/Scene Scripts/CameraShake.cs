@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// TO USE:  1.  Select your camera you want to shake in scene hiearchy
+//          2.  In inspector, Add Component > CameraShake
+//          3.  In your scene script, create public field for CameraShake object. e.g. "public CameraShake cameraShakeObject;"
+//          4.  In your scene script, call the Shake method with StartCoroutine(cameraShakeObject.Shake(duration, magnitude))
+//          5.  Add the camera to the public field created in the script in inspector
+
 public class CameraShake : MonoBehaviour
 {
     public IEnumerator Shake(float duration_, float magnitude_)
