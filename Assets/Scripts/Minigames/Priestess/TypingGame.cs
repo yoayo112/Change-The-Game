@@ -32,8 +32,8 @@ public class TypingGame : MonoBehaviour
     //  Variables
     //-------------------------------------------------------------------------------------
     private string _typedLine = string.Empty;
-    private string _previousLines = "";
     private int _typedCount = 0;
+    private string _dispTypedLine = string.Empty;
 
     private int _mistakeCount = 0;
     private bool _isLocked = false;
@@ -56,22 +56,19 @@ public class TypingGame : MonoBehaviour
     //-------------------------------------------------------------------------------------
     //  Mutators
     //-------------------------------------------------------------------------------------
- 
+
 
     private void Display_Typed_Line()
     //Updates typedLineOutput with _typedLine
     {
-        string dispTypedLine_ = _typedLine;
-
-        typedLineOutput.text = dispTypedLine_;
+        typedLineOutput.text = _dispTypedLine;
     }
 
     private void Display_Available_Lines()
-        //Updates availableLineOutput with available lines, and progress on them.
+    //Updates availableLineOutput with available lines, and progress on them.
     {
         string dispCurrentLetter_ = string.Empty;
         string dispRemainingLine_ = string.Empty;
-        string dispTypedLine_ = _typedLine;
 
         availableLineOutput.text = string.Empty;
         for (int i = 0; i < _availableLines.Length; i++)
@@ -80,7 +77,7 @@ public class TypingGame : MonoBehaviour
             {
                 dispCurrentLetter_ = Space_To_Underscore(_availableLines[i][_typedCount]);
                 dispRemainingLine_ = _availableLines[i].Remove(0, _typedCount + 1);
-                availableLineOutput.text += "<color=green>" + dispTypedLine_ + "</color><color=yellow>" + dispCurrentLetter_ + "</color>" + dispRemainingLine_ + "\n";
+                availableLineOutput.text += "<color=green>" + _typedLine + "</color><color=yellow>" + dispCurrentLetter_ + "</color>" + dispRemainingLine_ + "\n";
             }
             else
                 availableLineOutput.text += "<color=grey>" + _availableLines[i] + "</color>\n";
@@ -88,7 +85,7 @@ public class TypingGame : MonoBehaviour
     }
 
     private void Add_Mistake()
-        //Increments mistake counter, plays sound, and locks player input
+    //Increments mistake counter, plays sound, and locks player input
     {
         _mistakeCount++;
         //Camera Shake
@@ -98,15 +95,15 @@ public class TypingGame : MonoBehaviour
     }
 
     private void Update_Mistake_Display()
-        //Updates mistake counter
+    //Updates mistake counter
     {
         mistakesOutput.text = "Mistakes: " + _mistakeCount;
     }
 
     private void Check_Input()
-        //Pulls the player input if it is a single key press and calls Enter_Letter
+    //Pulls the player input if it is a single key press and calls Enter_Letter
     {
-        if(Input.anyKeyDown)
+        if (Input.anyKeyDown)
         {
             string keysPressed_ = Input.inputString;
 
@@ -118,7 +115,7 @@ public class TypingGame : MonoBehaviour
     }
 
     private void Attempt_Letter(string typedLetter_)
-        //When letter is typed, addes letter to typed Line if correct, or adds mistake otherwise. Will not add mistake if on lockout
+    //When letter is typed, addes letter to typed Line if correct, or adds mistake otherwise. Will not add mistake if on lockout
     {
         bool isCorrect_ = false;
         for (int i = 0; i < _availableLines.Length; i++)
@@ -148,12 +145,16 @@ public class TypingGame : MonoBehaviour
         {
             _typedCount = 0;
             _typedLine = string.Empty;
+            _dispTypedLine += "\n";
             for (int i = 0; i < _isActiveAvailableLines.Length; i++)
                 _isActiveAvailableLines[i] = true;
 
         }
         else
+        {
             _typedLine += typedLetter_;
+            _dispTypedLine += typedLetter_;
+        }
 
         Display_Typed_Line();
         Display_Available_Lines();
@@ -169,12 +170,22 @@ public class TypingGame : MonoBehaviour
             if (_typedLine == _availableLines[i].Remove(_typedCount, _availableLines[i].Length - _typedCount))
                 _isActiveAvailableLines[i] = true;
         }
+
+        for (int i = _dispTypedLine.Length - 1; i >= 0; i -= 8) // check every 8th character starting at the end. examp<s>l</s><s>e</s>
+        {
+            if (_dispTypedLine[i] != '>')
+            {
+                _dispTypedLine = _dispTypedLine.Insert(i+1, "</s>").Insert(i, "<s>"); //strike through the first letter that isn't already striked.
+                break;
+            }
+        }
+        
         Display_Typed_Line();
         Display_Available_Lines();
     }
 
     IEnumerator Lock_Mistake()
-        //Locks out player mistakes for lockoutTime seconds
+    //Locks out player mistakes for lockoutTime seconds
     {
         _isLocked = true;
         yield return new WaitForSeconds(lockoutTime);
@@ -190,6 +201,7 @@ public class TypingGame : MonoBehaviour
         return char.ToLower(letter_[0]) == line_[_typedCount];
     }
 
+
     //-------------------------------------------------------------------------------------
     //  Functions
     //-------------------------------------------------------------------------------------
@@ -201,5 +213,9 @@ public class TypingGame : MonoBehaviour
         else
             return char.ToString(character);
     }
-}
 
+    private char Last_Char(string line)
+    {
+        return line[line.Length - 1];
+    }
+}
