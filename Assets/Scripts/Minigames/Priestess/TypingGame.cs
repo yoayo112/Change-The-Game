@@ -38,7 +38,7 @@ public class TypingGame : MonoBehaviour
     private int _mistakeCount = 0;
     private bool _isLocked = false;
 
-    private string[] _availableLines = { "you can type this line.", "you can also type this.", "you even can type this." };
+    private string[] _availableLines = { "you can type this line", "you can also type this", "you even can type this" };
     private bool[] _isActiveAvailableLines = { true, true, true };
 
     private void Update()
@@ -117,6 +117,7 @@ public class TypingGame : MonoBehaviour
     private void Attempt_Letter(string typedLetter_)
     //When letter is typed, addes letter to typed Line if correct, or adds mistake otherwise. Will not add mistake if on lockout
     {
+        typedLetter_ = typedLetter_.ToLower();
         bool isCorrect_ = false;
         for (int i = 0; i < _availableLines.Length; i++)
         {
@@ -150,7 +151,7 @@ public class TypingGame : MonoBehaviour
         {
             _typedCount = 0;
             _typedLine = string.Empty;
-            _dispTypedLine += "\n";
+            _dispTypedLine += typedLetter_ + "\n";
             for (int i = 0; i < _isActiveAvailableLines.Length; i++)
                 _isActiveAvailableLines[i] = true;
 
