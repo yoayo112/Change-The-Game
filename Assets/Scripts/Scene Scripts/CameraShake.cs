@@ -14,6 +14,7 @@ public class CameraShake : MonoBehaviour
     {
         Vector3 originalPos_ = transform.localPosition;
 
+        float speed_ = 0.01f;
         float elapsed_ = 0.0f;
 
         while (elapsed_ < duration_)
@@ -23,9 +24,10 @@ public class CameraShake : MonoBehaviour
 
             transform.localPosition = new Vector3(originalPos_.x + x, originalPos_.y + y, originalPos_.z);
 
-            elapsed_ += Time.deltaTime;
+            elapsed_ += Time.deltaTime + speed_;
 
-            yield return null;
+            yield return new WaitForSeconds(speed_);
+            //yield return null;
         }
 
         transform.localPosition = originalPos_;

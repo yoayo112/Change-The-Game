@@ -159,7 +159,7 @@ MonoBehaviour:
   cameraShake: {fileID: 1566328740}
   lockoutTime: 1
   shakeMagnitude: 20
-  shakeDuration: 0.15
+  shakeDuration: 0.2
   audioSource: {fileID: 9609470}
   audioClipArray:
   - {fileID: 8300000, guid: ea2d8e94580cbbc4a90b74c3e3b0e193, type: 3}

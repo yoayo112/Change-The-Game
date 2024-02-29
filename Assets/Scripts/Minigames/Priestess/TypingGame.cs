@@ -34,15 +34,15 @@ public class TypingGame : MonoBehaviour
     //-------------------------------------------------------------------------------------
     //  Variables
     //-------------------------------------------------------------------------------------
-    private string _typedLine = string.Empty;
-    private int _typedCount = 0;
-    private string _dispTypedLine = string.Empty;
+    private string _typedLine = string.Empty; //Represents the player's actual typed line, removing errors they have backspaced. 
+    private int _typedCount = 0;              //Running count of characters in _typedLine.
+    private string _dispTypedLine = string.Empty;   //The line displayed on the left as player input. Includes backspaced errors. Backspaced letters are represented by capitals.
 
-    private int _mistakeCount = 0;
-    private bool _isLocked = false;
+    private int _mistakeCount = 0;            //Running count of player mistakes. 
+    private bool _isLocked = false;           //Will not accept additional mistake inputs while true.
 
-    private string[] _availableLines = { "you can type this line", "you can also type this", "you even can type this" };
-    private bool[] _isActiveAvailableLines = { true, true, true };
+    private string[] _availableLines = { "you can type this line", "you can also type this", "you even can type this" };    //Line displayed on the right as lines available to type.
+    private bool[] _isActiveAvailableLines = { true, true, true };      //The line at _availableLines[i] is actively being typed by the player if _isActiveAvailableLines[i] == true;
 
     //-------------------------------------------------------------------------------------
     //  Unity Methods
@@ -61,7 +61,7 @@ public class TypingGame : MonoBehaviour
     }
 
     //-------------------------------------------------------------------------------------
-    //  Output Methods
+    //  Display Methods
     //-------------------------------------------------------------------------------------
 
     private void Update_Typed_Line()
@@ -97,7 +97,7 @@ public class TypingGame : MonoBehaviour
     }
 
     //-------------------------------------------------------------------------------------
-    //  Mutators
+    //  Basic Game Methods
     //-------------------------------------------------------------------------------------
 
     private void Check_Input()
@@ -118,29 +118,19 @@ public class TypingGame : MonoBehaviour
     //When letter is typed, adds letter to typed line, checks if it is a mistake, locks out mistakes if it is.
     {
         typedLetter_ = typedLetter_.ToLower();
-        bool isCorrect_ = false;
-        for (int i = 0; i < _availableLines.Length; i++)
+        
+        if (Is_Correct_Letter(typedLetter_))
         {
-            if (Is_Correct_Letter(typedLetter_, _availableLines[i]) && _isActiveAvailableLines[i])
-                isCorrect_ = true;
-        }
-
-        if (isCorrect_)
-        {
-            for (int i = 0; i < _availableLines.Length; i++)
-            {
-                if (!Is_Correct_Letter(typedLetter_, _availableLines[i]))
-                    _isActiveAvailableLines[i] = false;
-            }
+            Deactivate_Invalid_Lines(typedLetter_);
             Enter_Letter(typedLetter_);
         }
         else if (!_isLocked)
         {
             Add_Mistake();
-            for (int i = 0; i < _availableLines.Length; i++)
-                _isActiveAvailableLines[i] = false;
+            Deactivate_All_Lines();
             Enter_Letter(typedLetter_);
         }
+        //else do nothing
     }
 
     private void Enter_Letter(string typedLetter_)
@@ -152,8 +142,7 @@ public class TypingGame : MonoBehaviour
             _typedCount = 0;
             _typedLine = string.Empty;
             _dispTypedLine += typedLetter_ + "\n";
-            for (int i = 0; i < _isActiveAvailableLines.Length; i++)
-                _isActiveAvailableLines[i] = true;
+            Activate_All_Lines();
         }
         else
         {
@@ -177,21 +166,20 @@ public class TypingGame : MonoBehaviour
 
     private void Back_Space()
     {
-        _typedCount--;
-        if (_typedCount >= 0)
-            _typedLine = _typedLine.Remove(_typedLine.Length - 1);
-        else
-        {
-            _typedCount++;
+        if (_typedCount == 0)
             return;
-        }
 
-        for (int i = 0; i < _availableLines.Length; i++)
-        {
-            if (_typedLine == _availableLines[i].Remove(_typedCount, _availableLines[i].Length - _typedCount))
-                _isActiveAvailableLines[i] = true;
-        }
+        _typedCount--;
+        _typedLine = _typedLine.Remove(_typedLine.Length - 1);
 
+        Activate_Valid_Lines();
+        Remove_Last_Typed_Letter();
+        Update_Typed_Line();
+        Update_Available_Lines();
+    }
+
+    private void Remove_Last_Typed_Letter()
+    {
         char testChar_;
         string newChar_ = string.Empty;
         for (int i = _dispTypedLine.Length - 1; i >= 0; i--)
@@ -213,14 +201,40 @@ public class TypingGame : MonoBehaviour
             {
                 _dispTypedLine = _dispTypedLine.Remove(i, 1);
                 _dispTypedLine = _dispTypedLine.Insert(i, newChar_);
-                break;
+                return;
             }
         }
-
-        Update_Typed_Line();
-        Update_Available_Lines();
     }
 
+    private void Activate_All_Lines()
+    {
+        for (int i = 0; i < _availableLines.Length; i++)
+            _isActiveAvailableLines[i] = true;
+    }
+
+    private void Activate_Valid_Lines()
+    {
+        for (int i = 0; i < _availableLines.Length; i++)
+        {
+            if (_typedLine == _availableLines[i].Remove(_typedCount, _availableLines[i].Length - _typedCount))
+                _isActiveAvailableLines[i] = true;
+        }
+    }
+
+    private void Deactivate_All_Lines()
+    {
+        for (int i = 0; i < _availableLines.Length; i++)
+            _isActiveAvailableLines[i] = false;
+    }
+
+    private void Deactivate_Invalid_Lines(string typedLetter_)
+    {
+        for (int i = 0; i < _availableLines.Length; i++)
+        {
+            if (!Is_Correct_Letter(typedLetter_, _availableLines[i]))
+                _isActiveAvailableLines[i] = false;
+        }
+    }
 
     //-------------------------------------------------------------------------------------
     //  Accessors
@@ -229,6 +243,17 @@ public class TypingGame : MonoBehaviour
     private bool Is_Correct_Letter(string letter_, string line_)
     {
         return char.ToLower(letter_[0]) == line_[_typedCount];
+    }
+
+    private bool Is_Correct_Letter(string letter_)
+    {
+        for (int i = 0; i < _availableLines.Length; i++)
+        {
+            if (Is_Correct_Letter(letter_, _availableLines[i]) && _isActiveAvailableLines[i])
+                return true;
+        }
+
+        return false;
     }
 
     //-------------------------------------------------------------------------------------
