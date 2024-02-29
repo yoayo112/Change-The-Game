@@ -168,7 +168,13 @@ public class TypingGame : MonoBehaviour
     private void Back_Space()
     {
         _typedCount--;
-        _typedLine = _typedLine.Remove(_typedLine.Length - 1);
+        if (_typedCount >= 0)
+            _typedLine = _typedLine.Remove(_typedLine.Length - 1);
+        else
+        { 
+            _typedCount++;
+            return;
+        }
 
         for (int i = 0; i < _availableLines.Length; i++)
         {
@@ -176,12 +182,28 @@ public class TypingGame : MonoBehaviour
                 _isActiveAvailableLines[i] = true;
         }
 
-        for (int i = _dispTypedLine.Length - 1; i >= 0; i -= 8) // check every 8th character starting at the end. examp<s>l</s><s>e</s>
+        char testChar_;
+        string newChar_ = string.Empty;
+        for (int i = _dispTypedLine.Length - 1; i >= 0; i--)
         {
-            if (_dispTypedLine[i] != '>')
+            bool done_ = false;
+            testChar_ = _dispTypedLine[i];
+            if (char.IsWhiteSpace(testChar_))
             {
-                _dispTypedLine = _dispTypedLine.Insert(i+1, "</s>").Insert(i, "<s>"); //strike through the first letter that isn't already striked.
-                break;
+                newChar_ = "_";
+                done_ = true;
+            }
+            else if (char.IsLower(testChar_))
+            {
+                testChar_ = char.ToUpper(testChar_);
+                newChar_ = char.ToString(testChar_);
+                done_ = true;
+            }
+            if (done_)
+            { 
+                 _dispTypedLine = _dispTypedLine.Remove(i, 1);
+                 _dispTypedLine = _dispTypedLine.Insert(i, newChar_);
+                 break;
             }
         }
         
