@@ -13,12 +13,15 @@ public class TypingGame : MonoBehaviour
     public TextMeshProUGUI typedLineOutput = null;
     public TextMeshProUGUI availableLineOutput = null;
     public Text mistakesOutput = null;
+    public CameraShake cameraShake;
 
     //-------------------------------------------------------------------------------------
     //  Settings
     //-------------------------------------------------------------------------------------
     [Header("Game Settings")]
-    public float lockoutTime = 1f;
+    public float lockoutTime = 0.5f;
+    public float shakeMagnitude = 1f;
+    public float shakeDuration = 1f;
 
     //-------------------------------------------------------------------------------------
     //  Audio handling
@@ -98,7 +101,7 @@ public class TypingGame : MonoBehaviour
     //-------------------------------------------------------------------------------------
 
     private void Check_Input()
-    //Pulls the player input if it is a single key press and calls Enter_Letter
+    //Pulls the player input if it is a single key press and calls Enter_Letter. Calls Back_Space if backspace is pressed
     {
         if (Input.anyKeyDown)
         {
@@ -166,7 +169,7 @@ public class TypingGame : MonoBehaviour
     //Increments mistake counter, plays sound, and locks player input
     {
         _mistakeCount++;
-        //Camera Shake
+        StartCoroutine(cameraShake.Shake(shakeDuration, shakeMagnitude));
         Update_Mistake_Counter();
         audioSource.PlayOneShot(audioClipArray[0], volume);
         StartCoroutine(Lock_Mistake());
