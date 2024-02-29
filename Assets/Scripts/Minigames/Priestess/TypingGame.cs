@@ -58,6 +58,42 @@ public class TypingGame : MonoBehaviour
     }
 
     //-------------------------------------------------------------------------------------
+    //  Output Methods
+    //-------------------------------------------------------------------------------------
+
+    private void Update_Typed_Line()
+    //Updates typedLineOutput with _typedLine
+    {
+        typedLineOutput.text = _dispTypedLine;
+    }
+
+    private void Update_Available_Lines()
+    //Updates availableLineOutput with available lines, and progress on them.
+    {
+        string dispCurrentLetter_ = string.Empty;
+        string dispRemainingLine_ = string.Empty;
+
+        availableLineOutput.text = string.Empty;
+        for (int i = 0; i < _availableLines.Length; i++)
+        {
+            if (_isActiveAvailableLines[i])
+            {
+                dispCurrentLetter_ = Space_To_Underscore(_availableLines[i][_typedCount]);
+                dispRemainingLine_ = _availableLines[i].Remove(0, _typedCount + 1);
+                availableLineOutput.text += "<color=green>" + _typedLine + "</color><color=yellow>" + dispCurrentLetter_ + "</color>" + dispRemainingLine_ + "\n";
+            }
+            else
+                availableLineOutput.text += "<color=grey>" + _availableLines[i] + "</color>\n";
+        }
+    }
+
+    private void Update_Mistake_Counter()
+    //Updates mistake counter
+    {
+        mistakesOutput.text = "Mistakes: " + _mistakeCount;
+    }
+
+    //-------------------------------------------------------------------------------------
     //  Mutators
     //-------------------------------------------------------------------------------------
 
@@ -76,7 +112,7 @@ public class TypingGame : MonoBehaviour
     }
 
     private void Attempt_Letter(string typedLetter_)
-    //When letter is typed, addes letter to typed Line if correct, or adds mistake otherwise. Will not add mistake if on lockout
+    //When letter is typed, adds letter to typed line, checks if it is a mistake, locks out mistakes if it is.
     {
         typedLetter_ = typedLetter_.ToLower();
         bool isCorrect_ = false;
@@ -182,46 +218,6 @@ public class TypingGame : MonoBehaviour
         Update_Available_Lines();
     }
 
-    IEnumerator Lock_Mistake()
-    //Locks out player mistakes for lockoutTime seconds
-    {
-        _isLocked = true;
-        yield return new WaitForSeconds(lockoutTime);
-        _isLocked = false;
-    }
-
-
-    private void Update_Typed_Line()
-    //Updates typedLineOutput with _typedLine
-    {
-        typedLineOutput.text = _dispTypedLine;
-    }
-
-    private void Update_Available_Lines()
-    //Updates availableLineOutput with available lines, and progress on them.
-    {
-        string dispCurrentLetter_ = string.Empty;
-        string dispRemainingLine_ = string.Empty;
-
-        availableLineOutput.text = string.Empty;
-        for (int i = 0; i < _availableLines.Length; i++)
-        {
-            if (_isActiveAvailableLines[i])
-            {
-                dispCurrentLetter_ = Space_To_Underscore(_availableLines[i][_typedCount]);
-                dispRemainingLine_ = _availableLines[i].Remove(0, _typedCount + 1);
-                availableLineOutput.text += "<color=green>" + _typedLine + "</color><color=yellow>" + dispCurrentLetter_ + "</color>" + dispRemainingLine_ + "\n";
-            }
-            else
-                availableLineOutput.text += "<color=grey>" + _availableLines[i] + "</color>\n";
-        }
-    }
-
-    private void Update_Mistake_Counter()
-    //Updates mistake counter
-    {
-        mistakesOutput.text = "Mistakes: " + _mistakeCount;
-    }
 
     //-------------------------------------------------------------------------------------
     //  Accessors
@@ -231,7 +227,6 @@ public class TypingGame : MonoBehaviour
     {
         return char.ToLower(letter_[0]) == line_[_typedCount];
     }
-
 
     //-------------------------------------------------------------------------------------
     //  Functions
@@ -248,5 +243,17 @@ public class TypingGame : MonoBehaviour
     private char Last_Char(string line)
     {
         return line[line.Length - 1];
+    }
+
+    //-------------------------------------------------------------------------------------
+    //  Coroutines
+    //-------------------------------------------------------------------------------------
+
+    IEnumerator Lock_Mistake()
+    //Locks out player mistakes for lockoutTime seconds
+    {
+        _isLocked = true;
+        yield return new WaitForSeconds(lockoutTime);
+        _isLocked = false;
     }
 }
