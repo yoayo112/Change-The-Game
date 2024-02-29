@@ -134,7 +134,12 @@ public class TypingGame : MonoBehaviour
             Enter_Letter(typedLetter_);
         }
         else if (!_isLocked)
+        {
             Add_Mistake();
+            for (int i = 0; i < _availableLines.Length; i++)
+                _isActiveAvailableLines[i] = false;
+            Enter_Letter(typedLetter_);
+        }
     }
 
     private void Enter_Letter(string typedLetter_)
