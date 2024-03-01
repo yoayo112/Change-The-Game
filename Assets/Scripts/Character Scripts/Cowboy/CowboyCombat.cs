@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ public class CowboyCombat : MonoBehaviour
 
         Debug.Log("Attacking with " + damage + " damage.");
 
-        CombatEventManager.Take_Damage(enemyIndexes, damage);
+        CombatEventManager.Deal_Damage(enemyIndexes, damage);
     }
 
 
