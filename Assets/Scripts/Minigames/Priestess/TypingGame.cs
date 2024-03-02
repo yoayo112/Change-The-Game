@@ -44,6 +44,8 @@ public class TypingGame : MonoBehaviour
     private string[] _availableLines = { "you can type this line", "you can also type this", "you even can type this" };    //Line displayed on the right as lines available to type.
     private bool[] _isActiveAvailableLines = { true, true, true };      //The line at _availableLines[i] is actively being typed by the player if _isActiveAvailableLines[i] == true;
 
+    private TextTree currentTextTree_;
+
     //-------------------------------------------------------------------------------------
     //  Unity Methods
     //-------------------------------------------------------------------------------------
