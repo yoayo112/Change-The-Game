@@ -42,7 +42,7 @@ public class TextTree
     {
         if (strings_[0].Length == 0) return; //No more branches to build if input string is empty. 
 
-        bool[] grouped_ = new bool[strings_.length]; //grouped_[i] == true if the string strings_[i] has already been grouped
+        bool[] grouped_ = new bool[strings_.Length]; //grouped_[i] == true if the string strings_[i] has already been grouped
         List<string> group_ = new List<string>();
         for (int i = 0; i < strings_.Length; i++)
         {
@@ -53,7 +53,7 @@ public class TextTree
             group_.Add(strings_[i]);
             for (int j = 1; i + j < strings_.Length; j++) //We compare the string only to strings further down the list as earlier strings have already been grouped
             {
-                if ((Has_Common_String(strings_[i], strings_[i + j]) && !grouped[i + j]))
+                if ((Has_Common_String(strings_[i], strings_[i + j]) && !grouped_[i + j]))
                 {                                                                         //If the second string has not been grouped AND the strings share a starting string:
                     grouped_[i + j] = true;                                               //Mark new string as grouped
                     group_.Add(strings_[i + j]);                                          //Add the second string to the group
@@ -96,7 +96,7 @@ public class TextTree
         text = text_;
     }
 
-    public Add_Branch(TextTree branch_)
+    public void Add_Branch(TextTree branch_)
     {
         branch_.Set_Root(this);
         branches.Add(branch_);
@@ -125,7 +125,7 @@ public class TextTree
         string output_ = strings_[0];
         for (int i = 1; i < strings_.Length; i++)
         {
-            output_ = Find_Common_String(output, strings_[i]);
+            output_ = Find_Common_String(output_, strings_[i]);
         }
         return output_;
     }
