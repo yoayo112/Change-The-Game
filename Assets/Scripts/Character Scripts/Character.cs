@@ -186,11 +186,11 @@ public class Character : MonoBehaviour, IComparable
                 int actualDamage_ = (int)(damage_ * (1 - _armor));
                 _currentHealth -= actualDamage_;
                 //animate here
-                Debug.Log("Character " + characterName + " Just took " + actualDamage_ + " damage!");
+                Debug.Log("Character " + characterName + " just took " + actualDamage_ + " damage!");
                 if (_currentHealth <= 0)
                 {
                     _isAlive = false;
-                    Debug.Log("Character " + characterName + "has perished...");
+                    Debug.Log("Character " + characterName + " has perished...");
                 }
             }
             else
@@ -306,6 +306,7 @@ public class Character : MonoBehaviour, IComparable
 
     public virtual void Execute_Turn()
     {
+        //Hitting a random enemy target by default
         int target_ = UnityEngine.Random.Range(CombatController.MAX_PLAYERS, CombatController.MAX_PLAYERS + CombatController.enemies.Count);
 
         int[] targets_ = { target_ };

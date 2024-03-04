@@ -4,26 +4,26 @@ using UnityEngine;
 
 public class Enemy : Character
 {
-    public float armorMin;
-    public float armorMax;
+    private float armorMin;
+    private float armorMax;
 
-    public int attackPowerMin;
-    public int attackPowerMax;
+    private int attackPowerMin;
+    private int attackPowerMax;
 
-    public int healPowerMin;
-    public int healPowerMax;
+    private int healPowerMin;
+    private int healPowerMax;
 
-    public int healthMin;
-    public int healthMax;
+    private int healthMin;
+    private int healthMax;
 
-    public int energyMin;
-    public int energyMax;
+    private int energyMin;
+    private int energyMax;
 
-    public int speedMin;
-    public int speedMax;
+    private int speedMin;
+    private int speedMax;
 
-    public float Get_ArmorMin() => armorMin;
-    public float Get_ArmorMax() => armorMax;
+    private float Get_ArmorMin() => armorMin;
+    private float Get_ArmorMax() => armorMax;
 
     public int Get_AttackPowerMin() => attackPowerMin;
     public int Get_AttackPowerMax() => attackPowerMax;
