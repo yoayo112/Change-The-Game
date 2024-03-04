@@ -603,7 +603,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5672206726500571321}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.12748238, y: 0.8722334, z: -0.34559274, w: 0.32174975}
+  m_LocalRotation: {x: 0.1274824, y: 0.8722334, z: -0.34559277, w: 0.3217498}
   m_LocalPosition: {x: -0.0000014305115, y: 0.0000010738373, z: 0.0000019073486}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -682,8 +682,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6568129823854808835}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.10512751, y: 0.8938711, z: -0.28499082, w: 0.3297315}
-  m_LocalPosition: {x: -0.0000042915344, y: 0.0000026845933, z: 0.0000064373016}
+  m_LocalRotation: {x: 0.10512753, y: 0.8938711, z: -0.28499082, w: 0.3297315}
+  m_LocalPosition: {x: -0.00000834465, y: 0.0000059061053, z: 0.000012874603}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1088,10 +1088,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7962996822250114132}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5adde61d8fe6235468e192d8e86aa04c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b0a070946b7a72468553b68a5121131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: Cowboy
+  characterName: Place Holder
   armor: 0.1
   attackPower: 20
   healPower: 20
