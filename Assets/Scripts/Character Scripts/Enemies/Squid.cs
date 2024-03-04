@@ -1,3 +1,13 @@
+/*
+Project: Change the Game
+File: Squid.cs
+Date Created: March 03, 2024
+Author(s): Sean Thornton
+Info:
+
+Stats and Combat Controller for Squid enemy
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

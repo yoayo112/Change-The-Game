@@ -1,3 +1,13 @@
+/*
+Project: Change the Game
+File: ENEMY_TEMPLATE.cs
+Date Created: March 03, 2024
+Author(s): Sean Thornton
+Info:
+
+Example script for extensions of the Enemy class. Do not use script directly.
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,7 +33,6 @@ public class ENEMY_TEMPLATE : Enemy //Replace "ENEMY_TEMPLATE" with your class n
     /* This is where the enemy does its action on its turn.
      * Use CombatController.players and .enemies and .turnNumber for combat info
      * The target positions of players will be [0, CombatController.players.Count], for enemies: [0, CombatController.enemies.Count]
-     * the
      * 
      * Use - Attack_Characters(CharacterType type_, int[] targets_, float effectiveness_) to attack multiple targets
      *       Attack_Character(CharacterType type_, int target_) to attack a single target

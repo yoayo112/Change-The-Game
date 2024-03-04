@@ -2,7 +2,7 @@
 Project: Change the Game
 File: CombatController.cs
 Date Created: March 01, 2024
-Author(s): Elijah Theander
+Author(s): Elijah Theander, Sean Thornton
 Info:
 
 State Machine based handling of turn based combat.
@@ -261,13 +261,4 @@ public class CombatController : MonoBehaviour
 
     }
 
-    public void Update_Turn_Queue()
-    {
-        _turnQueue.Sort();
-        for (int i = 0; i < _turnQueue.Count; i++)
-        {
-            _turnQueue[i].Set_QueuePosition(i);
-            Debug.Log("Turn Queue indexes: " + _turnQueue[i].Get_Name() + " is at position: " + _turnQueue[i].Get_QueuePosition());
-        }
-    }
 }

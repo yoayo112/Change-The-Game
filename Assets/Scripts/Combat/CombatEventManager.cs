@@ -1,10 +1,13 @@
 /*
 Project: Change the Game
 File: CombatEventManager.cs
+Date Created: March 01, 2024
+Author(s): Elijah Theander
 
 Info:
 Defines and handles custom C# delegates and events for combat scenes.
 */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
