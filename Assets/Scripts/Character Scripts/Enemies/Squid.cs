@@ -24,15 +24,13 @@ public class Squid : Enemy
     {
         int playerCount_ = CombatController.players.Count;
         int randomTarget_ = UnityEngine.Random.Range(0, playerCount_);
-        int target_;
+        int target_ = -1;
 
         for (int i = 0; i < playerCount_; i++)
         {
             target_ = (randomTarget_ + i) % playerCount_;
             if (CombatController.players[target_].Is_Alive())
-            {
                 break;
-            }
         }
 
         Attack_Enemy(target_, 0.0f);

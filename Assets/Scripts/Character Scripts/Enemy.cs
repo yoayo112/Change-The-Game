@@ -63,12 +63,12 @@ public class Enemy : Character
         Set_Ranges();
 
         Set_CharacterType(CharacterType.enemy);
-        Set_Armor(UnityEngine.Random.Range(armorMin, armorMax));
-        Set_AttackPower(UnityEngine.Random.Range(attackPowerMin, attackPowerMax));
-        Set_HealPower(UnityEngine.Random.Range(healPowerMin, healPowerMax));
-        Set_MaxHealth(UnityEngine.Random.Range(healthMin, healthMax));
-        Set_MaxEnergy(UnityEngine.Random.Range(energyMin, energyMax));
-        Set_Speed(UnityEngine.Random.Range(speedMin, speedMax));
+        Set_Armor(UnityEngine.Random.Range(armorMin, armorMax + 1));
+        Set_AttackPower(UnityEngine.Random.Range(attackPowerMin, attackPowerMax + 1));
+        Set_HealPower(UnityEngine.Random.Range(healPowerMin, healPowerMax + 1));
+        Set_MaxHealth(UnityEngine.Random.Range(healthMin, healthMax + 1));
+        Set_MaxEnergy(UnityEngine.Random.Range(energyMin, energyMax + 1));
+        Set_Speed(UnityEngine.Random.Range(speedMin, speedMax + 1));
 
         Set_CurrentHealth(Get_MaxHealth());
         Set_CurrentEnergy(Get_MaxEnergy());

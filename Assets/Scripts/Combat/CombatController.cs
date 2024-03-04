@@ -49,9 +49,12 @@ public class CombatController : MonoBehaviour
 
     private void Awake()
     {
-        //Sets CombatController as a singleton with highlander rules (THERE CAN BE ONLY ONE)
+        //Sets CombatController as a singleton with highlander rules
         if (instance != null && instance != this)
+        {
             Destroy(this);
+            Debug.Log("There can be only one CombatController instance. Killing duplicate.");
+        }
         else
             instance = this;
     }

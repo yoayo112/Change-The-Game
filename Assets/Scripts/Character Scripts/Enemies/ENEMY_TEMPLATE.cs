@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ENEMY_TEMPLATE : Enemy //Replace "ENEMY_TEMPLATE" with your class name.
 {
+    private const string NAME = "ENTER NAME HERE";
+
     //Modify these values to define the ranges of the enemy stats.
     private const float ARMOR_MIN = 0.0f;
     private const float ARMOR_MAX = 0.0f;
@@ -44,9 +46,7 @@ public class ENEMY_TEMPLATE : Enemy //Replace "ENEMY_TEMPLATE" with your class n
         {
             target_ = (randomTarget_ + i) % playerCount_;
             if (CombatController.players[target_].Is_Alive())
-            {
                 break;
-            }
         }
 
         Attack_Enemy(target_, 0.0f);
