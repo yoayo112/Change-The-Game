@@ -38,7 +38,7 @@ public class TextTree
         Build_Branches(strings_);
     }
 
-    public TextTree(string file_) : this(new string[0])
+    /*public TextTree(string file_) : this(new string[0])
     {
         string line_;
         List<string> lines_ = new List<string>();
@@ -50,17 +50,17 @@ public class TextTree
             while (line_ != null)
             {
                 lines_.Add(line_);
-                line = reader_.ReadLine();
+                line_ = reader_.ReadLine();
             }
             reader_.Close();
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             Debug.Log("Exception: " + e.Message);
         }
 
         Build_Branches(lines_.ToArray());
-    }
+    }*/
 
     public void Build_Branches(string[] strings_)
     // Adds branches to this tree based on given array of strings
