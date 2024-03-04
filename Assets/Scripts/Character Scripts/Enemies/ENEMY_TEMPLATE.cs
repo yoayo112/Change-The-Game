@@ -21,7 +21,7 @@ public class ENEMY_TEMPLATE : Enemy //Replace "ENEMY_TEMPLATE" with your class n
     /* This is where the enemy does its action on its turn.
      * Use CombatController.players and .enemies and .turnNumber for combat info
      * The target positions of players characters will be in the range [0, CombatController.players.Count())
-     * The target positions of enemy characters will be in the range [CombatController.MAX_PLAYERS, CombatController.enemies.Count()]
+     * The target positions of enemy characters will be in the range [CombatController.MAX_PLAYERS, CombatController.MAX_PLAYERS + CombatController.enemies.Count]
      * 
      * Use - Attack_Enemies(int[] targets_, float effectiveness_) to attack multiple targets
      *       Attack_Enemy(int target_) to attack a single target
@@ -36,21 +36,20 @@ public class ENEMY_TEMPLATE : Enemy //Replace "ENEMY_TEMPLATE" with your class n
          * Example turn, attacking random player that is alive
          * 
 
-        int playerCount_ = CombatController.players.Count();
+        int playerCount_ = CombatController.players.Count;
         int randomTarget_ = UnityEngine.Random.Range(0, playerCount_);
         int target_ = -1;
 
         for (int i = 0; i < playerCount_; i++)
         {
-            if (CombatController.players[(randomTarget_ + i) % playerCount_].Is_Alive())
+            target_ = (randomTarget_ + i) % playerCount_;
+            if (CombatController.players[target_].Is_Alive())
             {
-                target = randomTarget_ + i;
                 break;
             }
         }
 
         Attack_Enemy(target_, 0.0f);
-
         */
     }
 

@@ -227,18 +227,6 @@ MonoBehaviour:
   maxHealth: 0
   maxEnergy: 0
   speed: 0
-  armorMin: 0
-  armorMax: 0
-  attackPowerMin: 0
-  attackPowerMax: 0
-  healPowerMin: 0
-  healPowerMax: 0
-  healthMin: 0
-  healthMax: 0
-  energyMin: 0
-  energyMax: 0
-  speedMin: 0
-  speedMax: 0
 --- !u!1 &279137243
 GameObject:
   m_ObjectHideFlags: 0
@@ -566,18 +554,6 @@ MonoBehaviour:
   maxHealth: 100
   maxEnergy: 100
   speed: 100
-  armorMin: 0
-  armorMax: 0
-  attackPowerMin: 0
-  attackPowerMax: 0
-  healPowerMin: 0
-  healPowerMax: 0
-  healthMin: 0
-  healthMax: 0
-  energyMin: 0
-  energyMax: 0
-  speedMin: 0
-  speedMax: 0
 --- !u!1 &561933479
 GameObject:
   m_ObjectHideFlags: 0
@@ -630,18 +606,6 @@ MonoBehaviour:
   maxHealth: 0
   maxEnergy: 0
   speed: 0
-  armorMin: 0
-  armorMax: 0
-  attackPowerMin: 0
-  attackPowerMax: 0
-  healPowerMin: 0
-  healPowerMax: 0
-  healthMin: 0
-  healthMax: 0
-  energyMin: 0
-  energyMax: 0
-  speedMin: 0
-  speedMax: 0
 --- !u!1 &662591056
 GameObject:
   m_ObjectHideFlags: 0
@@ -1154,15 +1118,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.0000042915344
+      value: -0.0000023841858
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0000026845933
+      value: 0.000001610756
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.0000064373016
+      value: 0.00000333786
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1184,7 +1148,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: COWBOY_PREFAB
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4157338461896387430, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

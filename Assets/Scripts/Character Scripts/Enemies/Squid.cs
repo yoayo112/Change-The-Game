@@ -24,7 +24,7 @@ public class Squid : Enemy
     {
         int playerCount_ = CombatController.players.Count;
         int randomTarget_ = UnityEngine.Random.Range(0, playerCount_);
-        int target_ = -1;
+        int target_;
 
         for (int i = 0; i < playerCount_; i++)
         {
