@@ -18,12 +18,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
-public enum CharacterType //Globally Public Enum for if a character is a player or enemy
-{
-    player,
-    enemy
-}
-
 [System.Serializable]
 public class Character : MonoBehaviour, IComparable
 {
