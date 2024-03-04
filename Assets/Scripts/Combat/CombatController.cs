@@ -245,10 +245,8 @@ public class CombatController : MonoBehaviour
             }
         }
 
-        Debug.Log("TEST");
-
         msg_ += temp_;
-        msg_ += "\nDead Enemies: ";
+        msg_ += " | Dead Enemies: ";
         temp_ = "";
         foreach (Character enemy_ in enemies)
         {
@@ -258,8 +256,6 @@ public class CombatController : MonoBehaviour
             }
         }
         msg_ += temp_;
-
-        Debug.Log("MESSAGE: " + msg_);
 
         return msg_;
 
