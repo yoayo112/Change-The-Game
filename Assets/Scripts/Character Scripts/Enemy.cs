@@ -1,3 +1,14 @@
+/*
+Project: Change the Game
+File: Character.cs
+Date Created: March 03, 2024
+Author(s): Sean Thornton
+Info:
+Enemy combat controller and stats. Extend this class to make specific enemies.
+
+*/
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,6 +33,10 @@ public class Enemy : Character
     private int speedMin;
     private int speedMax;
 
+    //------------------------------------------------------------------------------------
+    // Accessors
+    //------------------------------------------------------------------------------------
+
     private float Get_ArmorMin() => armorMin;
     private float Get_ArmorMax() => armorMax;
 
@@ -39,6 +54,10 @@ public class Enemy : Character
 
     public int Get_SpeedMin() => speedMin;
     public int Get_SpeedMax() => speedMax;
+
+    //------------------------------------------------------------------------------------
+    // Mutators
+    //------------------------------------------------------------------------------------
 
     public void Set_ArmorMin(float armorMin_) => armorMin = armorMin_;
     public void Set_ArmorMax(float armorMax_) => armorMax = armorMax_;
@@ -58,6 +77,10 @@ public class Enemy : Character
     public void Set_SpeedMin(int speedMin_) => speedMin = speedMin_;
     public void Set_SpeedMax(int speedMax_) => speedMax = speedMax_;
 
+
+    //Overridden method in Character.cs. This is called when the Enemy is initialized by the CombatController.
+    //Sets starting stats based off of ranges. Ranges are set in Set_Ranges() which must be defined in the subclass.
+    //See _ENEMY_TEMPLATE.cs for a default example of this.
     public override void Set_Starting_Stats()
     {
         Set_Ranges();
@@ -72,7 +95,6 @@ public class Enemy : Character
 
         Set_CurrentHealth(Get_MaxHealth());
         Set_CurrentEnergy(Get_MaxEnergy());
-
     }
 
     //----------------------------------------------------------------------------
@@ -82,5 +104,4 @@ public class Enemy : Character
     {
         return;
     }
-
 }
