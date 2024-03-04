@@ -1,4 +1,14 @@
-﻿using System.Collections;
+﻿/*
+Project: Change the Game
+File: TextTree.cs
+Date Created: March 01, 2024
+Author(s): Sean Thornton
+Info:
+
+Tree structure that represents the branching paths of possible lines to be typed in the typing minigame
+*/
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;

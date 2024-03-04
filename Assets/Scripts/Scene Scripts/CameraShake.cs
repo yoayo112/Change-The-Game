@@ -1,7 +1,7 @@
 /*
 Project: Change the Game
 File: CameraShake.cs
-Date Created: Februraru 28, 2024
+Date Created: Februrary 28, 2024
 Author(s): Sean Thornton
 Info:
 
