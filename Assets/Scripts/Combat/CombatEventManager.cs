@@ -13,33 +13,33 @@ using UnityEngine.UI;
 public class CombatEventManager : MonoBehaviour
 {
     //Characters invoke this when they attack, other characters intercept.
-    public delegate void OnDamage(int[] indexes, float damage);
+    public delegate void OnDamage(CharacterType type, int[] indexes, float damage);
     public static event OnDamage onDamage;
 
     //Characters invoke this when they heal, other characters intercept.
-    public delegate void OnHeal(int[] indexes, float healing);
+    public delegate void OnHeal(CharacterType type, int[] indexes, float healing);
     public static event OnHeal onHeal;
 
     //CombatController invokes this to tell characters who is up.
     public delegate void OnStartTurn(int turnPosition);
-    public static event  OnStartTurn onStartTurn;
+    public static event OnStartTurn onStartTurn;
 
     //Characters invoke this to tell CombatController they are done
     public delegate void OnEndTurn();
-    public static event  OnEndTurn onEndTurn;
+    public static event OnEndTurn onEndTurn;
 
     //----------------------------------------------------------------
     // Methods that invoke
     //----------------------------------------------------------------
 
-    public static void Deal_Damage(int [] indexes, float damage)
+    public static void Deal_Damage(CharacterType type, int[] indexes, float damage)
     {
-        onDamage?.Invoke(indexes, damage);
+        onDamage?.Invoke(type, indexes, damage);
     }
 
-    public static void Heal_Damage(int[] indexes, float healing)
+    public static void Heal_Damage(CharacterType type, int[] indexes, float healing)
     {
-        onHeal?.Invoke(indexes, healing);
+        onHeal?.Invoke(type, indexes, healing);
     }
     public static void Start_Turn(int turnPosition_)
     {
@@ -50,5 +50,5 @@ public class CombatEventManager : MonoBehaviour
         onEndTurn?.Invoke();
     }
 
-    
+
 }

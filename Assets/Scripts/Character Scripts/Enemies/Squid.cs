@@ -33,7 +33,7 @@ public class Squid : Enemy
                 break;
         }
 
-        Attack_Enemy(target_, 0.0f);
+        Attack_Character(CharacterType.player, target_, 0.0f);
     }
 
     public override void Set_Ranges()

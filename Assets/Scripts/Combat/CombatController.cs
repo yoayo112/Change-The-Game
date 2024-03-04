@@ -18,7 +18,14 @@ using System.Linq;
 
 public class CombatController : MonoBehaviour
 {
-    public const int MAX_PLAYERS = 3;
+    public enum CombatStates
+    {
+        beginCombat,
+        startTurn,
+        endTurn,
+        endCombat,
+        waiting
+    }
 
     public static CombatController instance { get; private set; } //Singleton
 
@@ -32,23 +39,11 @@ public class CombatController : MonoBehaviour
 
     private bool _playerVictory = false; // Only used for determining ending state of combat
 
-    public static int Get_TurnNumber() => turnNumber;
-
-    public enum CombatStates
-    {
-        beginCombat,
-        startTurn,
-        endTurn,
-        endCombat,
-        waiting
-    }
-
-    
-
     public CombatStates currentState = CombatStates.beginCombat; //Keeps track of current combat state
 
     private void Awake()
     {
+
         //Sets CombatController as a singleton with highlander rules
         if (instance != null && instance != this)
         {
@@ -72,6 +67,7 @@ public class CombatController : MonoBehaviour
     {
         //Find all Player and enemy character controls, put them in a list, and sort.
 
+
         players = new List<Character>();
         enemies = new List<Character>();
 
@@ -81,23 +77,22 @@ public class CombatController : MonoBehaviour
 
         int playerCount_ = 0;
         int enemyCount_ = 0;
-        
+
 
         //Break turnQueue into character and enemy lists
         foreach (Character character in _turnQueue)
         {
-
             if (character.myType == CharacterType.player)
             {
                 players.Add(character);
                 character.Set_Position(playerCount_);
                 playerCount_++;
-                
+
             }
             if (character.myType == CharacterType.enemy)
             {
                 enemies.Add(character);
-                character.Set_Position(MAX_PLAYERS + enemyCount_);
+                character.Set_Position(enemyCount_);
                 enemyCount_++;
             }
         }
@@ -153,10 +148,8 @@ public class CombatController : MonoBehaviour
 
     public void End_Turn()
     {
-        Debug.Log(
-                      "Ending Turn\n" + Print_Dead_Characters() + "\n"
-                    + "----------------------------------------------"
-                );
+        Debug.Log("Ending Turn");
+        Debug.Log(Print_Dead_Characters());
 
         currentState = CombatStates.waiting; //Tell State Machine to wait.
 
@@ -198,8 +191,6 @@ public class CombatController : MonoBehaviour
             if (!player_.Is_Alive())
                 deadPlayers_++;
         }
-
-        Debug.Log(Print_Dead_Characters());
 
         //returning false here tells the game that combat is over.
         if (deadPlayers_ == players.Count)
@@ -254,6 +245,8 @@ public class CombatController : MonoBehaviour
             }
         }
 
+        Debug.Log("TEST");
+
         msg_ += temp_;
         msg_ += "\nDead Enemies: ";
         temp_ = "";
@@ -265,7 +258,11 @@ public class CombatController : MonoBehaviour
             }
         }
         msg_ += temp_;
+
+        Debug.Log("MESSAGE: " + msg_);
+
         return msg_;
+
     }
 
     public void Update_Turn_Queue()
@@ -276,7 +273,5 @@ public class CombatController : MonoBehaviour
             _turnQueue[i].Set_QueuePosition(i);
             Debug.Log("Turn Queue indexes: " + _turnQueue[i].Get_Name() + " is at position: " + _turnQueue[i].Get_QueuePosition());
         }
-
     }
-
 }

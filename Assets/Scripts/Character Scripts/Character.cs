@@ -28,7 +28,7 @@ public enum CharacterType //Globally Public Enum for if a character is a player 
 public class Character : MonoBehaviour, IComparable
 {
     //public CombatController combatController;
-    
+
     public string characterName = "Place Holder";
     public CharacterType myType = CharacterType.player;
 
@@ -139,9 +139,6 @@ public class Character : MonoBehaviour, IComparable
     public void Set_Speed(int speed_) => _speed = speed_;
     public void Set_CharacterType(CharacterType type_) => myType = type_;
     public void Set_Targets(List<int> targets_) => _targets = targets_;
-    
-
-    
 
     //----------------------------------------------------------------------------
     //  Handling Game Events.
@@ -150,36 +147,37 @@ public class Character : MonoBehaviour, IComparable
     //----------------------------------------------------------------------------
 
     //Random generated effectiveness in place of enemy logic for now.
-    public void Attack_Enemies(int[] targets_)
+    public void Attack_Characters(CharacterType type_, int[] targets_)
     {
         float effectiveness_ = UnityEngine.Random.Range(0f, 1.0f);
 
         float damage_ = _attackPower * (effectiveness_ + 1);
 
-        Debug.Log("Character " + characterName + " is attacking with " + damage_ + "damage.");
+        Debug.Log("Character " + characterName + " is attacking with " + damage_ + " damage.");
 
-        CombatEventManager.Deal_Damage(targets_, damage_); //Tell the world what's up
+        CombatEventManager.Deal_Damage(type_, targets_, damage_); //Tell the world what's up
     }
 
     //Overloaded attack for player minigame effectiveness input.
-    public void Attack_Enemies(int[] targets_, float effectiveness_)
+    public void Attack_Characters(CharacterType type_, int[] targets_, float effectiveness_)
     {
         float damage_ = _attackPower * (effectiveness_ + 1);
 
-        Debug.Log("Character " + characterName + " is attacking with " + damage_ + "damage.");
+        Debug.Log("Character " + characterName + " is attacking with " + damage_ + " damage.");
 
-        CombatEventManager.Deal_Damage(targets_, damage_);
+        CombatEventManager.Deal_Damage(type_, targets_, damage_);
     }
 
-    public void Attack_Enemy(int target_, float effectiveness_)
+    public void Attack_Character(CharacterType type_, int target_, float effectiveness_)
     {
         int[] targets_ = { target_ };
-        Attack_Enemies(targets_, effectiveness_);
+        Attack_Characters(type_, targets_, effectiveness_);
     }
 
-    public void Take_Damage(int[] targets_, float damage_)
+    public void Take_Damage(CharacterType type_, int[] targets_, float damage_)
     {
-        if (targets_.Contains(_position))
+
+        if (myType == type_ && targets_.Contains(_position))
         {
             if (_isAlive)
             {
@@ -204,38 +202,38 @@ public class Character : MonoBehaviour, IComparable
     public void Take_Damage(float damage_)
     {
         int[] targets_ = { _position };
-        Take_Damage( targets_, damage_);
+        Take_Damage(myType, targets_, damage_);
     }
 
-    public void Heal_Characters(int[] targets_)
+    public void Heal_Characters(CharacterType type_, int[] targets_)
     {
         float effectiveness_ = UnityEngine.Random.Range(0f, 1.0f);
         float health_ = _healPower * (effectiveness_ + 1);
 
         Debug.Log("Character " + characterName + "is healing someone for " + health_ + "health.");
 
-        CombatEventManager.Heal_Damage(targets_, health_);
+        CombatEventManager.Heal_Damage(type_, targets_, health_);
     }
 
     //Overloaded Heal for minigame effectiveness input.
-    public void Heal_Characters(int[] targets_, float effectiveness_)
+    public void Heal_Characters(CharacterType type_, int[] targets_, float effectiveness_)
     {
         float health_ = _healPower * (effectiveness_ + 1);
 
         Debug.Log("Character " + characterName + "is healing someone for " + health_ + "health.");
 
-        CombatEventManager.Heal_Damage(targets_, health_);
+        CombatEventManager.Heal_Damage(type_, targets_, health_);
     }
 
-    public void Heal_Character(int target_, float effectiveness_)
+    public void Heal_Character(CharacterType type_, int target_, float effectiveness_)
     {
         int[] targets_ = { target_ };
-        Heal_Characters(targets_, effectiveness_);
+        Heal_Characters(type_, targets_, effectiveness_);
     }
 
-    public void Take_Healing(int[] targets_, float healing_)
+    public void Take_Healing(CharacterType type_, int[] targets_, float healing_)
     {
-        if (targets_.Contains(_position))
+        if (myType == type_ && targets_.Contains(_position))
         {
             if (_isAlive)
             {
@@ -257,8 +255,8 @@ public class Character : MonoBehaviour, IComparable
     //Overloaded Take_Healing method that always targets self
     public void Take_Healing(float healing_)
     {
-        int[] targets_ = { _queuePosition };
-        Take_Healing(targets_, healing_);
+        int[] targets_ = { _position };
+        Take_Healing(myType, targets_, healing_);
     }
 
 
@@ -307,11 +305,11 @@ public class Character : MonoBehaviour, IComparable
     public virtual void Execute_Turn()
     {
         //Hitting a random enemy target by default
-        int target_ = UnityEngine.Random.Range(CombatController.MAX_PLAYERS, CombatController.MAX_PLAYERS + CombatController.enemies.Count);
+        int target_ = UnityEngine.Random.Range(0, CombatController.enemies.Count);
 
         int[] targets_ = { target_ };
 
-        Attack_Enemies(targets_);
+        Attack_Characters(CharacterType.enemy, targets_);
     }
 
 }
