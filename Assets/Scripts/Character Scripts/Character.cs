@@ -26,13 +26,6 @@ public class Character : MonoBehaviour, IComparable
     public string characterName = "Place Holder";
     private CharacterType _myType = CharacterType.player;
     private StatsStruct _currentStats = new StatsStruct(); //StatsStruct is defined in Scripts/Global/Stats_Struct
-
-    public float armor;
-    public int attackPower;
-    public int healPower;
-    public int maxHealth;
-    public int maxEnergy;
-    public int speed;
     private bool _isAlive = true;
     private int _position = 0; // the index of position slot I am occupying in the Control Script
     private int _queuePosition = 0; // What index do I have in the Control Script's turn queue?
@@ -269,17 +262,17 @@ public class Character : MonoBehaviour, IComparable
     public virtual void Set_Starting_Stats()
     // Initial Stats based on selected public values from unity inspector
     {
-        Set_Armor(armor);
-        Set_AttackPower(attackPower);
-        Set_HealPower(healPower);
-        Set_MaxHealth(maxHealth);
-        Set_MaxEnergy(maxEnergy);
-        Set_Speed(speed);
+        Set_Armor(0.1f);
+        Set_AttackPower(20);
+        Set_HealPower(20);
+        Set_MaxHealth(100);
+        Set_MaxEnergy(100);
+        Set_Speed(100);
 
-        Set_CurrentHealth(maxHealth);
+        Set_CurrentHealth(100);
         //Set_CurrentHealth(_currentHealth);
 
-        Set_CurrentEnergy(maxEnergy);
+        Set_CurrentEnergy(100);
         //Set_CurrentEnergy(_currentEnergy);
     }
 
