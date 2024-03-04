@@ -1,4 +1,15 @@
-﻿using System.Collections;
+﻿/*
+Project: Change the Game
+File: TypingGame.cs
+Date Created: Feburary 26, 2024
+Author(s): Sean Thornton
+Info:
+
+Script that runs the priestess' typing minigame.
+
+*/
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
