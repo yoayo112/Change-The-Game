@@ -25,7 +25,7 @@ public class Character : MonoBehaviour, IComparable
 
     public string characterName = "Place Holder";
     private CharacterType _myType = CharacterType.player;
-    private StatsStruct _stats = new StatsStruct();
+    private StatsStruct _stats = new StatsStruct(); //StatsStruct is defined in Scripts/Global/Stats_Struct
 
     public float armor;
     public int attackPower;
