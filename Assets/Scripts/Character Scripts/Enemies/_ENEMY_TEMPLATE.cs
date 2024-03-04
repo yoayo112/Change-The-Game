@@ -1,8 +1,8 @@
 /*
 Project: Change the Game
-File: _ENEMY_TEMPLATE.cs
+File: ClassName.cs
 Date Created: March 03, 2024
-Author(s): Sean Thornton
+Author(s):
 Info:
 
 Example script for extensions of the Enemy class. Do not use script directly.
@@ -12,9 +12,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CLASS : Enemy
+public class ClassName : Enemy                   //Filename, ClassName, and NAME should all be the same. (e.g Squid.cs, Squid, and "Squid")
 {
-    private const string NAME = "ENTER NAME HERE";
+    private const string NAME = "ClassName";
 
     //Modify these values to define the ranges of the enemy stats.
     private const float ARMOR_MIN = 0.0f;
