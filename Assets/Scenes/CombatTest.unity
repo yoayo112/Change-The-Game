@@ -153,12 +153,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterName: Player 1
-  armor: 0.1
-  attackPower: 20
-  healPower: 20
-  maxHealth: 100
-  maxEnergy: 100
-  speed: 100
 --- !u!4 &114520876
 Transform:
   m_ObjectHideFlags: 0
@@ -219,12 +213,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterName: squid 2
-  armor: 0
-  attackPower: 0
-  healPower: 0
-  maxHealth: 0
-  maxEnergy: 0
-  speed: 0
 --- !u!1 &279137243
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,12 +466,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterName: Player 2
-  armor: 0.1
-  attackPower: 20
-  healPower: 20
-  maxHealth: 100
-  maxEnergy: 100
-  speed: 100
 --- !u!4 &327341893
 Transform:
   m_ObjectHideFlags: 0
@@ -544,12 +526,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterName: squid 1
-  armor: 0.1
-  attackPower: 20
-  healPower: 20
-  maxHealth: 100
-  maxEnergy: 100
-  speed: 100
 --- !u!1 &561933479
 GameObject:
   m_ObjectHideFlags: 0
@@ -595,12 +571,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterName: squid 3
-  armor: 0
-  attackPower: 0
-  healPower: 0
-  maxHealth: 0
-  maxEnergy: 0
-  speed: 0
 --- !u!1 &662591056
 GameObject:
   m_ObjectHideFlags: 0
@@ -848,12 +818,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterName: Player 3
-  armor: 0.1
-  attackPower: 20
-  healPower: 20
-  maxHealth: 100
-  maxEnergy: 100
-  speed: 100
 --- !u!4 &1103859851
 Transform:
   m_ObjectHideFlags: 0
@@ -913,6 +877,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1606057316 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7962996822250114132, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
+  m_PrefabInstance: {fileID: 2209235983821842789}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1606057322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606057316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c8a4bb1bbbfb8c4db06eb6273d4cd96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterName: Cowboy
 --- !u!1 &2059366390
 GameObject:
   m_ObjectHideFlags: 0
@@ -1112,15 +1094,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.0000023841858
+      value: -0.0000042915344
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.000001610756
+      value: 0.0000026845933
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.00000333786
+      value: 0.0000064373016
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1128,7 +1110,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.10512753
+      value: 0.10512751
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalRotation.y
@@ -1146,7 +1128,10 @@ PrefabInstance:
     - {fileID: 4157338461896387430, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7962996822250114132, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
+      insertIndex: 4
+      addedObject: {fileID: 1606057322}
   m_SourcePrefab: {fileID: 100100000, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

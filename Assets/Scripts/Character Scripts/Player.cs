@@ -92,4 +92,15 @@ public class Player : Character
         Set_StatsStruct(_permanentStats);
         Set_CharacterType(CharacterType.player);
     }
+
+    //-----------------------------------------------------------------
+    // Writing currentHealth and currentEnergy values back into
+    // "permanent" stats
+    //-----------------------------------------------------------------
+
+    public void End_Combat()
+    {
+        _permanentStats.currentHealth = Get_CurrentHealth();
+        _permanentStats.currentEnergy = Get_CurrentEnergy();
+    }
 }
