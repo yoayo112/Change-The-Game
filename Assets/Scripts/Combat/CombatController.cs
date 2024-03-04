@@ -82,14 +82,14 @@ public class CombatController : MonoBehaviour
         //Break turnQueue into character and enemy lists
         foreach (Character character in _turnQueue)
         {
-            if (character.myType == CharacterType.player)
+            if (character.Get_CharacterType() == CharacterType.player)
             {
                 players.Add(character);
                 character.Set_Position(playerCount_);
                 playerCount_++;
 
             }
-            if (character.myType == CharacterType.enemy)
+            if (character.Get_CharacterType() == CharacterType.enemy)
             {
                 enemies.Add(character);
                 character.Set_Position(enemyCount_);

@@ -30,7 +30,7 @@ public class Character : MonoBehaviour, IComparable
     //public CombatController combatController;
 
     public string characterName = "Place Holder";
-    public CharacterType myType = CharacterType.player;
+    private CharacterType _myType = CharacterType.player;
 
     public float armor;
     private float _armor;
@@ -119,7 +119,7 @@ public class Character : MonoBehaviour, IComparable
     public int Get_QueuePosition() => _queuePosition;
     public int Get_Position() => _position;
     public bool Is_Alive() => _isAlive;
-    public CharacterType Get_CharacterType() => myType;
+    public CharacterType Get_CharacterType() => _myType;
     public List<int> Get_Targets() => _targets;
 
 
@@ -137,7 +137,7 @@ public class Character : MonoBehaviour, IComparable
     public void Set_Position(int pos_) => _position = pos_;
     public void Set_Alive(bool alive_) => _isAlive = alive_;
     public void Set_Speed(int speed_) => _speed = speed_;
-    public void Set_CharacterType(CharacterType type_) => myType = type_;
+    public void Set_CharacterType(CharacterType type_) => _myType = type_;
     public void Set_Targets(List<int> targets_) => _targets = targets_;
 
     //----------------------------------------------------------------------------
@@ -177,7 +177,7 @@ public class Character : MonoBehaviour, IComparable
     public void Take_Damage(CharacterType type_, int[] targets_, float damage_)
     {
 
-        if (myType == type_ && targets_.Contains(_position))
+        if (_myType == type_ && targets_.Contains(_position))
         {
             if (_isAlive)
             {
@@ -202,7 +202,7 @@ public class Character : MonoBehaviour, IComparable
     public void Take_Damage(float damage_)
     {
         int[] targets_ = { _position };
-        Take_Damage(myType, targets_, damage_);
+        Take_Damage(_myType, targets_, damage_);
     }
 
     public void Heal_Characters(CharacterType type_, int[] targets_)
@@ -233,7 +233,7 @@ public class Character : MonoBehaviour, IComparable
 
     public void Take_Healing(CharacterType type_, int[] targets_, float healing_)
     {
-        if (myType == type_ && targets_.Contains(_position))
+        if (_myType == type_ && targets_.Contains(_position))
         {
             if (_isAlive)
             {
@@ -256,7 +256,7 @@ public class Character : MonoBehaviour, IComparable
     public void Take_Healing(float healing_)
     {
         int[] targets_ = { _position };
-        Take_Healing(myType, targets_, healing_);
+        Take_Healing(_myType, targets_, healing_);
     }
 
 
