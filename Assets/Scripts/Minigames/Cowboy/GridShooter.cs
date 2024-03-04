@@ -11,44 +11,53 @@ public class GridShooter : MonoBehaviour
     //-----------------------------------------------------------------------------------
     [Header("General Members")]
     public GameObject gridSprite; // Reference to rope grid prefab
-    private GameObject grid; // This instances rope grid.
+    private GameObject _grid; // This instances rope grid.
     public TMP_Text hitsDisplay;
     public TMP_Text effectivenessDisplay;
-    private Dictionary<int,Vector3> gridPositions = new Dictionary<int,Vector3>(); // Vector3 positions for grid
-    private int totalTargets;
-    private int hitTargets; //How many targets player has hit
-    private int missedTargets; //How many targets missed to old age
-    private float minigameEffectiveness;
-    private bool gameRunning = false;
+    private Dictionary<int,Vector3> _gridPositions = new Dictionary<int,Vector3>(); // Vector3 positions for grid
+    private int _totalTargets;
+    private int _hitTargets; //How many targets player has hit
+    private int _missedTargets; //How many targets missed to old age
+    private float _minigameEffectiveness;
+    private bool _gameRunning = false;
+
+    private enum _MoveDirections
+    {
+        up,
+        down,
+        left,
+        right
+    }
+
     //-----------------------------------------------------------------------------------
     //  Target specific class members
     //-----------------------------------------------------------------------------------
     [Header("Target Members")]
     public GameObject targetSprite; //Reference to the target prefab
-    private TargetGrid targets; //Object that holds information about game targets.
+    private TargetGrid _targets; //Object that holds information about game targets.
     [Header("Target Spawn Settings")]
     public float targetSpawnRate = 5f; // How often targets within a group can spawn
     public float groupSpawnRate = 1f; // How often a group can start spawning
-    private bool isSpawning = false; // Is a target group spawning right now?
+    private bool _isSpawning = false; // Is a target group spawning right now?
     public float maxTargetTime = 2f; // How long a target lasts before dissapearing.
-    private int[][] targetGroup; // Vector holding target groups
+    private int[][] _targetGroup; // Vector holding target groups
 
     //------------------------------------------------------------------------------------
     //  Weapon specific class members
     //------------------------------------------------------------------------------------
     [Header("Weapon Members")]
     public GameObject reticleSprite; // Reference to reticle prefab
-    private GameObject reticle; // This instances reticle.
+    private GameObject _reticle; // This instances reticle.
     public GameObject bangSprite; //Reference to Bang! prefab
     public TMP_Text ammoDisplay; // UI element for current ammo
     public Slider reloadProgressBar; // UI progress bar for reload
     [Header("Weapon Settings")]
-    private int aimPos; // Current Grid the reticle is at.
-    private int currentAmmo; // current ammo.
+    private int _aimPos; // Current Grid the reticle is at.
+    private int _currentAmmo; // current ammo.
     public int maxAmmo = 6; // maximum ammo.
     public float reloadTime = 2f; // How long to reload.
-    private float reloadProgress = 0f; 
-    private bool isReloading = false; // Reload coroutine running?
+    private float _reloadProgress = 0f; 
+    private bool _isReloading = false; // Reload coroutine running?
 
     //-------------------------------------------------------------------------------------
     //  Audio handling
@@ -58,69 +67,78 @@ public class GridShooter : MonoBehaviour
     public AudioClip[] audioClipArray;
     public float volume = 0.5f;
 
+
+    void OnEnable()
+    {
+        MinigameEventManager.onStart += Start_Minigame;
+    }
+    void OnDisable()
+    {
+        MinigameEventManager.onStart -= Start_Minigame;
+    }
     void Start() // Called before first frame update.
     {
-        SetupGrid();
-        SetupTargetGroup();
+        Setup_Grid();
+        Setup_Target_Group();
 
 
-        aimPos = 5;
-        SetAim(aimPos);
+        _aimPos = 5;
+        Set_Aim(_aimPos);
 
-        targets = new TargetGrid(maxTargetTime, targetSprite,gridPositions,reticleSprite.transform.rotation);
-        missedTargets = 0;
-        hitTargets = 0;
-        totalTargets = 0;
-        minigameEffectiveness = 0f;
+        _targets = new TargetGrid(maxTargetTime, targetSprite,_gridPositions,reticleSprite.transform.rotation);
+        _missedTargets = 0;
+        _hitTargets = 0;
+        _totalTargets = 0;
+        _minigameEffectiveness = 0f;
 
-        currentAmmo = maxAmmo;
-        SetAmmoDisplay();
+        _currentAmmo = maxAmmo;
+        Set_Ammo_Display();
 
         Time.timeScale = 1.0f;
-        gameRunning = false;
+        _gameRunning = false;
     }
 
     void Update() //Called once per frame.
     {
-        if(gameRunning)
+        if(_gameRunning)
         {
-            if(!isSpawning)
+            if(!_isSpawning)
             {
-                StartCoroutine(CreateTargetGroup(targetGroup));
+                StartCoroutine(Create_Target_Group(_targetGroup));
             }
 
-            if(isReloading)
+            if(_isReloading)
             {
-                reloadProgress += Time.deltaTime;
-                reloadProgressBar.value = reloadProgress/reloadTime;
+                _reloadProgress += Time.deltaTime;
+                reloadProgressBar.value = _reloadProgress/reloadTime;
             }
 
-            AgeTargets();
-            HandleInputs();
+            Age_Targets();
+            Handle_Inputs();
         }
     }
 
     //--------------------------------------------------------------------------------------------
     // Mutators
     //--------------------------------------------------------------------------------------------
-    private void SetAim(int pos)
+    private void Set_Aim(int pos_)
     {
-        reticle.transform.position = gridPositions[pos];
+        _reticle.transform.position = _gridPositions[pos_];
     }
 
-    private void SetAmmoDisplay()
+    private void Set_Ammo_Display()
     {
-        ammoDisplay.text = currentAmmo + "/" + maxAmmo;
+        ammoDisplay.text = _currentAmmo + "/" + maxAmmo;
     }
 
-    private void SetHitsDisplay()
+    private void Set_Hits_Display()
     {
-        hitsDisplay.text = "Hits: " + hitTargets;
+        hitsDisplay.text = "Hits: " + _hitTargets;
     }
 
-    private void SetEffectivenessDisplay()
+    private void Set_Effectiveness_Display()
     {
-        effectivenessDisplay.text = "Effectiveness: " + minigameEffectiveness;
+        effectivenessDisplay.text = "Effectiveness: " + _minigameEffectiveness;
     }
 
     //---------------------------------------------------------------------------------------------
@@ -129,135 +147,135 @@ public class GridShooter : MonoBehaviour
     public void OnTimeOver()
     {
         StopAllCoroutines();
-        isSpawning = false;
-        isReloading = false;
-        gameRunning = false;
-        targets.KillAll();
-        minigameEffectiveness = (float)hitTargets/(float)totalTargets;
-        SetEffectivenessDisplay();
+        _isSpawning = false;
+        _isReloading = false;
+        _gameRunning = false;
+        _targets.Kill_All();
+        _minigameEffectiveness = (float)_hitTargets/(float)_totalTargets;
+        Set_Effectiveness_Display();
 
-        ResetState();
+        Reset_State();
     }
-    public void OnStartClicked()
+    public void Start_Minigame()
     {
         Debug.Log("Start clicked entered.");
-        if(!gameRunning)
+        if(!_gameRunning)
         {
-            hitTargets = 0;
-            SetHitsDisplay();
-            minigameEffectiveness = 0f;
-            gameRunning = true;
+            _hitTargets = 0;
+            Set_Hits_Display();
+            _minigameEffectiveness = 0f;
+            _gameRunning = true;
             Debug.Log("Start Clicked ending");
         }
     }
     //--------------------------------------------------------------------------------------------
     //  General Game Methods
     //--------------------------------------------------------------------------------------------
-    private void AgeTargets()
+    private void Age_Targets()
     {
-        for(int pos = 1; pos <= 9; pos++)
+        for(int pos_ = 1; pos_ <= 9; pos_++)
         {
-            if(targets.HasTarget(pos))
+            if(_targets.Has_Target(pos_))
             {
-                targets.AddTime(pos,Time.deltaTime);
+                _targets.Add_Time(pos_,Time.deltaTime);
 
-                if(targets.TooOld(pos)) //Target is dying of old age.
+                if(_targets.Is_Too_Old(pos_)) //Target is dying of old age.
                 {
-                    missedTargets++;
-                    targets.KillTarget(pos);
+                    _missedTargets++;
+                    _targets.Kill_Target(pos_);
                 }
             }
         }
     }
 
-    IEnumerator CreateTargetGroup(int[][] targetGroup)
+    IEnumerator Create_Target_Group(int[][] targetGroup_)
     {
-        isSpawning = true;
+        _isSpawning = true;
         Debug.Log("Spawning Target Group...");
 
-        foreach(int[] group in targetGroup)
+        foreach(int[] group_ in targetGroup_)
         {
-            foreach(int pos in group)
+            foreach(int pos_ in group_)
             {
-                targets.CreateTarget(pos);
-                totalTargets++;
+                _targets.Create_Target(pos_);
+                _totalTargets++;
                 yield return new WaitForSeconds(targetSpawnRate);
             }
             
             yield return new WaitForSeconds(groupSpawnRate);
         }
 
-        isSpawning = false;
+        _isSpawning = false;
         Debug.Log("Group Spawning Finished!");
     }
 
     
-    void FireWeapon()
+    void Fire_Weapon()
     {
-        currentAmmo--;
-        SetAmmoDisplay();
+        _currentAmmo--;
+        Set_Ammo_Display();
         audioSource.PlayOneShot(audioClipArray[0],volume);
-        GameObject clone = Instantiate(bangSprite,gridPositions[aimPos],transform.rotation);
+        GameObject clone = Instantiate(bangSprite,_gridPositions[_aimPos],transform.rotation);
         Destroy(clone, 0.1f);
 
-        if(targets.HasTarget(aimPos))
+        if(_targets.Has_Target(_aimPos))
         {
-            hitTargets++;
-            SetHitsDisplay();
-            targets.KillTarget(aimPos);
+            _hitTargets++;
+            Set_Hits_Display();
+            _targets.Kill_Target(_aimPos);
         }
     }
     IEnumerator Reload()
     {
-        isReloading = true;
-        currentAmmo = 0;
-        SetAmmoDisplay();
+        _isReloading = true;
+        _currentAmmo = 0;
+        Set_Ammo_Display();
         audioSource.PlayOneShot(audioClipArray[1], volume);
         yield return new WaitForSeconds(reloadTime);
-        currentAmmo = maxAmmo;
-        SetAmmoDisplay();
-        isReloading = false;
-        reloadProgress = 0f;
+        _currentAmmo = maxAmmo;
+        Set_Ammo_Display();
+        _isReloading = false;
+        _reloadProgress = 0f;
         reloadProgressBar.value = 0f;
     }
 
-    private void ResetState()
+    private void Reset_State()
     {
-        aimPos = 5;
-        SetAim(aimPos);
+        _aimPos = 5;
+        Set_Aim(_aimPos);
 
-        currentAmmo = maxAmmo;
-        SetAmmoDisplay();
-        missedTargets = 0;
-        totalTargets = 0;
+        _currentAmmo = maxAmmo;
+        Set_Ammo_Display();
+        _missedTargets = 0;
+        _totalTargets = 0;
     }
 
     //----------------------------------------------------------------------
     //  Input Handling
     //----------------------------------------------------------------------
-    void HandleInputs()
+    void Handle_Inputs()
     {
         if(Input.GetButtonDown("GridRight"))
         {
-            UpdateAimHorizontal("R");
+            Update_Aim_Horizontal(_MoveDirections.right);
         }
         if(Input.GetButtonDown("GridLeft"))
         {
-            UpdateAimHorizontal("L");
+            Update_Aim_Horizontal(_MoveDirections.left);
         }
         if(Input.GetButtonDown("GridUp"))
         {
-            UpdateAimVertical("U");
+            Update_Aim_Vertical(_MoveDirections.up);
         }
         if(Input.GetButtonDown("GridDown"))
         {
-            UpdateAimVertical("D");
+            Update_Aim_Vertical(_MoveDirections.down);
         }
         if(Input.GetButtonDown("GridReload"))
         {
-            if(!isReloading)
+            if(!_isReloading)
             {
-                if(currentAmmo < maxAmmo)
+                if(_currentAmmo < maxAmmo)
                 {
                     StartCoroutine(Reload());
                 }
@@ -265,125 +283,125 @@ public class GridShooter : MonoBehaviour
         }
         if(Input.GetButtonDown("GridFire"))
         {
-            if(currentAmmo > 0)
+            if(_currentAmmo > 0)
             {
-                FireWeapon();
+                Fire_Weapon();
             }
             else
             {
                 audioSource.PlayOneShot(audioClipArray[2], volume);
-                if(!isReloading)
+                if(!_isReloading)
                 {
                     StartCoroutine(Reload());
                 }
             }
         }
     }
-    private void UpdateAimHorizontal(string dir)
+    private void Update_Aim_Horizontal(_MoveDirections dir_)
     {
-        if(dir == "R")
+        if(dir_ == _MoveDirections.right)
         {
-            switch(aimPos)
+            switch(_aimPos)
             {
                 case 3:
-                    aimPos = 1;
+                    _aimPos = 1;
                     break;
                 case 6:
-                    aimPos = 4;
+                    _aimPos = 4;
                     break;
                 case 9:
-                    aimPos = 7;
+                    _aimPos = 7;
                     break;
                 default:
-                    aimPos++;
+                    _aimPos++;
                     break;
             }
         }
-        else if(dir == "L")
+        else if(dir_ == _MoveDirections.left )
         {
-            switch(aimPos)
+            switch(_aimPos)
             {
                 case 1:
-                    aimPos = 3;
+                    _aimPos = 3;
                     break;
                 case 4:
-                    aimPos = 6;
+                    _aimPos = 6;
                     break;
                 case 7:
-                    aimPos = 9;
+                    _aimPos = 9;
                     break;
                 default:
-                    aimPos--;
+                    _aimPos--;
                     break;
             }
         }
-        SetAim(aimPos);
+        Set_Aim(_aimPos);
     }
-    void UpdateAimVertical(string dir)
+    void Update_Aim_Vertical(_MoveDirections dir_)
     {
-        if(dir == "U")
+        if(dir_ == _MoveDirections.up)
         {
-            switch(aimPos)
+            switch(_aimPos)
             {
                 case 1: 
-                    aimPos = 7;
+                    _aimPos = 7;
                     break;
                 case 2:
-                    aimPos = 8;
+                    _aimPos = 8;
                     break;
                 case 3:
-                    aimPos = 9;
+                    _aimPos = 9;
                     break;
                 default:
-                    aimPos = aimPos - 3;
+                    _aimPos = _aimPos - 3;
                     break;
             }
         }
-        else if(dir == "D")
+        else if(dir_ == _MoveDirections.down)
         {
-            switch(aimPos)
+            switch(_aimPos)
             {
                 case 7:
-                    aimPos = 1;
+                    _aimPos = 1;
                     break;
                 case 8:
-                    aimPos = 2;
+                    _aimPos = 2;
                     break;
                 case 9:
-                    aimPos = 3;
+                    _aimPos = 3;
                     break;
                 default:
-                    aimPos = aimPos + 3;
+                    _aimPos = _aimPos + 3;
                     break;
             }
         }
-        SetAim(aimPos);
+        Set_Aim(_aimPos);
     }
     
     //--------------------------------------------------------------------------
     //  Initial setup
     //--------------------------------------------------------------------------
-    private void SetupGrid()
+    private void Setup_Grid()
     {
         //Top Row
-        gridPositions.Add(1, new Vector3(-2.9f, 2.9f,0f));
-        gridPositions.Add(2, new Vector3(0f,    2.9f,0f));
-        gridPositions.Add(3, new Vector3(2.9f,  2.9f,0f));
+        _gridPositions.Add(1, new Vector3(-2.9f, 2.9f,0f));
+        _gridPositions.Add(2, new Vector3(0f,    2.9f,0f));
+        _gridPositions.Add(3, new Vector3(2.9f,  2.9f,0f));
         //Middle Row
-        gridPositions.Add(4, new Vector3(-2.9f, 0f,0f));
-        gridPositions.Add(5, new Vector3(0f,    0f,0f));
-        gridPositions.Add(6, new Vector3(2.9f,  0f,0f));
+        _gridPositions.Add(4, new Vector3(-2.9f, 0f,0f));
+        _gridPositions.Add(5, new Vector3(0f,    0f,0f));
+        _gridPositions.Add(6, new Vector3(2.9f,  0f,0f));
         //Bottom Row
-        gridPositions.Add(7, new Vector3(-2.9f, -2.9f,0f));
-        gridPositions.Add(8, new Vector3(0f,    -2.9f,0f));
-        gridPositions.Add(9, new Vector3(2.9f,  -2.9f,0f));
+        _gridPositions.Add(7, new Vector3(-2.9f, -2.9f,0f));
+        _gridPositions.Add(8, new Vector3(0f,    -2.9f,0f));
+        _gridPositions.Add(9, new Vector3(2.9f,  -2.9f,0f));
 
-        grid = Instantiate(gridSprite, gridPositions[5], transform.rotation);
-        reticle = Instantiate(reticleSprite, gridPositions[5], transform.rotation);
+        _grid = Instantiate(gridSprite, _gridPositions[5], transform.rotation);
+        _reticle = Instantiate(reticleSprite, _gridPositions[5], transform.rotation);
     }
-    private void SetupTargetGroup()
+    private void Setup_Target_Group()
     {
-        targetGroup = new int[][]
+        _targetGroup = new int[][]
         {
             new int[]{1,2,3},
             new int[]{4,5,6},
