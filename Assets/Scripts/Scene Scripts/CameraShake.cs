@@ -1,3 +1,13 @@
+/*
+Project: Change the Game
+File: CameraShake.cs
+Date Created: Februraru 28, 2024
+Author(s): Sean Thornton
+Info:
+
+Script to add simple camera shake effect to a camera object.
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
