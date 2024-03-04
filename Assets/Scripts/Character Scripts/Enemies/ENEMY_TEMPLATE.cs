@@ -22,14 +22,14 @@ public class ENEMY_TEMPLATE : Enemy //Replace "ENEMY_TEMPLATE" with your class n
 
     /* This is where the enemy does its action on its turn.
      * Use CombatController.players and .enemies and .turnNumber for combat info
-     * The target positions of players characters will be in the range [0, CombatController.players.Count())
-     * The target positions of enemy characters will be in the range [CombatController.MAX_PLAYERS, CombatController.MAX_PLAYERS + CombatController.enemies.Count]
+     * The target positions of players will be [0, CombatController.players.Count], for enemies: [0, CombatController.enemies.Count]
+     * the
      * 
-     * Use - Attack_Enemies(int[] targets_, float effectiveness_) to attack multiple targets
-     *       Attack_Enemy(int target_) to attack a single target
+     * Use - Attack_Characters(CharacterType type_, int[] targets_, float effectiveness_) to attack multiple targets
+     *       Attack_Character(CharacterType type_, int target_) to attack a single target
      *       Take_Damage(float damage_) to take self damage
-     *       Heal_Characters(int[] targets_, float effectiveness_) to heal multiple targets
-     *       Heal_Character(int target_, effeictness_) to heal a single target
+     *       Heal_Characters(CharacterType type_, int[] targets_, float effectiveness_) to heal multiple targets
+     *       Heal_Character(CharacterType type_, int target_, effeictness_) to heal a single target
      *       Take_Healing(float healing_) to heal self
     */
     public override void Execute_Turn()
@@ -49,7 +49,7 @@ public class ENEMY_TEMPLATE : Enemy //Replace "ENEMY_TEMPLATE" with your class n
                 break;
         }
 
-        Attack_Enemy(target_, 0.0f);
+        Attack_Character(CharcterType.player, target_, 0.0f);
         */
     }
 

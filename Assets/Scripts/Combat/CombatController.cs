@@ -246,7 +246,7 @@ public class CombatController : MonoBehaviour
         }
 
         msg_ += temp_;
-        msg_ += " | Dead Enemies: ";
+        msg_ += "\nDead Enemies: ";
         temp_ = "";
         foreach (Character enemy_ in enemies)
         {
