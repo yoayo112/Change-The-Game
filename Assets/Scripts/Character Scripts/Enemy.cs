@@ -72,6 +72,7 @@ public class Enemy : Character
 
         Set_CurrentHealth(Get_MaxHealth());
         Set_CurrentEnergy(Get_MaxEnergy());
+
     }
 
     //----------------------------------------------------------------------------

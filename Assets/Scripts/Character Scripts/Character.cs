@@ -32,25 +32,25 @@ public class Character : MonoBehaviour, IComparable
     public string characterName = "Place Holder";
     public CharacterType myType = CharacterType.player;
 
-    public float armor = 0.1f;
-    private float _armor = 0.1f;
+    public float armor;
+    private float _armor;
 
-    public int attackPower = 20;
-    private int _attackPower = 20;
+    public int attackPower;
+    private int _attackPower;
 
-    public int healPower = 20;
-    private int _healPower = 20;
+    public int healPower;
+    private int _healPower;
 
-    public int maxHealth = 100;
-    private int _maxHealth = 100;
-    private int _currentHealth = 100;
+    public int maxHealth;
+    private int _maxHealth;
+    private int _currentHealth;
 
-    public int maxEnergy = 100;
-    private int _maxEnergy = 100;
-    private int _currentEnergy = 100;
+    public int maxEnergy;
+    private int _maxEnergy;
+    private int _currentEnergy;
 
-    public int speed = 100;
-    private int _speed = 100;
+    public int speed;
+    private int _speed;
 
     private bool _isAlive = true;
 
@@ -171,6 +171,12 @@ public class Character : MonoBehaviour, IComparable
         CombatEventManager.Deal_Damage(targets_, damage_);
     }
 
+    public void Attack_Enemy(int target_, float effectiveness_)
+    {
+        int[] targets_ = { target_ };
+        Attack_Enemies(targets_, effectiveness_);
+    }
+
     public void Take_Damage(int[] targets_, float damage_)
     {
         if (targets_.Contains(_position))
@@ -219,6 +225,12 @@ public class Character : MonoBehaviour, IComparable
         Debug.Log("Character " + characterName + "is healing someone for " + health_ + "health.");
 
         CombatEventManager.Heal_Damage(targets_, health_);
+    }
+
+    public void Heal_Character(int target_, float effectiveness_)
+    {
+        int[] targets_ = { target_ };
+        Heal_Characters(targets_, effectiveness_);
     }
 
     public void Take_Healing(int[] targets_, float healing_)
@@ -282,15 +294,19 @@ public class Character : MonoBehaviour, IComparable
         Set_AttackPower(attackPower);
         Set_HealPower(healPower);
         Set_MaxHealth(maxHealth);
-        Set_CurrentHealth(_currentHealth);
         Set_MaxEnergy(maxEnergy);
-        Set_CurrentEnergy(_currentEnergy);
         Set_Speed(speed);
+
+        Set_CurrentHealth(maxHealth);
+        //Set_CurrentHealth(_currentHealth);
+
+        Set_CurrentEnergy(maxEnergy);
+        //Set_CurrentEnergy(_currentEnergy);
     }
 
     public virtual void Execute_Turn()
     {
-        int target_ = UnityEngine.Random.Range(0, 7);
+        int target_ = UnityEngine.Random.Range(CombatController.MAX_PLAYERS, CombatController.MAX_PLAYERS + CombatController.enemies.Count);
 
         int[] targets_ = { target_ };
 

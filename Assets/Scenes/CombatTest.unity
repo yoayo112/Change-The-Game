@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 114520876}
   - component: {fileID: 114520875}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Player 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,14 +152,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b0a070946b7a72468553b68a5121131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: Place Holder
+  characterName: Player 1
+  myType: 0
   armor: 0.1
   attackPower: 20
   healPower: 20
   maxHealth: 100
   maxEnergy: 100
   speed: 100
-  myType: 0
 --- !u!4 &114520876
 Transform:
   m_ObjectHideFlags: 0
@@ -184,34 +184,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 210975485}
-  - component: {fileID: 210975484}
+  - component: {fileID: 210975486}
   m_Layer: 0
-  m_Name: Enemy2
+  m_Name: Squid 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &210975484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 210975483}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b0a070946b7a72468553b68a5121131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterName: Place Holder
-  armor: 0.1
-  attackPower: 20
-  healPower: 20
-  maxHealth: 100
-  maxEnergy: 100
-  speed: 100
-  myType: 1
 --- !u!4 &210975485
 Transform:
   m_ObjectHideFlags: 0
@@ -227,6 +207,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &210975486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 210975483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abf7a551474a88c48b1cf83e921af9fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterName: Place Holder
+  myType: 0
+  armor: 0
+  attackPower: 0
+  healPower: 0
+  maxHealth: 0
+  maxEnergy: 0
+  speed: 0
+  armorMin: 0
+  armorMax: 0
+  attackPowerMin: 0
+  attackPowerMax: 0
+  healPowerMin: 0
+  healPowerMax: 0
+  healthMin: 0
+  healthMax: 0
+  energyMin: 0
+  energyMax: 0
+  speedMin: 0
+  speedMax: 0
 --- !u!1 &279137243
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,7 +473,7 @@ GameObject:
   - component: {fileID: 327341893}
   - component: {fileID: 327341892}
   m_Layer: 0
-  m_Name: Player2
+  m_Name: Player 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -479,14 +491,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b0a070946b7a72468553b68a5121131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: Place Holder
+  characterName: Player 2
+  myType: 0
   armor: 0.1
   attackPower: 20
   healPower: 20
   maxHealth: 100
   maxEnergy: 100
   speed: 100
-  myType: 0
 --- !u!4 &327341893
 Transform:
   m_ObjectHideFlags: 0
@@ -511,34 +523,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 340953223}
-  - component: {fileID: 340953222}
+  - component: {fileID: 340953224}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Squid 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &340953222
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 340953221}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b0a070946b7a72468553b68a5121131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterName: Place Holder
-  armor: 0.1
-  attackPower: 20
-  healPower: 20
-  maxHealth: 100
-  maxEnergy: 100
-  speed: 100
-  myType: 1
 --- !u!4 &340953223
 Transform:
   m_ObjectHideFlags: 0
@@ -554,6 +546,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &340953224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 340953221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abf7a551474a88c48b1cf83e921af9fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterName: 
+  myType: 0
+  armor: 0.1
+  attackPower: 20
+  healPower: 20
+  maxHealth: 100
+  maxEnergy: 100
+  speed: 100
+  armorMin: 0
+  armorMax: 0
+  attackPowerMin: 0
+  attackPowerMax: 0
+  healPowerMin: 0
+  healPowerMax: 0
+  healthMin: 0
+  healthMax: 0
+  energyMin: 0
+  energyMax: 0
+  speedMin: 0
+  speedMax: 0
 --- !u!1 &561933479
 GameObject:
   m_ObjectHideFlags: 0
@@ -563,34 +587,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 561933481}
-  - component: {fileID: 561933480}
+  - component: {fileID: 561933482}
   m_Layer: 0
-  m_Name: Enemy3
+  m_Name: Squid 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &561933480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 561933479}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b0a070946b7a72468553b68a5121131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterName: Place Holder
-  armor: 0.1
-  attackPower: 20
-  healPower: 20
-  maxHealth: 100
-  maxEnergy: 100
-  speed: 100
-  myType: 1
 --- !u!4 &561933481
 Transform:
   m_ObjectHideFlags: 0
@@ -606,6 +610,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &561933482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561933479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abf7a551474a88c48b1cf83e921af9fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterName: Place Holder
+  myType: 0
+  armor: 0
+  attackPower: 0
+  healPower: 0
+  maxHealth: 0
+  maxEnergy: 0
+  speed: 0
+  armorMin: 0
+  armorMax: 0
+  attackPowerMin: 0
+  attackPowerMax: 0
+  healPowerMin: 0
+  healPowerMax: 0
+  healthMin: 0
+  healthMax: 0
+  energyMin: 0
+  energyMax: 0
+  speedMin: 0
+  speedMax: 0
 --- !u!1 &662591056
 GameObject:
   m_ObjectHideFlags: 0
@@ -738,7 +774,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 837016322}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.059719484, y: 0.9173854, z: -0.36348277, w: -0.15072457}
+  m_LocalRotation: {x: -0.059719488, y: 0.9173854, z: -0.36348274, w: -0.15072457}
   m_LocalPosition: {x: 1.5997951, y: 7.08, z: 4.737158}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -834,7 +870,7 @@ GameObject:
   - component: {fileID: 1103859851}
   - component: {fileID: 1103859850}
   m_Layer: 0
-  m_Name: Player3
+  m_Name: Player 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -852,14 +888,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b0a070946b7a72468553b68a5121131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: Place Holder
+  characterName: Player 3
+  myType: 0
   armor: 0.1
   attackPower: 20
   healPower: 20
   maxHealth: 100
   maxEnergy: 100
   speed: 100
-  myType: 0
 --- !u!4 &1103859851
 Transform:
   m_ObjectHideFlags: 0
@@ -1058,19 +1094,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2037432296691875365, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.32174978
+      value: 0.32174975
       objectReference: {fileID: 0}
     - target: {fileID: 2037432296691875365, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.1274824
+      value: 0.12748238
       objectReference: {fileID: 0}
     - target: {fileID: 2037432296691875365, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.8722333
+      value: 0.8722334
       objectReference: {fileID: 0}
     - target: {fileID: 2037432296691875365, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.34559283
+      value: -0.34559274
+      objectReference: {fileID: 0}
+    - target: {fileID: 4157338461896387430, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
+      propertyPath: characterName
+      value: Cowboy
       objectReference: {fileID: 0}
     - target: {fileID: 5907349051597121778, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1114,31 +1154,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.0000064373016
+      value: -0.0000042915344
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0000042953493
+      value: 0.0000026845933
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.000009536743
+      value: 0.0000064373016
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.3297315
+      value: 0.32973152
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.10512751
+      value: 0.10512754
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.8938711
+      value: 0.8938712
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.28499082
+      value: -0.28499088
       objectReference: {fileID: 0}
     - target: {fileID: 7962996822250114132, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_Name
