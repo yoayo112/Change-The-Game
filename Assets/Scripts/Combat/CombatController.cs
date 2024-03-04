@@ -261,4 +261,13 @@ public class CombatController : MonoBehaviour
 
     }
 
+    public void Update_Turn_Queue()
+    {
+        _turnQueue.Sort();
+        for (int i = 0; i < _turnQueue.Count; i++)
+        {
+            _turnQueue[i].Set_QueuePosition(i);
+            Debug.Log("Turn Queue indexes: " + _turnQueue[i].Get_Name() + " is at position: " + _turnQueue[i].Get_QueuePosition());
+        }
+    }
 }
