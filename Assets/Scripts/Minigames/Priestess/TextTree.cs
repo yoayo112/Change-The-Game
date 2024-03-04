@@ -6,6 +6,15 @@ Author(s): Sean Thornton
 Info:
 
 Tree structure that represents the branching paths of possible lines to be typed in the typing minigame
+
+The TextTree object contains other TextTrees as branches. Each tree in the structure carries a string representing the shared text of all of it's branches.
+Branching represents differences between the strings in the array that cosntructor uses as input.
+For example: TextTree({"you can type", "you can also", "you even can"}) will create a tree with the following structure:
+
+ "you " ---- "can " ---- "type"
+    |           └------ "also"   
+    └------ "even can"
+
 */
 
 using System.Collections;
@@ -15,15 +24,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.IO;
 
-// The TextTree object contains other TextTrees as branches. Each tree in the structure carries a string representing the shared text of all of it's branches.
-// Branching represents differences between the strings in the array that cosntructor uses as input.
-// For example: TextTree({"you can type", "you can also", "you even can"}) will create a tree with the following structure:
-//
-//         "you " ---- "can " ---- "type"
-//             |           └------ "also"   
-//             └------ "even can"
-//
-//  
+
 public class TextTree
 {
     public TextTree root;
