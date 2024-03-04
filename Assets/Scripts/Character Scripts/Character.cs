@@ -25,33 +25,18 @@ public class Character : MonoBehaviour, IComparable
 
     public string characterName = "Place Holder";
     private CharacterType _myType = CharacterType.player;
+    private StatsStruct _stats = new StatsStruct();
 
     public float armor;
-    private float _armor;
-
     public int attackPower;
-    private int _attackPower;
-
     public int healPower;
-    private int _healPower;
-
     public int maxHealth;
-    private int _maxHealth;
-    private int _currentHealth;
-
     public int maxEnergy;
-    private int _maxEnergy;
-    private int _currentEnergy;
-
     public int speed;
-    private int _speed;
-
     private bool _isAlive = true;
-
     private int _position = 0; // the index of position slot I am occupying in the Control Script
     private int _queuePosition = 0; // What index do I have in the Control Script's turn queue?
     private List<int> _targets;
-
 
     private void OnEnable() //Subscrizzle.
     {
@@ -102,14 +87,14 @@ public class Character : MonoBehaviour, IComparable
     // Accessors
     //public CombatController Get_CombatController() => combatController;
     public string Get_Name() => characterName;
-    public float Get_Armor() => _armor;
-    public int Get_AttackPower() => _attackPower;
-    public int Get_HealPower() => _healPower;
-    public int Get_MaxHealth() => _maxHealth;
-    public int Get_CurrentHealth() => _currentHealth;
-    public int Get_MaxEnergy() => _maxEnergy;
-    public int Get_CurrentEnergy() => _currentEnergy;
-    public int Get_Speed() => _speed;
+    public float Get_Armor() => _stats.armor;
+    public int Get_AttackPower() => _stats.attackPower;
+    public int Get_HealPower() => _stats.healPower;
+    public int Get_MaxHealth() => _stats.maxHealth;
+    public int Get_CurrentHealth() => _stats.currentHealth;
+    public int Get_MaxEnergy() => _stats.maxEnergy;
+    public int Get_CurrentEnergy() => _stats.currentEnergy;
+    public int Get_Speed() => _stats.speed;
     public int Get_QueuePosition() => _queuePosition;
     public int Get_Position() => _position;
     public bool Is_Alive() => _isAlive;
@@ -120,17 +105,17 @@ public class Character : MonoBehaviour, IComparable
     // Mutators
     //public void Set_CombatController(CombatController combatController_) => combatController = combatController_;
     public void Set_Name(string name_) => characterName = name_;
-    public void Set_Armor(float armor_) => _armor = armor_;
-    public void Set_AttackPower(int attack_) => _attackPower = attack_;
-    public void Set_HealPower(int heal_) => _healPower = heal_;
-    public void Set_MaxHealth(int health_) => _maxHealth = health_;
-    public void Set_CurrentHealth(int health_) => _currentHealth = health_;
-    public void Set_MaxEnergy(int energy_) => _maxEnergy = energy_;
-    public void Set_CurrentEnergy(int energy_) => _currentEnergy = energy_;
+    public void Set_Armor(float armor_) => _stats.armor = armor_;
+    public void Set_AttackPower(int attack_) => _stats.attackPower = attack_;
+    public void Set_HealPower(int heal_) => _stats.healPower = heal_;
+    public void Set_MaxHealth(int health_) => _stats.maxHealth = health_;
+    public void Set_CurrentHealth(int health_) => _stats.currentHealth = health_;
+    public void Set_MaxEnergy(int energy_) => _stats.maxEnergy = energy_;
+    public void Set_CurrentEnergy(int energy_) => _stats.currentEnergy = energy_;
     public void Set_QueuePosition(int pos_) => _queuePosition = pos_;
     public void Set_Position(int pos_) => _position = pos_;
     public void Set_Alive(bool alive_) => _isAlive = alive_;
-    public void Set_Speed(int speed_) => _speed = speed_;
+    public void Set_Speed(int speed_) => _stats.speed = speed_;
     public void Set_CharacterType(CharacterType type_) => _myType = type_;
     public void Set_Targets(List<int> targets_) => _targets = targets_;
 
@@ -145,7 +130,7 @@ public class Character : MonoBehaviour, IComparable
     {
         float effectiveness_ = UnityEngine.Random.Range(0f, 1.0f);
 
-        float damage_ = _attackPower * (effectiveness_ + 1);
+        float damage_ = _stats.attackPower * (effectiveness_ + 1);
 
         Debug.Log("Character " + characterName + " is attacking with " + damage_ + " damage.");
 
@@ -155,7 +140,7 @@ public class Character : MonoBehaviour, IComparable
     //Overloaded attack for player minigame effectiveness input.
     public void Attack_Characters(CharacterType type_, int[] targets_, float effectiveness_)
     {
-        float damage_ = _attackPower * (effectiveness_ + 1);
+        float damage_ = _stats.attackPower * (effectiveness_ + 1);
 
         Debug.Log("Character " + characterName + " is attacking with " + damage_ + " damage.");
 
@@ -175,11 +160,11 @@ public class Character : MonoBehaviour, IComparable
         {
             if (_isAlive)
             {
-                int actualDamage_ = (int)(damage_ * (1 - _armor));
-                _currentHealth -= actualDamage_;
+                int actualDamage_ = (int)(damage_ * (1 - _stats.armor));
+                _stats.currentHealth -= actualDamage_;
                 //animate here
                 Debug.Log("Character " + characterName + " just took " + actualDamage_ + " damage!");
-                if (_currentHealth <= 0)
+                if (_stats.currentHealth <= 0)
                 {
                     _isAlive = false;
                     Debug.Log("Character " + characterName + " has perished...");
@@ -202,7 +187,7 @@ public class Character : MonoBehaviour, IComparable
     public void Heal_Characters(CharacterType type_, int[] targets_)
     {
         float effectiveness_ = UnityEngine.Random.Range(0f, 1.0f);
-        float health_ = _healPower * (effectiveness_ + 1);
+        float health_ = _stats.healPower * (effectiveness_ + 1);
 
         Debug.Log("Character " + characterName + "is healing someone for " + health_ + "health.");
 
@@ -212,7 +197,7 @@ public class Character : MonoBehaviour, IComparable
     //Overloaded Heal for minigame effectiveness input.
     public void Heal_Characters(CharacterType type_, int[] targets_, float effectiveness_)
     {
-        float health_ = _healPower * (effectiveness_ + 1);
+        float health_ = _stats.healPower * (effectiveness_ + 1);
 
         Debug.Log("Character " + characterName + "is healing someone for " + health_ + "health.");
 
@@ -231,16 +216,16 @@ public class Character : MonoBehaviour, IComparable
         {
             if (_isAlive)
             {
-                int actualHealing_ = (int)(healing_ * (1 + _armor));
+                int actualHealing_ = (int)(healing_ * (1 + _stats.armor));
 
-                int temp = _currentHealth + actualHealing_;
+                int temp = _stats.currentHealth + actualHealing_;
 
-                if (temp > _maxHealth)
+                if (temp > _stats.maxHealth)
                 {
-                    temp = _maxHealth;
+                    temp = _stats.maxHealth;
                 }
 
-                _currentHealth = temp;
+                _stats.currentHealth = temp;
                 Debug.Log("Character " + characterName + " Just got healed for " + actualHealing_ + " health!");
             }
         }
