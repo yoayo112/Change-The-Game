@@ -1,4 +1,15 @@
-﻿using System.Collections;
+﻿/*
+Project: Change the Game
+File: TextTree.cs
+Date Created: March 01, 2024
+Author(s): Sean Thornton
+Info:
+
+A TextTree is a tree structure that represents the branching paths of possible lines that can be typed in the typing game.
+
+*/
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -54,7 +65,7 @@ public class TextTree
             }
             reader_.Close();
         }
-        catch(Exception e)
+        catch(Exception e) //Having issues with Exception here.
         {
             Debug.Log("Exception: " + e.Message);
         }

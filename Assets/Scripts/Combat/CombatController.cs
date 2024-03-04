@@ -2,7 +2,7 @@
 Project: Change the Game
 File: CombatController.cs
 Date Created: March 01, 2024
-Author(s): Elijah Theander
+Author(s): Elijah Theander, Sean Thornton
 Info:
 
 State Machine based handling of turn based combat.
