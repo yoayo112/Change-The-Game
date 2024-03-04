@@ -149,10 +149,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 114520874}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5adde61d8fe6235468e192d8e86aa04c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b0a070946b7a72468553b68a5121131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: Bob_p1
+  characterName: Place Holder
   armor: 0.1
   attackPower: 20
   healPower: 20
@@ -201,16 +201,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 210975483}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5adde61d8fe6235468e192d8e86aa04c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b0a070946b7a72468553b68a5121131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: mary_e2
+  characterName: Place Holder
   armor: 0.1
   attackPower: 20
   healPower: 20
   maxHealth: 100
   maxEnergy: 100
-  speed: 77
+  speed: 100
   myType: 1
 --- !u!4 &210975485
 Transform:
@@ -476,16 +476,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 327341891}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5adde61d8fe6235468e192d8e86aa04c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b0a070946b7a72468553b68a5121131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: Jim_p2
+  characterName: Place Holder
   armor: 0.1
   attackPower: 20
   healPower: 20
   maxHealth: 100
   maxEnergy: 100
-  speed: 119
+  speed: 100
   myType: 0
 --- !u!4 &327341893
 Transform:
@@ -528,16 +528,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 340953221}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5adde61d8fe6235468e192d8e86aa04c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b0a070946b7a72468553b68a5121131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: Lisa_e1
+  characterName: Place Holder
   armor: 0.1
   attackPower: 20
   healPower: 20
   maxHealth: 100
   maxEnergy: 100
-  speed: 94
+  speed: 100
   myType: 1
 --- !u!4 &340953223
 Transform:
@@ -580,16 +580,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 561933479}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5adde61d8fe6235468e192d8e86aa04c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b0a070946b7a72468553b68a5121131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: kelly_e3
+  characterName: Place Holder
   armor: 0.1
   attackPower: 20
   healPower: 20
   maxHealth: 100
   maxEnergy: 100
-  speed: 72
+  speed: 100
   myType: 1
 --- !u!4 &561933481
 Transform:
@@ -849,16 +849,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1103859849}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5adde61d8fe6235468e192d8e86aa04c, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b0a070946b7a72468553b68a5121131, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: mike_p3
+  characterName: Place Holder
   armor: 0.1
   attackPower: 20
   healPower: 20
   maxHealth: 100
   maxEnergy: 100
-  speed: 110
+  speed: 100
   myType: 0
 --- !u!4 &1103859851
 Transform:
@@ -1037,12 +1037,20 @@ PrefabInstance:
       value: -0.0000014305115
       objectReference: {fileID: 0}
     - target: {fileID: 270578047385857945, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0000010738373
+      objectReference: {fileID: 0}
+    - target: {fileID: 270578047385857945, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.0000019073486
       objectReference: {fileID: 0}
     - target: {fileID: 2037432296691875365, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.0000014305115
+      objectReference: {fileID: 0}
+    - target: {fileID: 2037432296691875365, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0000010738373
       objectReference: {fileID: 0}
     - target: {fileID: 2037432296691875365, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1106,31 +1114,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.0000023841858
+      value: -0.0000064373016
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.000001610756
+      value: 0.0000042953493
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.00000333786
+      value: 0.000009536743
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.32973152
+      value: 0.3297315
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.10512754
+      value: 0.10512751
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.8938712
+      value: 0.8938711
       objectReference: {fileID: 0}
     - target: {fileID: 7650672298667806654, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.28499085
+      value: -0.28499082
       objectReference: {fileID: 0}
     - target: {fileID: 7962996822250114132, guid: 97333a440ca8ca84db52c150b2093860, type: 3}
       propertyPath: m_Name

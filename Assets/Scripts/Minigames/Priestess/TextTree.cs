@@ -99,6 +99,7 @@ public class TextTree
     {
         branch_.Set_Root(null);
         branches.Remove(branch_);
+        Destroy(branch);
     }
 
     public void Remove_Branch(string branchText_)
