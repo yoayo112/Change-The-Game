@@ -5,8 +5,7 @@ Date Created: Feburary 26, 2024
 Author(s): Sean Thornton
 Info:
 
-Script that runs the priestess' typing minigame.
-
+Script that controls the Priestess' typing minigame.
 */
 
 using System.Collections;

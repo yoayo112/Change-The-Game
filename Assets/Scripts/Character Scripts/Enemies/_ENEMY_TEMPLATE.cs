@@ -1,6 +1,6 @@
 /*
 Project: Change the Game
-File: ENEMY_TEMPLATE.cs
+File: _ENEMY_TEMPLATE.cs
 Date Created: March 03, 2024
 Author(s): Sean Thornton
 Info:
@@ -12,7 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ENEMY_TEMPLATE : Enemy //Replace "ENEMY_TEMPLATE" with your class name.
+public class CLASS : Enemy
 {
     private const string NAME = "ENTER NAME HERE";
 
