@@ -85,6 +85,9 @@ public class CowboyMovement_v3 : MonoBehaviour
         topMinRad = topStartRad * maxZoomIn;
         midMinRad = midStartRad * maxZoomIn;
         botMinRad = botStartRad * maxZoomIn;
+
+        //move the character once dynamically, otherwise gravity wont be applied until the user moves.
+        //controller.Move(new Vector3(1,1,1).normalized * 1 * Time.deltaTime);
     }
 
     void Update()
@@ -98,6 +101,7 @@ public class CowboyMovement_v3 : MonoBehaviour
 
         float mouseScroll = Input.GetAxis("Mouse ScrollWheel");
 
+        //add scroll zoom
         if(mouseScroll != 0f)
         {
             if(mouseScroll > 0)
@@ -110,11 +114,13 @@ public class CowboyMovement_v3 : MonoBehaviour
             }
         }
 
+        //get applied movement
         Vector3 move = hInput + vInput;
         normalizedSpeed = Vector3.Dot(move.normalized,move.normalized);
 
         direction = new Vector3(horizontal,0f,vertical).normalized;
 
+        //trigger animations
         moving = direction.magnitude >= 0.1f;
         if(Input.GetButton("Run"))
         {
@@ -131,6 +137,7 @@ public class CowboyMovement_v3 : MonoBehaviour
 
         animator.SetFloat("Speed", playerSpeed);
 
+        //apply movement
         if(moving)
         {
             UpdateMovement();
@@ -150,9 +157,9 @@ public class CowboyMovement_v3 : MonoBehaviour
         float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y,targetAngle, ref turnSmoothVelocity, turnSmoothTime);
 
         transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
         Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward; // Makes sure direction is correct with respect to camera
         
+        //apply gravity
         if (controller.isGrounded)
         {
             fallSpeed = 0f;
@@ -173,7 +180,7 @@ public class CowboyMovement_v3 : MonoBehaviour
             UpdateAudio("Run");
 
         }
-        else if (moving)
+        else if (moving) //handle walking movement
         {
             playerSpeed = walkSpeed;
             controller.Move(moveDir.normalized * walkSpeed * Time.deltaTime);
