@@ -26,7 +26,6 @@ public class Character : MonoBehaviour, IComparable
     public string characterName = "Place Holder";
     private CharacterType _myType = CharacterType.player;
     private StatsStruct _currentStats = new StatsStruct(); //StatsStruct is defined in Scripts/Global/Stats_Struct
-    private bool _isAlive = true;
     private int _position = 0; // the index of position slot I am occupying in the Control Script
     private int _queuePosition = 0; // What index do I have in the Control Script's turn queue?
     private List<int> _targets;
@@ -90,7 +89,7 @@ public class Character : MonoBehaviour, IComparable
     public int Get_Speed() => _currentStats.speed;
     public int Get_QueuePosition() => _queuePosition;
     public int Get_Position() => _position;
-    public bool Is_Alive() => _isAlive;
+    public bool Is_Alive() => _currentStats.currentHealth > 0;
     public CharacterType Get_CharacterType() => _myType;
     public List<int> Get_Targets() => _targets;
 
@@ -108,7 +107,6 @@ public class Character : MonoBehaviour, IComparable
     public void Set_CurrentEnergy(int energy_) => _currentStats.currentEnergy = energy_;
     public void Set_QueuePosition(int pos_) => _queuePosition = pos_;
     public void Set_Position(int pos_) => _position = pos_;
-    public void Set_Alive(bool alive_) => _isAlive = alive_;
     public void Set_Speed(int speed_) => _currentStats.speed = speed_;
     public void Set_CharacterType(CharacterType type_) => _myType = type_;
     public void Set_Targets(List<int> targets_) => _targets = targets_;
@@ -154,15 +152,14 @@ public class Character : MonoBehaviour, IComparable
 
         if (_myType == type_ && targets_.Contains(_position))
         {
-            if (_isAlive)
+            if (Is_Alive())
             {
                 int actualDamage_ = (int) (damage_ * 100f / (armor + 100f));
                 _currentStats.currentHealth -= actualDamage_;
                 //animate here
                 Debug.Log("Character " + characterName + " just took " + actualDamage_ + " damage!");
-                if (_currentStats.currentHealth <= 0)
+                if (!Is_Alive())
                 {
-                    _isAlive = false;
                     Debug.Log("Character " + characterName + " has perished...");
                 }
             }
@@ -210,7 +207,7 @@ public class Character : MonoBehaviour, IComparable
     {
         if (_myType == type_ && targets_.Contains(_position))
         {
-            if (_isAlive)
+            if (Is_Alive())
             {
 
                 int temp = (int) (_currentStats.currentHealth + healing_);
