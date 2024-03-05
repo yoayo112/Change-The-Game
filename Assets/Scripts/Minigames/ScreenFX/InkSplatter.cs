@@ -14,13 +14,24 @@ using UnityEngine;
 
 public class InkSplatter : MonoBehaviour
 {
+    public float xRange = 88.8f;
+    public float yRange = 50;
+    
+    public float opacity = .5f;
+
     public Canvas canvas;
     public GameObject[] splats;
+
+    private Vector3 _canvasPosition;
+    private Quaternion _canvasRotation;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        splats = Resources.LoadAll<GameObject>("Prefabs/InkSplatter");
+        _canvasPosition = canvas.transform.position;
+        _canvasRotation = canvas.transform.rotation;
     }
 
     // Update is called once per frame
@@ -41,9 +52,18 @@ public class InkSplatter : MonoBehaviour
 
     public void Make_Splat()
     {
-        float randX_ = Random.Range(-88.8f, 88.8f);
-        float randY_ = Random.Range(-50.0f, 50.0f);
+        SpriteRenderer sr_;
 
-        UnityEngine.Object.Instantiate(splats[Random.Range(0, splats.Length)], new Vector3(randX_, randY_, 0.0f), canvas.transform.rotation);
+        float deltaX_ = Random.Range(-xRange, xRange);
+        float deltaY_ = Random.Range(-yRange, yRange);
+        Vector3 delta_ = new Vector3(deltaX_, deltaY_, 0f);
+
+        Vector3 splatPosition_ = _canvasPosition + delta_;
+
+        int rand_ = Random.Range(0, splats.Length);
+
+        GameObject splat_ = UnityEngine.GameObject.Instantiate(splats[rand_], splatPosition_, _canvasRotation);
+        sr_ = splat_.GetComponent<SpriteRenderer>();
+        sr_.color = new Color(1f, 1f, 1f, opacity);
     }
 }

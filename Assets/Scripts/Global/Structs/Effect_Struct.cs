@@ -9,7 +9,7 @@ public struct StatusEffect
     public int turnsLeft;
 
 
-    public EffectStruct(StatusType type_, int level_, int turns_)
+    public StatusEffect(StatusType type_, int level_, int turns_)
     {
         type = type_;
         level = level_;
