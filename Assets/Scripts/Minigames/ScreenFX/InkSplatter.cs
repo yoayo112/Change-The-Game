@@ -15,7 +15,7 @@ using UnityEngine;
 public class InkSplatter : MonoBehaviour
 {
     public float xRange = 88.8f;
-    public float yRange = 50;
+    public float yRange = 50f;
     
     public float opacity = .5f;
 

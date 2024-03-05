@@ -406,18 +406,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4c44383e2b1d9a40aaf4c6ed16d20ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  xRange: 88.8
+  yRange: 50
+  opacity: 0.5
   canvas: {fileID: 176937012}
-  splats:
-  - {fileID: 1182847171532231409, guid: 63a3eb3b9c9799e4286a0050c159e15b, type: 3}
-  - {fileID: 5684761635000703046, guid: bcc64244c0667064ea0fda4812bc588a, type: 3}
-  - {fileID: 1973775359173622334, guid: 35161dfff6cc0424eae4bc71d12a816c, type: 3}
-  - {fileID: 2804390074636222352, guid: b5f2bd18fdf78ad42a4aa174829fcf93, type: 3}
-  - {fileID: 2777339026861392861, guid: a4023ae13ab9e1f4d93fc0421f3840d3, type: 3}
-  - {fileID: 6667641218399358415, guid: 1d7b3c37bf46f16499c6ea24fbfd865d, type: 3}
-  - {fileID: 6785025537933760392, guid: e52cc6422753c414ba826a9dcb69d26b, type: 3}
-  - {fileID: 1003429553512462941, guid: f9d413bfeee64fe438e71a22956a2355, type: 3}
-  - {fileID: 2658914080482050799, guid: fbdf77cc4c2a2fd409cf8a565ccc6a93, type: 3}
-  - {fileID: 2036895416039600800, guid: 9aa39fd078c6a1e4983dff84ceb21c64, type: 3}
+  splats: []
 --- !u!1 &288231257
 GameObject:
   m_ObjectHideFlags: 0
