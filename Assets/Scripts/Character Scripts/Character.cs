@@ -2,7 +2,7 @@
 Project: Change the Game
 File: Character.cs
 Date Created: March 01, 2024
-Author(s): Elijah Theander, Sean Thornton
+Author(s): Sky Vercauteren, Elijah Theander, Sean Thornton
 Info:
 Character Stats script that stores stats about characters,
 handles whether or not a character is living, and processes
