@@ -170,7 +170,7 @@ public class TypingGame : MonoBehaviour
     //Increments mistake counter, plays sound, and locks player input
     {
         _mistakeCount++;
-        StartCoroutine(cameraShake.Shake(shakeDuration, shakeMagnitude));
+        //StartCoroutine(cameraShake.Shake(shakeDuration, shakeMagnitude));
         Update_Mistake_Counter();
         audioSource.PlayOneShot(audioClipArray[0], volume);
         StartCoroutine(Lock_Mistake());

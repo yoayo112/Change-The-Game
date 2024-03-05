@@ -8,11 +8,12 @@ TagManager:
   - Perch_2
   - Perch_3
   - Perch_4
+  - Perch
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ink
   - Water
   - UI
   - 
