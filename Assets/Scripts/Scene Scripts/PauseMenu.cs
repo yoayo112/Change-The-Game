@@ -1,3 +1,22 @@
+/*
+Project: Change the Game
+File: PauseMenu.cs
+Date Created: Feb 26, 2024
+Author(s): Sky Vercauteren
+Info:
+
+A menu accessible by clicking a floating icon in the upper left corner. 
+contains:
+- music volume
+- quit
+- resume 
+
+TODO: visual design.
+TODO: add player preference buttons/functions.
+TODO: add inventory.
+
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

@@ -10,6 +10,7 @@ public class Door : MonoBehaviour
 
     private bool audioplaying;
     private Animator animator;
+    private Animator cowboyAnim;
     private Transform player;
     private Transform frame;
     private float openDistance;
@@ -29,8 +30,8 @@ public class Door : MonoBehaviour
         audio = GetComponent<AudioSource>();
         audio.clip = opensound;
         audioplaying = false;
+        StartCoroutine(setCowboy());
         animator = GetComponent<Animator>();
-        player = GameObject.Find("Cowboy_body").GetComponent<Transform>();
         frame = GetComponent<Transform>().parent;
         openDistance = 1.5f;
         isOpen = false;
@@ -58,7 +59,6 @@ public class Door : MonoBehaviour
                 
                 {
                     openWait.Update();
-                    Animator cowboyAnim = GameObject.Find("Cowboy_body").GetComponent<Animator>();
                     if (isOpen == false && opened == false)
                     {
                         cowboyAnim.SetTrigger("open");
@@ -111,5 +111,12 @@ public class Door : MonoBehaviour
             
         }
         openWait = new Timer(openDoor, 1.3f);
+    }
+
+    IEnumerator setCowboy()
+    {
+        yield return new WaitForSeconds(0.5f);
+        player = GameObject.Find("Cowboy_body").GetComponent<Transform>();
+        cowboyAnim = GameObject.Find("Cowboy_body").GetComponent<Animator>();
     }
 }

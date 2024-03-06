@@ -1,3 +1,13 @@
+/*
+Project: Change the Game
+File: BirdScript.cs
+Date Created: February 9th, 2024
+Author(s): Sky Vercauteren
+Info:
+
+Controls the movement and animation of a bird.
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
