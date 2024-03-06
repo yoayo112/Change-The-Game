@@ -24,4 +24,20 @@ public struct StatsStruct
         currentEnergy = maxEnergy_;
         speed         = speed_;
     }
+
+    public override string ToString()
+    {
+        string msg_ = "-----------------------------------\n";
+        msg_ += $"Armor: {armor}\n";
+        msg_ += $"AttackPower: {attackPower}\n";
+        msg_ += $"HealPower: {healPower}\n";
+        msg_ += $"MaxHealth: {maxHealth}\n";
+        msg_ += $"CurrentHealth: {currentHealth}\n";
+        msg_ += $"MaxEnergy: {maxEnergy}\n";
+        msg_ += $"CurrentEnergy: {currentEnergy}\n";
+        msg_ += $"Speed: {speed}\n";
+        msg_ += "---------------------------------------------";
+
+        return msg_;
+    }
 }
