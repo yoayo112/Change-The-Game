@@ -13,3 +13,11 @@ public enum CharacterType //Globally Public Enum for if a character is a player 
     player,
     enemy
 }
+
+public enum StatusType
+{
+    inked,
+    blinded,
+    weakened
+    //etc...
+}

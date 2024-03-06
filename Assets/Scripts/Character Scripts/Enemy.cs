@@ -15,6 +15,8 @@ using UnityEngine;
 
 public class Enemy : Character
 {
+    public int level = 1;
+
     private float armorMin;
     private float armorMax;
 
@@ -33,12 +35,15 @@ public class Enemy : Character
     private int speedMin;
     private int speedMax;
 
+
     //------------------------------------------------------------------------------------
     // Accessors
     //------------------------------------------------------------------------------------
 
-    private float Get_ArmorMin() => armorMin;
-    private float Get_ArmorMax() => armorMax;
+    public int Get_Level() => level;
+
+    public float Get_ArmorMin() => armorMin;
+    public float Get_ArmorMax() => armorMax;
 
     public int Get_AttackPowerMin() => attackPowerMin;
     public int Get_AttackPowerMax() => attackPowerMax;
@@ -58,6 +63,8 @@ public class Enemy : Character
     //------------------------------------------------------------------------------------
     // Mutators
     //------------------------------------------------------------------------------------
+
+    public void Set_Level(int level_) => level = level_;
 
     public void Set_ArmorMin(float armorMin_) => armorMin = armorMin_;
     public void Set_ArmorMax(float armorMax_) => armorMax = armorMax_;
@@ -86,15 +93,29 @@ public class Enemy : Character
         Set_Ranges();
 
         Set_CharacterType(CharacterType.enemy);
-        Set_Armor(UnityEngine.Random.Range(armorMin, armorMax));
-        Set_AttackPower(UnityEngine.Random.Range(attackPowerMin, attackPowerMax + 1));
-        Set_HealPower(UnityEngine.Random.Range(healPowerMin, healPowerMax + 1));
-        Set_MaxHealth(UnityEngine.Random.Range(healthMin, healthMax + 1));
-        Set_MaxEnergy(UnityEngine.Random.Range(energyMin, energyMax + 1));
-        Set_Speed(UnityEngine.Random.Range(speedMin, speedMax + 1));
+        Set_Armor(Random.Range(armorMin, armorMax));
+        Set_AttackPower(Random.Range(attackPowerMin, attackPowerMax + 1));
+        Set_HealPower(Random.Range(healPowerMin, healPowerMax + 1));
+        Set_MaxHealth(Random.Range(healthMin, healthMax + 1));
+        Set_MaxEnergy(Random.Range(energyMin, energyMax + 1));
+        Set_Speed(Random.Range(speedMin, speedMax + 1));
+
+        Multiply_Stats();
 
         Set_CurrentHealth(Get_MaxHealth());
         Set_CurrentEnergy(Get_MaxEnergy());
+    }
+
+    public void Multiply_Stats()
+    {
+        float mult_ = Get_Level_Multiplier();
+
+        Set_Armor(Get_Armor() * mult_);
+        Set_AttackPower((int) (Get_AttackPower() * mult_));
+        Set_HealPower((int) (Get_HealPower() * mult_));
+        Set_MaxHealth((int) (Get_MaxHealth() * mult_));
+        Set_MaxEnergy((int) (Get_MaxEnergy() * mult_));
+        Set_Speed((int) (Get_Speed() * mult_));
     }
 
     //----------------------------------------------------------------------------
@@ -103,5 +124,10 @@ public class Enemy : Character
     public virtual void Set_Ranges()
     {
         return;
+    }
+
+    public virtual float Get_Level_Multiplier()
+    {
+        return 0.9f + (0.1f * level);
     }
 }

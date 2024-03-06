@@ -74,11 +74,11 @@ public class Character : MonoBehaviour, IComparable
     }
 
     //-------------------------------------------------------------------
-    // Accessors and Mutators
-    //-------------------------------------------------------------------
     // Accessors
-    //public CombatController Get_CombatController() => combatController;
+    //-------------------------------------------------------------------
+
     public string Get_Name() => characterName;
+
     public float Get_Armor() => _currentStats.armor;
     public int Get_AttackPower() => _currentStats.attackPower;
     public int Get_HealPower() => _currentStats.healPower;
@@ -93,9 +93,10 @@ public class Character : MonoBehaviour, IComparable
     public CharacterType Get_CharacterType() => _myType;
     public List<int> Get_Targets() => _targets;
 
-
+    //-------------------------------------------------------------------
     // Mutators
-    //public void Set_CombatController(CombatController combatController_) => combatController = combatController_;
+    //-------------------------------------------------------------------
+
     public void Set_Name(string name_) => characterName = name_;
     public void Set_Armor(float armor_) => _currentStats.armor = armor_;
     public void Set_AttackPower(int attack_) => _currentStats.attackPower = attack_;
