@@ -16,6 +16,8 @@ using TMPro;
 
 public class TypingGame : MonoBehaviour
 {
+    public InkSplatter inkSplatter;
+
     //-------------------------------------------------------------------------------------
     //  Output
     //-------------------------------------------------------------------------------------
@@ -30,8 +32,6 @@ public class TypingGame : MonoBehaviour
     //-------------------------------------------------------------------------------------
     [Header("Game Settings")]
     public float lockoutTime = 0.5f;
-    public float shakeMagnitude = 1f;
-    public float shakeDuration = 1f;
 
     //-------------------------------------------------------------------------------------
     //  Audio handling
@@ -55,6 +55,7 @@ public class TypingGame : MonoBehaviour
     private bool[] _isActiveAvailableLines = { true, true, true };      //The line at _availableLines[i] is actively being typed by the player if _isActiveAvailableLines[i] == true;
 
     private TextTree currentTextTree_;
+
 
     //-------------------------------------------------------------------------------------
     //  Unity Methods
@@ -170,10 +171,12 @@ public class TypingGame : MonoBehaviour
     //Increments mistake counter, plays sound, and locks player input
     {
         _mistakeCount++;
-        //StartCoroutine(cameraShake.Shake(shakeDuration, shakeMagnitude));
+        cameraShake.Shake();
         Update_Mistake_Counter();
         audioSource.PlayOneShot(audioClipArray[0], volume);
         StartCoroutine(Lock_Mistake());
+
+        inkSplatter.Splat();
     }
 
     private void Back_Space()
