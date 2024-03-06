@@ -6,6 +6,11 @@ Author(s): Sean Thornton
 Info:
 
 Script that controls ink splatter effect
+
+    TO USE: Add as a component to the object that will be splattered.
+            Use inkSplatter.Splat() to cause a splat.
+            Use Remove_Splats() to remove all splats.
+
 */
 
 using System.Collections;
@@ -14,25 +19,25 @@ using UnityEngine;
 
 public class InkSplatter : MonoBehaviour
 {
-    public float duration = 3.0f;
+    public float duration = 3.0f;       //Time splat will stay on screen
+                                        //for duration < 0: Object will stay until scene ends or is removed by Remove_Splats
 
-    public float slideLength = 10f;
-    public float startOpacity = 1f;
+    public float slideLength = 10f;     //How far the splats will slide down the y axis
+    public float startOpacity = 1f;     //The starting opacity
 
-    public float xRange = 88.8f;
-    public float yRange = 50f;
+    public float xRange = 88.8f;        //How far in the x direction the random splat may fall
+    public float yRange = 50f;          //How far in the y direction
 
-    public bool followParent = false;
+    public bool followParent = false;   //Will the splats follow the object as it moves?
 
-    private GameObject[] splatPrefabs;
+    private GameObject[] splatPrefabs = Resources.LoadAll<GameObject>("Prefabs/InkSplatter"); //Load Ink Prefabs
 
-    private Vector3 _objectPos;
-    private Quaternion _objectRot;
+    private Vector3 _objectPos;         //Object position
+    private Quaternion _objectRot;      //Object rotation
 
     // Start is called before the first frame update
     void Start()
     {
-        splatPrefabs = Resources.LoadAll<GameObject>("Prefabs/InkSplatter");
         _objectPos = this.gameObject.transform.position;
         _objectRot = this.gameObject.transform.rotation;
     }
