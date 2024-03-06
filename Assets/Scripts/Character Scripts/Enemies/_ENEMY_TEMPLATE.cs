@@ -17,8 +17,8 @@ public class ClassName : Enemy                   //Filename, ClassName, and NAME
     private const string NAME = "ClassName";
 
     //Modify these values to define the ranges of the enemy stats.
-    private const float ARMOR_MIN = 0.0f;
-    private const float ARMOR_MAX = 0.0f;
+    private const int ARMOR_MIN = 0;
+    private const int ARMOR_MAX = 0;
     private const int ATTACK_POWER_MIN = 0;
     private const int ATTACK_POWER_MAX = 0;
     private const int HEAL_POWER_MIN = 0;

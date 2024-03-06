@@ -27,7 +27,7 @@ public class Character : MonoBehaviour, IComparable
     private CharacterType _myType = CharacterType.player;
     private StatsStruct _currentStats = new StatsStruct(); //StatsStruct is defined in Scripts/Global/Stats_Struct
 
-    public float armor;
+    public int armor;
     public int attackPower;
     public int healPower;
     public int maxHealth;
@@ -87,7 +87,7 @@ public class Character : MonoBehaviour, IComparable
 
     public string Get_Name() => characterName;
 
-    public float Get_Armor() => _currentStats.armor;
+    public int Get_Armor() => _currentStats.armor;
     public int Get_AttackPower() => _currentStats.attackPower;
     public int Get_HealPower() => _currentStats.healPower;
     public int Get_MaxHealth() => _currentStats.maxHealth;
@@ -106,7 +106,7 @@ public class Character : MonoBehaviour, IComparable
     //-------------------------------------------------------------------
 
     public void Set_Name(string name_) => characterName = name_;
-    public void Set_Armor(float armor_) => _currentStats.armor = armor_;
+    public void Set_Armor(int armor_) => _currentStats.armor = armor_;
     public void Set_AttackPower(int attack_) => _currentStats.attackPower = attack_;
     public void Set_HealPower(int heal_) => _currentStats.healPower = heal_;
     public void Set_MaxHealth(int health_) => _currentStats.maxHealth = health_;
@@ -163,7 +163,7 @@ public class Character : MonoBehaviour, IComparable
         {
             if (_isAlive)
             {
-                int actualDamage_ = (int)(damage_ * (1 - _currentStats.armor));
+                int actualDamage_ = (int) (damage_ * 100f / (armor + 100f));
                 _currentStats.currentHealth -= actualDamage_;
                 //animate here
                 Debug.Log("Character " + characterName + " just took " + actualDamage_ + " damage!");
@@ -219,16 +219,15 @@ public class Character : MonoBehaviour, IComparable
         {
             if (_isAlive)
             {
-                int actualHealing_ = (int)(healing_ * (1 + _currentStats.armor));
 
-                int temp = _currentStats.currentHealth + actualHealing_;
+                int temp = (int) (_currentStats.currentHealth + healing_);
 
                 if (temp > _currentStats.maxHealth)
-                {
                     temp = _currentStats.maxHealth;
-                }
 
+                int actualHealing_ = temp - _currentStats.currentHealth;
                 _currentStats.currentHealth = temp;
+
                 Debug.Log("Character " + characterName + " Just got healed for " + actualHealing_ + " health!");
             }
         }

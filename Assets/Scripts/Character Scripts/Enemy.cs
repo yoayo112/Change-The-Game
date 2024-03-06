@@ -17,8 +17,8 @@ public class Enemy : Character
 {
     public int level = 1;
 
-    private float armorMin;
-    private float armorMax;
+    private int armorMin;
+    private int armorMax;
 
     private int attackPowerMin;
     private int attackPowerMax;
@@ -42,8 +42,8 @@ public class Enemy : Character
 
     public int Get_Level() => level;
 
-    public float Get_ArmorMin() => armorMin;
-    public float Get_ArmorMax() => armorMax;
+    public int Get_ArmorMin() => armorMin;
+    public int Get_ArmorMax() => armorMax;
 
     public int Get_AttackPowerMin() => attackPowerMin;
     public int Get_AttackPowerMax() => attackPowerMax;
@@ -66,8 +66,8 @@ public class Enemy : Character
 
     public void Set_Level(int level_) => level = level_;
 
-    public void Set_ArmorMin(float armorMin_) => armorMin = armorMin_;
-    public void Set_ArmorMax(float armorMax_) => armorMax = armorMax_;
+    public void Set_ArmorMin(int armorMin_) => armorMin = armorMin_;
+    public void Set_ArmorMax(int armorMax_) => armorMax = armorMax_;
 
     public void Set_AttackPowerMin(int attackPowerMin_) => attackPowerMin = attackPowerMin_;
     public void Set_AttackPowerMax(int attackPowerMax_) => attackPowerMax = attackPowerMax_;
@@ -93,7 +93,7 @@ public class Enemy : Character
         Set_Ranges();
 
         Set_CharacterType(CharacterType.enemy);
-        Set_Armor(Random.Range(armorMin, armorMax));
+        Set_Armor(Random.Range(armorMin, armorMax + 1));
         Set_AttackPower(Random.Range(attackPowerMin, attackPowerMax + 1));
         Set_HealPower(Random.Range(healPowerMin, healPowerMax + 1));
         Set_MaxHealth(Random.Range(healthMin, healthMax + 1));
@@ -110,7 +110,7 @@ public class Enemy : Character
     {
         float mult_ = Get_Level_Multiplier();
 
-        Set_Armor(Get_Armor() * mult_);
+        Set_Armor((int) (Get_Armor() * mult_));
         Set_AttackPower((int) (Get_AttackPower() * mult_));
         Set_HealPower((int) (Get_HealPower() * mult_));
         Set_MaxHealth((int) (Get_MaxHealth() * mult_));
