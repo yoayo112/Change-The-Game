@@ -30,16 +30,19 @@ public class InkSplatter : MonoBehaviour
 
     public bool followParent = false;   //Will the splats follow the object as it moves?
 
-    private GameObject[] splatPrefabs = Resources.LoadAll<GameObject>("Prefabs/InkSplatter"); //Load Ink Prefabs
+    private GameObject[] splatPrefabs;  //Ink Prefabs
 
     private Vector3 _objectPos;         //Object position
     private Quaternion _objectRot;      //Object rotation
+    private int _sortingOrder;
 
     // Start is called before the first frame update
     void Start()
     {
-        _objectPos = this.gameObject.transform.position;
-        _objectRot = this.gameObject.transform.rotation;
+        splatPrefabs = Resources.LoadAll<GameObject>("Prefabs/InkSplatter"); //Load prefabs
+        _objectPos = gameObject.transform.position;
+        _objectRot = gameObject.transform.rotation;
+        _sortingOrder = gameObject.GetComponent<Canvas>().sortingOrder + 1;
     }
 
     // Update is called once per frame
@@ -49,7 +52,7 @@ public class InkSplatter : MonoBehaviour
             Update_Position();
     }
 
-    private void Update_Position()
+    private void Update_Position() 
     {
         _objectPos = this.gameObject.transform.position;
         _objectRot = this.gameObject.transform.rotation;
@@ -78,6 +81,7 @@ public class InkSplatter : MonoBehaviour
             yield break;
 
         SpriteRenderer sr_ = splat_.GetComponent<SpriteRenderer>();
+        sr_.sortingOrder = _sortingOrder;
 
         float timeAlive_ = 0f;
         float opacity_;

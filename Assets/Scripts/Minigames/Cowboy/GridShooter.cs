@@ -21,6 +21,8 @@ public class GridShooter : MonoBehaviour
     private float _minigameEffectiveness;
     private bool _gameRunning = false;
 
+    public InkSplatter inkSplatter;
+
     private enum _MoveDirections
     {
         up,
@@ -255,7 +257,12 @@ public class GridShooter : MonoBehaviour
     //----------------------------------------------------------------------
     void Handle_Inputs()
     {
-        if(Input.GetButtonDown("GridRight"))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            inkSplatter.Splat();
+        }
+
+        if (Input.GetButtonDown("GridRight"))
         {
             Update_Aim_Horizontal(_MoveDirections.right);
         }

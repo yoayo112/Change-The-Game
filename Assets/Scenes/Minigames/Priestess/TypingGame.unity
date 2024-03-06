@@ -207,7 +207,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &176937013
 RectTransform:
@@ -264,7 +264,7 @@ MonoBehaviour:
   startOpacity: 1
   xRange: 88.8
   yRange: 50
-  followParent: 0
+  followParent: 1
 --- !u!82 &176937016
 AudioSource:
   m_ObjectHideFlags: 0
