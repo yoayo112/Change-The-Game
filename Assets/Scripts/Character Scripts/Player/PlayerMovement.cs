@@ -1,9 +1,19 @@
+/*
+Project: Change the Game
+File: PlayerMovement.cs
+Date Created: February 2, 2024
+Author(s): Elijah Theander, Sky Vercauteren
+Info: Version 3.1
+(V1: cowboy movement, V2: cowboy movement new camera, V3: cowboy movement cinemachine.)
+
+Handles player input on the selected character in the overworld.
+*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
-public class GenericMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     //--------------------------------------------------------
     //  Camera
