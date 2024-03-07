@@ -32,12 +32,16 @@ public class FadeHandler : MonoBehaviour
     void Start()
     {
         //Access the _GLOBAL_ undestroyed object to spawn a player at "MainSpawn"
-        Transform global = GameObject.Find("_GLOBAL_").GetComponent<Transform>();
-        player_ = Instantiate(global.GetChild(0).GetComponent<GlobalMain>().GetPlayer());
+        //Transform global = GameObject.Find("_GLOBAL_").GetComponent<Transform>();
+        //player_ = Instantiate(global.GetChild(0).GetComponent<GlobalMain>().GetPlayer());
+        //Transform global = GlobalService.Get_Global();
+        
+        player_ = Instantiate(GlobalService.Get_Main().GetPlayer());
         body_ = player_.GetComponent<Transform>().GetChild(0).GetComponent<Transform>();
 
         //set fade transition render camera to main camera
-        transform.GetChild(0).GetComponent<Canvas>().worldCamera = global.GetChild(1).GetComponent<Camera>();
+        //transform.GetChild(0).GetComponent<Canvas>().worldCamera = global.GetChild(1).GetComponent<Camera>();
+        transform.GetChild(0).GetComponent<Canvas>().worldCamera = GlobalService.Get_Camera();
 
         //also we need the fade animator
         animator_ = transform.GetChild(0).GetComponent<Animator>();

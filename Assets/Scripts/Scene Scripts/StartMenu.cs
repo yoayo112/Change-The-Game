@@ -12,9 +12,8 @@ public class StartMenu : MonoBehaviour
 
     void Awake()
     {
-        //this is literally just so the cowboy is interactable in the start menu.
-        //main_ = GameObject.Find("_GLOBAL_").GetComponent<Transform>().GetChild(0).GetComponent<GlobalMain>();
-        main_ = GlobalService.Get_Main();
+        //this is literally just so the cowboy is interactable in the start menu.      
+        main_ = GlobalService.Get_Main();            // = GameObject.Find("_GLOBAL_").GetComponent<Transform>().GetChild(0).GetComponent<GlobalMain>();
         main_.SetPlayer(Resources.Load<GameObject>("COWBOY_PREFAB"));
     }
 
