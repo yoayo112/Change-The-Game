@@ -30,6 +30,7 @@ public class Character : MonoBehaviour, IComparable
     private int _queuePosition = 0; // What index do I have in the Control Script's turn queue?
     private List<int> _targets;
 
+
     private void OnEnable() //Subscrizzle.
     {
         CombatEventManager.onStartTurn += Start_Turn;
@@ -74,9 +75,10 @@ public class Character : MonoBehaviour, IComparable
     }
 
     //-------------------------------------------------------------------
-    // Accessors
+    // Accessors and Mutators
     //-------------------------------------------------------------------
-
+    // Accessors
+    //public CombatController Get_CombatController() => combatController;
     public string Get_Name() => characterName;
 
     public int Get_Armor() => _currentStats.armor;
@@ -87,16 +89,16 @@ public class Character : MonoBehaviour, IComparable
     public int Get_MaxEnergy() => _currentStats.maxEnergy;
     public int Get_CurrentEnergy() => _currentStats.currentEnergy;
     public int Get_Speed() => _currentStats.speed;
+
     public int Get_QueuePosition() => _queuePosition;
     public int Get_Position() => _position;
     public bool Is_Alive() => _currentStats.currentHealth > 0;
     public CharacterType Get_CharacterType() => _myType;
     public List<int> Get_Targets() => _targets;
 
-    //-------------------------------------------------------------------
-    // Mutators
-    //-------------------------------------------------------------------
 
+    // Mutators
+    //public void Set_CombatController(CombatController combatController_) => combatController = combatController_;
     public void Set_Name(string name_) => characterName = name_;
     public void Set_Armor(int armor_) => _currentStats.armor = armor_;
     public void Set_AttackPower(int attack_) => _currentStats.attackPower = attack_;
@@ -125,6 +127,7 @@ public class Character : MonoBehaviour, IComparable
         float effectiveness_ = UnityEngine.Random.Range(0f, 1.0f);
 
         float damage_ = _currentStats.attackPower * (effectiveness_ + 1);
+
 
         Debug.Log("Character " + characterName + " is attacking with " + damage_ + " damage.");
 
@@ -209,7 +212,6 @@ public class Character : MonoBehaviour, IComparable
         {
             if (Is_Alive())
             {
-
                 int temp = (int) (_currentStats.currentHealth + healing_);
 
                 if (temp > _currentStats.maxHealth)
