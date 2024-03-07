@@ -110,6 +110,7 @@ public class Character : MonoBehaviour, IComparable
     public void Set_QueuePosition(int pos_) => _queuePosition = pos_;
     public void Set_Position(int pos_) => _position = pos_;
     public void Set_Speed(int speed_) => _currentStats.speed = speed_;
+
     public void Set_CharacterType(CharacterType type_) => _myType = type_;
     public void Set_Targets(List<int> targets_) => _targets = targets_;
 
@@ -127,7 +128,6 @@ public class Character : MonoBehaviour, IComparable
         float effectiveness_ = UnityEngine.Random.Range(0f, 1.0f);
 
         float damage_ = _currentStats.attackPower * (effectiveness_ + 1);
-
 
         Debug.Log("Character " + characterName + " is attacking with " + damage_ + " damage.");
 
@@ -157,7 +157,8 @@ public class Character : MonoBehaviour, IComparable
         {
             if (Is_Alive())
             {
-                int actualDamage_ = (int) (damage_ * 100f / (armor + 100f));
+                int actualDamage_ = (int) (damage_ * 100f / (_currentStats.armor + 100f));
+
                 _currentStats.currentHealth -= actualDamage_;
                 //animate here
                 Debug.Log("Character " + characterName + " just took " + actualDamage_ + " damage!");
@@ -261,7 +262,7 @@ public class Character : MonoBehaviour, IComparable
     public virtual void Set_Starting_Stats()
     // Initial Stats based on selected public values from unity inspector
     {
-        Set_Armor(0.1f);
+        Set_Armor(20);
         Set_AttackPower(20);
         Set_HealPower(20);
         Set_MaxHealth(100);

@@ -9,7 +9,7 @@ public class StructTesting : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        test1 = new StatsStruct(0.1f, 20,20, 100, 100, 50);
+        test1 = new StatsStruct(20, 20,20, 100, 100, 50);
         test2 = test1;
 
         Debug.Log("Test 1");
@@ -18,8 +18,8 @@ public class StructTesting : MonoBehaviour
         Debug.Log("Test 2");
         Debug.Log(test2);
 
-        test1.armor = 4.0f;
-        test2.armor = 2.0f;
+        test1.armor = 50;
+        test2.armor = 30;
 
         Debug.Log("Test 1 now:");
         Debug.Log(test1);
