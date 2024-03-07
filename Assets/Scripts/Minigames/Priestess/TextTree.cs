@@ -179,7 +179,7 @@ public class TextTree
     {
         if (root == null)
             return string.Empty;
-        return root.Get_Text_Upto_Branch() + text;
+        return root.Get_Text_Upto_Branch() + root.text;
     }
 
     private string Find_Common_String(string stringA_, string stringB_)

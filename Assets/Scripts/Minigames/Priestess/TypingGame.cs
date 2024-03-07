@@ -45,20 +45,26 @@ public class TypingGame : MonoBehaviour
     //  Variables
     //-------------------------------------------------------------------------------------
     private string _typedLine = string.Empty; //Represents the player's actual typed line, removing errors they have backspaced. 
-    private int _typedCount = 0;              //Running count of characters in _typedLine.
+    private int _typedCount = 0;        //Running count of characters in _typedLine.
     private string _dispTypedLine = string.Empty;   //The line displayed on the left as player input. Includes backspaced errors. Backspaced letters are represented by capitals.
 
     private int _mistakeCount = 0;            //Running count of player mistakes. 
     private bool _isLocked = false;           //Will not accept additional mistake inputs while true.
 
-    private string[] _availableLines = { "healy dan, grant me thy heals",
-                                         "healy dan, grant me thy healy goodness all over me",
-                                         "healy dan, grant us heals please",
-                                         "healy dan, grant us heals at the expense of this fool",
-                                         "bad man sam, strike down this heathen",
-                                         "bad man sam, striketh down with ultimate might on the unbeliever",
-                                         "bad man sam, strike down these forsaken infidels",
-                                         "bad man sam, strengthen my body to spill your enemies blood"};
+    private string[] _availableLines = { "Healy Dan, grant divine healing to my wounded body",
+                                         "Healy Dan, grant divine healing for my bloodied brethren",
+                                         "Healy Dan, bestow powerful and awesome divine healing to my mortally wounded vessel",
+                                         "Healy Dan, bestow powerful and awesome divine healing for my bloodied brethren",
+                                         "Healy Dan, bestow powerful and awesome zealous might to your humble servant",
+                                         "Healy Dan, bestow powerful and awesome zealous might for this glorious holy army",
+                                         "Ghost Malone, strike down this heathen",
+                                         "Ghost Malone, striketh down with ultimate might on the unbeliever",
+                                         "Ghost Malone, strike down these forsaken infidels",
+                                         "Ghost Malone, strengthen my body to spill your enemies blood",
+                                         "Shady Haga, do some wicked ass cool shit that I can't think of",
+                                         "Shady Haga, do some wicked stupid dumb shit I dunno",
+                                         "Shady Haga, do some wicked ass cool shit i guess jesus",
+                                         "Shady Haga, do some fine things for me"};
 
     //private bool[] _isActiveAvailableLines; // = { true, true, true };      //The line at _availableLines[i] is actively being typed by the player if _isActiveAvailableLines[i] == true;
 
@@ -95,27 +101,46 @@ public class TypingGame : MonoBehaviour
     private void Update_Available_Lines()
     //Updates availableLineOutput with available lines, and progress on them.
     {
-        string dispCurrentLetter_ = string.Empty;
-        string dispRemainingLine_ = string.Empty;
-        string dispNextLine_ = string.Empty;
+        string dispCurrentLetter_;
+        string dispRemainingLine_;
+        string dispNextLine_;
+        string dispLastLine_;
 
         string branchText_;
 
         availableLineOutput.text = string.Empty;
+
         foreach (TextTree branch_ in _currentBranch.branches)
         {
-            branchText_ = branch_.Get_Text();
+            dispCurrentLetter_ = string.Empty;
+            dispRemainingLine_ = string.Empty;
+            dispNextLine_ = string.Empty;
+            dispLastLine_ = string.Empty;
+
+            branchText_ = branch_.text;
+
+            if (branch_.branches.Count > 0)
+            {
+                dispNextLine_ = branch_.branches[0].text;
+
+                if (branch_.branches[0].branches.Count > 0)
+                    dispNextLine_ += " . . . ";
+            }
+
+
+            if (_currentBranch.root != null && _currentBranch.root.root != null)
+                dispLastLine_ = " . . . ";
+             dispLastLine_ += _currentBranch.text;
+
             if (branch_.alive)
             {
                 dispCurrentLetter_ = Space_To_Underscore(branchText_[_typedCount]);
                 dispRemainingLine_ = branchText_.Remove(0, _typedCount + 1);
-                if (branch_.branches.Count > 0)
-                    dispNextLine_ = branch_.branches[0].Get_Text();
 
-                availableLineOutput.text += "<color=green>" + _typedLine + "</color><color=yellow>" + dispCurrentLetter_ + "</color>" + dispRemainingLine_ + dispNextLine_ + "\n";
+                availableLineOutput.text += "<color=green>" + dispLastLine_ + _typedLine + "</color><color=yellow>" + dispCurrentLetter_ + "</color>" + dispRemainingLine_ + dispNextLine_ + "\n";
             }
             else
-                availableLineOutput.text += "<color=grey>" + branchText_ + "</color>\n";
+                availableLineOutput.text += "<color=grey>" + dispLastLine_ + branchText_ + dispNextLine_ + "</color>\n";
         }
     }
 
@@ -254,7 +279,7 @@ public class TypingGame : MonoBehaviour
         string branchText_;
         foreach (TextTree branch_ in _currentBranch.branches)
         {
-            branchText_ = branch_.Get_Text();
+            branchText_ = branch_.text;
             if (branchText_.Length < _typedCount)
                 continue;
             if (_typedLine == branchText_.Remove(_typedCount, branchText_.Length - _typedCount))
@@ -273,7 +298,7 @@ public class TypingGame : MonoBehaviour
         string branchText_;
         foreach (TextTree branch_ in _currentBranch.branches)
         {
-            branchText_ = branch_.Get_Text();
+            branchText_ = branch_.text;
             if (!Is_Correct_Letter(typedLetter_, branchText_))
                 branch_.Kill();
         }
@@ -290,7 +315,7 @@ public class TypingGame : MonoBehaviour
     {
         foreach (TextTree branch_ in _currentBranch.branches)
         {
-            if (Is_Correct_Letter(letter_, branch_.Get_Text()) && branch_.Is_Alive())
+            if (Is_Correct_Letter(letter_, branch_.text) && branch_.Is_Alive())
                 return true;
         }
 
