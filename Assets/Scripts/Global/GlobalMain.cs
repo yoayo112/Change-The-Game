@@ -21,11 +21,11 @@ public class GlobalMain : MonoBehaviour
 {
     //we can put global information here that can be both dynamic and static between scenes.
     private GameObject player_;
-    public GameObject getPlayer()
+    public GameObject GetPlayer()
     {
         return player_;
     }
-    public void setPlayer(GameObject p)
+    public void SetPlayer(GameObject p)
     {
         player_ = p;
         //initialize prefab as player object
@@ -34,7 +34,7 @@ public class GlobalMain : MonoBehaviour
         
     }
     private List<GameObject> party_;
-    public void setParty(List<GameObject> others)
+    public void SetParty(List<GameObject> others)
     {
         //set all characters as NPC's
         foreach (GameObject character in others)
@@ -45,11 +45,19 @@ public class GlobalMain : MonoBehaviour
         }
         party_ = others;
     }
-    public void partyPush(GameObject npc)
+    public List<GameObject> GetParty()
+    {
+        return party_;
+    }
+    public void PartyPush(GameObject npc)
     {
         //some logic here to make sure the npc is a valid party member and has the correct components.
         //if components ? do nothing : add npc movement script etc.
         party_.Add(npc);
+    }
+    public bool IsInParty(GameObject npc)
+    {
+        return party_.Contains(npc);
     }
 
     // Start is called before the first frame update
@@ -57,24 +65,5 @@ public class GlobalMain : MonoBehaviour
     {
         //Make sure that the _Global_ Object is never destroyed.
         DontDestroyOnLoad(gameObject.transform.root);
-    }
-
-    //-------------
-    //Start Menu
-    //-------------
-    public void Play()
-    {
-        //this is purely temporary, there should be a selection by the player.
-        // Also, this should Resources.Load so we dont have to have all the prefabs in the scene.
-        setPlayer(Resources.Load<GameObject>("COWBOY_PREFAB")); 
-        setParty(new List<GameObject>());
-
-        //This should actually probably be a cutscene.
-        SceneManager.LoadScene("HomeTown_v2"); //should probably start at family farm at some point but Oh well
-    }
-
-    public void Quit()
-    {
-        Application.Quit();
     }
 }

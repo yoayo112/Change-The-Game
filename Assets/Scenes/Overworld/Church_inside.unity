@@ -9018,10 +9018,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1501738271}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9d46d69210d7a84dbb37d1f2a3fe8d3, type: 3}
+  m_Script: {fileID: 11500000, guid: 1438dc0007d7f2b4aa2d184833dffaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 1501738273}
+  walkSpeed: 2
+  runSpeed: 4
+  turnSmoothTime: 0.1
+  audio: {fileID: 0}
+  runSound: {fileID: 0}
+  walkSound: {fileID: 0}
 --- !u!43 &1506940092
 Mesh:
   m_ObjectHideFlags: 0

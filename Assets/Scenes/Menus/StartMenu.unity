@@ -211,8 +211,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1843540535}
-        m_TargetAssemblyTypeName: GlobalMain, Assembly-CSharp
+      - m_Target: {fileID: 1214267525}
+        m_TargetAssemblyTypeName: StartMenu, Assembly-CSharp
         m_MethodName: Quit
         m_Mode: 1
         m_Arguments:
@@ -556,8 +556,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1843540535}
-        m_TargetAssemblyTypeName: GlobalMain, Assembly-CSharp
+      - m_Target: {fileID: 1214267525}
+        m_TargetAssemblyTypeName: StartMenu, Assembly-CSharp
         m_MethodName: Play
         m_Mode: 1
         m_Arguments:
@@ -632,15 +632,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 976720933982718733, guid: 10c154404920dd541ac6eeb29b7893af, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.05299495
+      value: -0.05299494
       objectReference: {fileID: 0}
     - target: {fileID: 976720933982718733, guid: 10c154404920dd541ac6eeb29b7893af, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.8305013
+      value: -0.8305014
       objectReference: {fileID: 0}
     - target: {fileID: 976720933982718733, guid: 10c154404920dd541ac6eeb29b7893af, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.08021842
+      value: -0.08021841
       objectReference: {fileID: 0}
     - target: {fileID: 1151620123759387730, guid: 10c154404920dd541ac6eeb29b7893af, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1117,6 +1117,7 @@ GameObject:
   - component: {fileID: 1214267523}
   - component: {fileID: 1214267522}
   - component: {fileID: 1214267521}
+  - component: {fileID: 1214267525}
   m_Layer: 5
   m_Name: StartMenuCanvas
   m_TagString: Untagged
@@ -1207,6 +1208,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1214267525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1214267520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a87ca5fb286adf34695e15f8bb9e2b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1380347893
 GameObject:
   m_ObjectHideFlags: 0

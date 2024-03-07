@@ -12,129 +12,98 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 
-public class CowboyActions : MonoBehaviour
+public class CowboyAction : MonoBehaviour
 {
     //internal vars
-    private Animator animator;
-    private Door[] doors;
-    private Transform body;
-    private bool COMBAT;
-    public void setCombat(bool t)
-    {
-        COMBAT = t;
-    }
-    private ParentConstraint constraint;
-    private List<ConstraintSource> sources;
+    private Animator animator_;
+    
+    private ParentConstraint constraint_;
+    private List<ConstraintSource> sources_;
     Timer holster;
+    private bool inCombat_;
+    public void SetCombat(bool t)
+    {
+        inCombat_ = t;
+    }
+    private Transform body_;
 
     //exposed vars
     public  RuntimeAnimatorController combatController;
-    public  RuntimeAnimatorController movementController;
-    
+    public RuntimeAnimatorController movementController;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        animator = GameObject.Find("Cowboy_body").GetComponent<Animator>();
-        body = GameObject.Find("Cowboy_body").GetComponent<Transform>();
-        constraint = GameObject.Find("Gun").GetComponent<ParentConstraint>();
-        sources = new List<ConstraintSource>(constraint.sourceCount);
-        constraint.GetSources(sources);
-        doors = FindObjectsOfType<Door>();
-        holster = new Timer(putAway, 0f);
-        COMBAT = false;
+        body_ = gameObject.GetComponent<Transform>();
+        animator_ = body_.GetChild(0).GetComponent<Animator>();
+        constraint_ = body_.GetChild(1).GetComponent<ParentConstraint>();
+        sources_ = new List<ConstraintSource>(constraint_.sourceCount);
+        constraint_.GetSources(sources_);
+        holster = new Timer(PutAway, 0f);
+        inCombat_ = false;
     }
 
     // Update is called once per frame
     void Update()
     {
         //COMBAT = true;
-        if (COMBAT)
+        if (inCombat_)
         {
-            animator.runtimeAnimatorController = combatController;
+            animator_.runtimeAnimatorController = combatController;
             if (holster != null) { holster.Update(); }
         }
         else
         {
-            animator.runtimeAnimatorController = movementController;
+            animator_.runtimeAnimatorController = movementController;
         }
         //"Mlady"
         if (Input.GetButtonDown("Hat"))
         {
-            float playerSpeed = GameObject.Find("COWBOY_PREFAB").GetComponent<PlayerMovement>().GetPlayerSpeed();
-            if (playerSpeed < 1.5)
+            float playerSpeed_ = body_.gameObject.GetComponent<PlayerMovement>().GetPlayerSpeed();
+            if (playerSpeed_ < 1.5)
             {
-                Debug.Log("Setting trigger hat");
-                animator.SetTrigger("Hat");
+                animator_.SetTrigger("Hat");
             }
             else
             {
-                animator.SetTrigger("movingHat");
+                animator_.SetTrigger("movingHat");
             }
         }
 
         //Main interact switch
         if (Input.GetButtonDown("Interact"))
         {
-            //Door open/close
-            if(doors.Length > 0)
+            if(inCombat_)
             {
-                Door d = getClosestDoor(doors);
-                d.setSwing(true);
-            }
-            
-            if(COMBAT)
-            {
-                holster = new Timer(putAway, 3f);
-                getOut();
-                animator.SetTrigger("attack");
+                holster = new Timer(PutAway, 3f);
+                GetOut();
+                animator_.SetTrigger("attack");
             }
         }
 
         
     }
 
-    //finds which door is closest to the cowboy.
-    private Door getClosestDoor(Door[] all)
+    private void PutAway()
     {
-        //according to some folks online, the most resource friendly way to find the real distance between points is by using squares.
-        Door closestDoor = null;
-        float closestDistance = Mathf.Infinity;
-        Vector3 location = body.position;
-        foreach (Door d in all)
-        {
-            Transform door = d.GetComponent<Transform>();
-            Vector3 direction = door.position - location;
-            float dSqrToTarget = direction.sqrMagnitude;
-            if (dSqrToTarget < closestDistance)
-            {
-                closestDistance = dSqrToTarget;
-                closestDoor = d;
-            }
-        }
-        return closestDoor;
+        ConstraintSource holst_ = sources_[0];
+        ConstraintSource hand_ = sources_[1];
+        holst_.weight = 1;
+        hand_.weight = 0;
+        sources_[0] = holst_;
+        sources_[1] = hand_;
+        constraint_.SetSources(sources_);
     }
 
-    private void putAway()
+    private void GetOut()
     {
-        ConstraintSource holst = sources[0];
-        ConstraintSource hand = sources[1];
-        holst.weight = 1;
-        hand.weight = 0;
-        sources[0] = holst;
-        sources[1] = hand;
-        constraint.SetSources(sources);
-    }
-
-    private void getOut()
-    {
-        ConstraintSource holst = sources[0];
-        ConstraintSource hand = sources[1];
-        holst.weight = 0;
-        hand.weight = 1;
-        sources[0] = holst;
-        sources[1] = hand;
-        constraint.SetSources(sources);
+        ConstraintSource holst_ = sources_[0];
+        ConstraintSource hand_ = sources_[1];
+        holst_.weight = 0;
+        hand_.weight = 1;
+        sources_[0] = holst_;
+        sources_[1] = hand_;
+        constraint_.SetSources(sources_);
     }
 }
