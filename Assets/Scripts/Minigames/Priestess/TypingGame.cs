@@ -45,16 +45,30 @@ public class TypingGame : MonoBehaviour
     //  Variables
     //-------------------------------------------------------------------------------------
     private string _typedLine = string.Empty; //Represents the player's actual typed line, removing errors they have backspaced. 
-    private int _typedCount = 0;              //Running count of characters in _typedLine.
+    private int _typedCount = 0;        //Running count of characters in _typedLine.
     private string _dispTypedLine = string.Empty;   //The line displayed on the left as player input. Includes backspaced errors. Backspaced letters are represented by capitals.
 
     private int _mistakeCount = 0;            //Running count of player mistakes. 
     private bool _isLocked = false;           //Will not accept additional mistake inputs while true.
 
-    private string[] _availableLines = { "you can type this line", "you can also type this", "you even can type this" };    //Line displayed on the right as lines available to type.
-    private bool[] _isActiveAvailableLines = { true, true, true };      //The line at _availableLines[i] is actively being typed by the player if _isActiveAvailableLines[i] == true;
+    private string[] _availableLines = { "Healy Dan, grant divine healing to my wounded body",
+                                         "Healy Dan, grant divine healing for my bloodied brethren",
+                                         "Healy Dan, bestow powerful and awesome divine healing to my mortally wounded vessel",
+                                         "Healy Dan, bestow powerful and awesome divine healing for my bloodied brethren",
+                                         "Healy Dan, bestow powerful and awesome zealous might to your humble servant",
+                                         "Healy Dan, bestow powerful and awesome zealous might for this glorious holy army",
+                                         "Ghost Malone, strike down this heathen",
+                                         "Ghost Malone, striketh down with ultimate might on the unbeliever",
+                                         "Ghost Malone, strike down these forsaken infidels",
+                                         "Ghost Malone, strengthen my body to spill your enemies blood",
+                                         "Shady Haga, do some wicked ass cool shit that I can't think of",
+                                         "Shady Haga, do some wicked stupid dumb shit I dunno",
+                                         "Shady Haga, do some wicked ass cool shit i guess jesus",
+                                         "Shady Haga, do some fine things for me"};
 
-    private TextTree currentTextTree_;
+    //private bool[] _isActiveAvailableLines; // = { true, true, true };      //The line at _availableLines[i] is actively being typed by the player if _isActiveAvailableLines[i] == true;
+
+    private TextTree _currentBranch;
 
 
     //-------------------------------------------------------------------------------------
@@ -68,6 +82,7 @@ public class TypingGame : MonoBehaviour
 
     private void Start()
     {
+        _currentBranch = new TextTree(_availableLines);
         Update_Available_Lines();
         Update_Typed_Line();
         Update_Mistake_Counter();
@@ -86,20 +101,46 @@ public class TypingGame : MonoBehaviour
     private void Update_Available_Lines()
     //Updates availableLineOutput with available lines, and progress on them.
     {
-        string dispCurrentLetter_ = string.Empty;
-        string dispRemainingLine_ = string.Empty;
+        string dispCurrentLetter_;
+        string dispRemainingLine_;
+        string dispNextLine_;
+        string dispLastLine_;
+
+        string branchText_;
 
         availableLineOutput.text = string.Empty;
-        for (int i = 0; i < _availableLines.Length; i++)
+
+        foreach (TextTree branch_ in _currentBranch.branches)
         {
-            if (_isActiveAvailableLines[i])
+            dispCurrentLetter_ = string.Empty;
+            dispRemainingLine_ = string.Empty;
+            dispNextLine_ = string.Empty;
+            dispLastLine_ = string.Empty;
+
+            branchText_ = branch_.text;
+
+            if (branch_.branches.Count > 0)
             {
-                dispCurrentLetter_ = Space_To_Underscore(_availableLines[i][_typedCount]);
-                dispRemainingLine_ = _availableLines[i].Remove(0, _typedCount + 1);
-                availableLineOutput.text += "<color=green>" + _typedLine + "</color><color=yellow>" + dispCurrentLetter_ + "</color>" + dispRemainingLine_ + "\n";
+                dispNextLine_ = branch_.branches[0].text;
+
+                if (branch_.branches[0].branches.Count > 0)
+                    dispNextLine_ += " . . . ";
+            }
+
+
+            if (_currentBranch.root != null && _currentBranch.root.root != null)
+                dispLastLine_ = " . . . ";
+             dispLastLine_ += _currentBranch.text;
+
+            if (branch_.alive)
+            {
+                dispCurrentLetter_ = Space_To_Underscore(branchText_[_typedCount]);
+                dispRemainingLine_ = branchText_.Remove(0, _typedCount + 1);
+
+                availableLineOutput.text += "<color=green>" + dispLastLine_ + _typedLine + "</color><color=yellow>" + dispCurrentLetter_ + "</color>" + dispRemainingLine_ + dispNextLine_ + "\n";
             }
             else
-                availableLineOutput.text += "<color=grey>" + _availableLines[i] + "</color>\n";
+                availableLineOutput.text += "<color=grey>" + dispLastLine_ + branchText_ + dispNextLine_ + "</color>\n";
         }
     }
 
@@ -131,7 +172,7 @@ public class TypingGame : MonoBehaviour
     //When letter is typed, adds letter to typed line, checks if it is a mistake, locks out mistakes if it is.
     {
         typedLetter_ = typedLetter_.ToLower();
-        
+
         if (Is_Correct_Letter(typedLetter_))
         {
             Deactivate_Invalid_Lines(typedLetter_);
@@ -143,28 +184,20 @@ public class TypingGame : MonoBehaviour
             Deactivate_All_Lines();
             Enter_Letter(typedLetter_);
         }
-        //else do nothing
+        else return;    //Do nothing. No need to Check if line is complete.
+
+        Check_Complete();
+        Update_Typed_Line();
+        Update_Available_Lines();
     }
 
     private void Enter_Letter(string typedLetter_)
     //Adds typed letter to _typedLine, gets new _currentLetter from _remainingLine, and removes letter from _remainingLine
     {
         _typedCount++;
-        if (_typedCount == _availableLines[0].Length) //Reset for testing
-        {
-            _typedCount = 0;
-            _typedLine = string.Empty;
-            _dispTypedLine += typedLetter_ + "\n";
-            Activate_All_Lines();
-        }
-        else
-        {
-            _typedLine += typedLetter_;
-            _dispTypedLine += typedLetter_;
-        }
 
-        Update_Typed_Line();
-        Update_Available_Lines();
+        _typedLine += typedLetter_;
+        _dispTypedLine += typedLetter_;
     }
 
     private void Add_Mistake()
@@ -221,59 +254,73 @@ public class TypingGame : MonoBehaviour
         }
     }
 
+    private void Check_Complete()
+    {
+        foreach (TextTree branch_ in _currentBranch.branches)
+        {
+            if (branch_.Is_Alive() && branch_.text == _typedLine)
+            {
+                _typedLine = string.Empty;
+                _typedCount = 0;
+                _currentBranch = branch_;
+                return;
+            }
+        }
+    }
+
     private void Activate_All_Lines()
     {
-        for (int i = 0; i < _availableLines.Length; i++)
-            _isActiveAvailableLines[i] = true;
+        foreach (TextTree branch_ in _currentBranch.branches)
+            branch_.Revive();
     }
 
     private void Activate_Valid_Lines()
     {
-        for (int i = 0; i < _availableLines.Length; i++)
+        string branchText_;
+        foreach (TextTree branch_ in _currentBranch.branches)
         {
-            if (_typedLine == _availableLines[i].Remove(_typedCount, _availableLines[i].Length - _typedCount))
-                _isActiveAvailableLines[i] = true;
+            branchText_ = branch_.text;
+            if (branchText_.Length < _typedCount)
+                continue;
+            if (_typedLine == branchText_.Remove(_typedCount, branchText_.Length - _typedCount))
+                branch_.Revive();
         }
     }
 
     private void Deactivate_All_Lines()
     {
-        for (int i = 0; i < _availableLines.Length; i++)
-            _isActiveAvailableLines[i] = false;
+        foreach (TextTree branch_ in _currentBranch.branches)
+            branch_.Kill();
     }
 
     private void Deactivate_Invalid_Lines(string typedLetter_)
     {
-        for (int i = 0; i < _availableLines.Length; i++)
+        string branchText_;
+        foreach (TextTree branch_ in _currentBranch.branches)
         {
-            if (!Is_Correct_Letter(typedLetter_, _availableLines[i]))
-                _isActiveAvailableLines[i] = false;
+            branchText_ = branch_.text;
+            if (!Is_Correct_Letter(typedLetter_, branchText_))
+                branch_.Kill();
         }
     }
 
-    //-------------------------------------------------------------------------------------
-    //  Accessors
-    //-------------------------------------------------------------------------------------
-
     private bool Is_Correct_Letter(string letter_, string line_)
     {
+        if (_typedCount >= line_.Length)
+            return false;
         return char.ToLower(letter_[0]) == line_[_typedCount];
     }
 
     private bool Is_Correct_Letter(string letter_)
     {
-        for (int i = 0; i < _availableLines.Length; i++)
+        foreach (TextTree branch_ in _currentBranch.branches)
         {
-            if (Is_Correct_Letter(letter_, _availableLines[i]) && _isActiveAvailableLines[i])
+            if (Is_Correct_Letter(letter_, branch_.text) && branch_.Is_Alive())
                 return true;
         }
 
         return false;
     }
-
-    //-------------------------------------------------------------------------------------
-    //  Functions
-    //-------------------------------------------------------------------------------------
 
     private string Space_To_Underscore(char character)
     {

@@ -17,8 +17,8 @@ public class Squid : Enemy
     private const string NAME = "Squid";
 
     //Modify these values to define the ranges of the enemy stats.
-    private const float ARMOR_MIN = 0.0f;
-    private const float ARMOR_MAX = 0.5f;
+    private const int ARMOR_MIN = 10;
+    private const int ARMOR_MAX = 50;
     private const int ATTACK_POWER_MIN = 12;
     private const int ATTACK_POWER_MAX = 15;
     private const int HEAL_POWER_MIN = 0;

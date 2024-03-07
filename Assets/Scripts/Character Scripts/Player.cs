@@ -8,7 +8,7 @@ public class Player : Character
     //Basically, only using these dictionaries to allow specific stats to be mutable 
     //while in combat, but not outside of combat.
     private StatsStruct _permanentStats = new StatsStruct(
-        0.1f, //armor
+        50, //armor
         20,   //attack power
         20,   //heal power
         100,  //max health
@@ -19,7 +19,7 @@ public class Player : Character
     //------------------------------------------------------------------------------------
     // Methods for updating starting stats(permanent stats, update on level up or such.)
     //------------------------------------------------------------------------------------
-    public void Set_PermanentArmor(float val_) => _permanentStats.armor = val_;
+    public void Set_PermanentArmor(int val_) => _permanentStats.armor = val_;
     public void Set_PermanentAttackPower(int val_) => _permanentStats.attackPower = val_;
     public void Set_PermanentHealPower(int val_) => _permanentStats.healPower = val_;
     public void Set_PermanentMaxHealth(int val_) => _permanentStats.maxHealth = val_;
@@ -29,10 +29,10 @@ public class Player : Character
     //------------------------------------------------------------------------------------
     // Stat Modification methods (temporary modifications to stats during combat.)
     //------------------------------------------------------------------------------------
-    public void Modify_Armor(float modVal_)
+    public void Modify_Armor(int modVal_)
     {
         //do whatever calulation makes sense here.
-        float modified_ = Get_Armor();
+        int modified_ = Get_Armor();
 
         modified_ -= modVal_;
 

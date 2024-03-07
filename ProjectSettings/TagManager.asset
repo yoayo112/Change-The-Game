@@ -9,6 +9,7 @@ TagManager:
   - Perch_3
   - Perch_4
   - Perch
+  - splat
   layers:
   - Default
   - TransparentFX

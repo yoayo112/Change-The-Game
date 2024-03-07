@@ -4,7 +4,7 @@ using UnityEngine;
 
 public struct StatsStruct
 {
-    public float armor;
+    public int armor;
     public int attackPower;
     public int healPower;
     public int maxHealth;
@@ -13,7 +13,7 @@ public struct StatsStruct
     public int currentEnergy;
     public int speed;
 
-    public StatsStruct(float armor_, int attackPower_, int healPower_, int maxHealth_, int maxEnergy_, int speed_)
+    public StatsStruct(int armor_, int attackPower_, int healPower_, int maxHealth_, int maxEnergy_, int speed_)
     {
         armor         = armor_;
         attackPower   = attackPower_;
