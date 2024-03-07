@@ -158,7 +158,6 @@ public class Character : MonoBehaviour, IComparable
             if (Is_Alive())
             {
                 int actualDamage_ = (int) (damage_ * 100f / (_currentStats.armor + 100f));
-
                 _currentStats.currentHealth -= actualDamage_;
                 //animate here
                 Debug.Log("Character " + characterName + " just took " + actualDamage_ + " damage!");
