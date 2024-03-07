@@ -1,3 +1,12 @@
+/*
+Project: Change the Game
+File: CowboyAction.cs
+Date Created: February 2, 2024
+Author(s): Sky Vercauteren
+Info:
+
+Used to control the actions that are unique to the cowboy according to player input.
+*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -53,7 +62,7 @@ public class CowboyActions : MonoBehaviour
         //"Mlady"
         if (Input.GetButtonDown("Hat"))
         {
-            float playerSpeed = GameObject.Find("COWBOY_PREFAB").GetComponent<CowboyMovement_v3>().GetPlayerSpeed();
+            float playerSpeed = GameObject.Find("COWBOY_PREFAB").GetComponent<PlayerMovement>().GetPlayerSpeed();
             if (playerSpeed < 1.5)
             {
                 Debug.Log("Setting trigger hat");
