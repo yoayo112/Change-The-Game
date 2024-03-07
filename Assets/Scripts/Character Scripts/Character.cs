@@ -82,7 +82,6 @@ public class Character : MonoBehaviour, IComparable
     // Accessors
     //public CombatController Get_CombatController() => combatController;
     public string Get_Name() => characterName;
-<<<<<<< HEAD
 
     public int Get_Armor() => _currentStats.armor;
     public int Get_AttackPower() => _currentStats.attackPower;
@@ -92,16 +91,6 @@ public class Character : MonoBehaviour, IComparable
     public int Get_MaxEnergy() => _currentStats.maxEnergy;
     public int Get_CurrentEnergy() => _currentStats.currentEnergy;
     public int Get_Speed() => _currentStats.speed;
-=======
-    public float Get_Armor() => _armor;
-    public int Get_AttackPower() => _attackPower;
-    public int Get_HealPower() => _healPower;
-    public int Get_MaxHealth() => _maxHealth;
-    public int Get_CurrentHealth() => _currentHealth;
-    public int Get_MaxEnergy() => _maxEnergy;
-    public int Get_CurrentEnergy() => _currentEnergy;
-    public int Get_Speed() => _speed;
->>>>>>> parent of dd775dd... Edited comments
     public int Get_QueuePosition() => _queuePosition;
     public int Get_Position() => _position;
     public bool Is_Alive() => _currentStats.currentHealth > 0;
@@ -112,7 +101,6 @@ public class Character : MonoBehaviour, IComparable
     // Mutators
     //public void Set_CombatController(CombatController combatController_) => combatController = combatController_;
     public void Set_Name(string name_) => characterName = name_;
-<<<<<<< HEAD
     public void Set_Armor(int armor_) => _currentStats.armor = armor_;
     public void Set_AttackPower(int attack_) => _currentStats.attackPower = attack_;
     public void Set_HealPower(int heal_) => _currentStats.healPower = heal_;
@@ -123,19 +111,7 @@ public class Character : MonoBehaviour, IComparable
     public void Set_QueuePosition(int pos_) => _queuePosition = pos_;
     public void Set_Position(int pos_) => _position = pos_;
     public void Set_Speed(int speed_) => _currentStats.speed = speed_;
-=======
-    public void Set_Armor(float armor_) => _armor = armor_;
-    public void Set_AttackPower(int attack_) => _attackPower = attack_;
-    public void Set_HealPower(int heal_) => _healPower = heal_;
-    public void Set_MaxHealth(int health_) => _maxHealth = health_;
-    public void Set_CurrentHealth(int health_) => _currentHealth = health_;
-    public void Set_MaxEnergy(int energy_) => _maxEnergy = energy_;
-    public void Set_CurrentEnergy(int energy_) => _currentEnergy = energy_;
-    public void Set_QueuePosition(int pos_) => _queuePosition = pos_;
-    public void Set_Position(int pos_) => _position = pos_;
-    public void Set_Alive(bool alive_) => _isAlive = alive_;
-    public void Set_Speed(int speed_) => _speed = speed_;
->>>>>>> parent of dd775dd... Edited comments
+
     public void Set_CharacterType(CharacterType type_) => _myType = type_;
     public void Set_Targets(List<int> targets_) => _targets = targets_;
 
@@ -152,11 +128,7 @@ public class Character : MonoBehaviour, IComparable
     {
         float effectiveness_ = UnityEngine.Random.Range(0f, 1.0f);
 
-<<<<<<< HEAD
         float damage_ = _currentStats.attackPower * (effectiveness_ + 1);
-=======
-        float damage_ = _attackPower * (effectiveness_ + 1);
->>>>>>> parent of dd775dd... Edited comments
 
         Debug.Log("Character " + characterName + " is attacking with " + damage_ + " damage.");
 
@@ -166,11 +138,7 @@ public class Character : MonoBehaviour, IComparable
     //Overloaded attack for player minigame effectiveness input.
     public void Attack_Characters(CharacterType type_, int[] targets_, float effectiveness_)
     {
-<<<<<<< HEAD
         float damage_ = _currentStats.attackPower * (effectiveness_ + 1);
-=======
-        float damage_ = _attackPower * (effectiveness_ + 1);
->>>>>>> parent of dd775dd... Edited comments
 
         Debug.Log("Character " + characterName + " is attacking with " + damage_ + " damage.");
 
@@ -190,19 +158,11 @@ public class Character : MonoBehaviour, IComparable
         {
             if (Is_Alive())
             {
-<<<<<<< HEAD
-                int actualDamage_ = (int) (damage_ * 100f / (armor + 100f));
+                int actualDamage_ = (int) (damage_ * 100f / (_currentStats.armor + 100f));
                 _currentStats.currentHealth -= actualDamage_;
                 //animate here
                 Debug.Log("Character " + characterName + " just took " + actualDamage_ + " damage!");
                 if (!Is_Alive())
-=======
-                int actualDamage_ = (int)(damage_ * (1 - _armor));
-                _currentHealth -= actualDamage_;
-                //animate here
-                Debug.Log("Character " + characterName + " just took " + actualDamage_ + " damage!");
-                if (_currentHealth <= 0)
->>>>>>> parent of dd775dd... Edited comments
                 {
                     Debug.Log("Character " + characterName + " has perished...");
                 }
@@ -224,11 +184,7 @@ public class Character : MonoBehaviour, IComparable
     public void Heal_Characters(CharacterType type_, int[] targets_)
     {
         float effectiveness_ = UnityEngine.Random.Range(0f, 1.0f);
-<<<<<<< HEAD
         float health_ = _currentStats.healPower * (effectiveness_ + 1);
-=======
-        float health_ = _healPower * (effectiveness_ + 1);
->>>>>>> parent of dd775dd... Edited comments
 
         Debug.Log("Character " + characterName + "is healing someone for " + health_ + "health.");
 
@@ -238,11 +194,7 @@ public class Character : MonoBehaviour, IComparable
     //Overloaded Heal for minigame effectiveness input.
     public void Heal_Characters(CharacterType type_, int[] targets_, float effectiveness_)
     {
-<<<<<<< HEAD
         float health_ = _currentStats.healPower * (effectiveness_ + 1);
-=======
-        float health_ = _healPower * (effectiveness_ + 1);
->>>>>>> parent of dd775dd... Edited comments
 
         Debug.Log("Character " + characterName + "is healing someone for " + health_ + "health.");
 
@@ -261,7 +213,6 @@ public class Character : MonoBehaviour, IComparable
         {
             if (Is_Alive())
             {
-<<<<<<< HEAD
 
                 int temp = (int) (_currentStats.currentHealth + healing_);
 
@@ -271,18 +222,6 @@ public class Character : MonoBehaviour, IComparable
                 int actualHealing_ = temp - _currentStats.currentHealth;
                 _currentStats.currentHealth = temp;
 
-=======
-                int actualHealing_ = (int)(healing_ * (1 + _armor));
-
-                int temp = _currentHealth + actualHealing_;
-
-                if (temp > _maxHealth)
-                {
-                    temp = _maxHealth;
-                }
-
-                _currentHealth = temp;
->>>>>>> parent of dd775dd... Edited comments
                 Debug.Log("Character " + characterName + " Just got healed for " + actualHealing_ + " health!");
             }
         }
@@ -324,7 +263,7 @@ public class Character : MonoBehaviour, IComparable
     public virtual void Set_Starting_Stats()
     // Initial Stats based on selected public values from unity inspector
     {
-        Set_Armor(0.1f);
+        Set_Armor(20);
         Set_AttackPower(20);
         Set_HealPower(20);
         Set_MaxHealth(100);
