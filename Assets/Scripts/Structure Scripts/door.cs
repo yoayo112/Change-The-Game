@@ -17,7 +17,7 @@ public class Door : MonoBehaviour
     private bool isOpen;
     private bool opened;
     private bool swing;
-    public void setSwing(bool s)
+    public void SetSwing(bool s)
     {
         swing = s;
     }

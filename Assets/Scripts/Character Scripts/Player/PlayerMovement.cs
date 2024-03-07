@@ -55,8 +55,10 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 hInput;
     private Vector3 vInput;
     private bool moving;
+    public bool getMoving() { return moving; }
     private bool runHasToggled;
     private bool running;
+    public bool getRunning() { return running; }
     private bool falling;
 
     //--------------------------------------------------------
@@ -95,8 +97,6 @@ public class PlayerMovement : MonoBehaviour
         midMinRad = midStartRad * maxZoomIn;
         botMinRad = botStartRad * maxZoomIn;
 
-        //move the character once dynamically, otherwise gravity wont be applied until the user moves.
-        //controller.Move(new Vector3(1,1,1).normalized * 1 * Time.deltaTime);
     }
 
     void Update()
@@ -194,6 +194,10 @@ public class PlayerMovement : MonoBehaviour
             playerSpeed = walkSpeed;
             controller.Move(moveDir.normalized * walkSpeed * Time.deltaTime);
             UpdateAudio("Walk");
+        }
+        else
+        {
+            controller.Move(new Vector3(0f, moveDir.normalized.y, 0f));
         }
     }
 
