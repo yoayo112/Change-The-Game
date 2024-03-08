@@ -51,7 +51,7 @@ public class TypingGame : MonoBehaviour
     private int _mistakeCount = 0;            //Running count of player mistakes. 
     private bool _isLocked = false;           //Will not accept additional mistake inputs while true.
 
-    private string[] _availableLines = { "Healy Dan, grant divine healing to my wounded body",
+    private string[] _availableLines = { "Healy Dan, grant divine healing to my wounded body realy realy realy reallasdlasldfasdlfksadfljkasdflkasdflkjasdflkjsadflkjasdfljksadljkfsdakljsdaljksdafljksdfalkjdsljksdjkladsjklfsdaljksdafljksdafljksdafljkdsfljksdaflkjsdaljksdafjlkadsljkdasljkasd",
                                          "Healy Dan, grant divine healing for my bloodied brethren",
                                          "Healy Dan, bestow powerful and awesome divine healing to my mortally wounded vessel",
                                          "Healy Dan, bestow powerful and awesome divine healing for my bloodied brethren",
@@ -119,18 +119,20 @@ public class TypingGame : MonoBehaviour
 
             branchText_ = branch_.text;
 
-            if (branch_.branches.Count > 0)
+            /* if (branch_.branches.Count > 0)
             {
                 dispNextLine_ = branch_.branches[0].text;
 
                 if (branch_.branches[0].branches.Count > 0)
                     dispNextLine_ += " . . . ";
-            }
+            } */
+            dispNextLine_ = branch_.Get_Text_To_End();
 
 
-            if (_currentBranch.root != null && _currentBranch.root.root != null)
+            /* if (_currentBranch.root != null && _currentBranch.root.root != null)
                 dispLastLine_ = " . . . ";
-             dispLastLine_ += _currentBranch.text;
+             dispLastLine_ += _currentBranch.text; */
+             dispLastLine_ = branch_.Get_Text_Upto_Branch();
 
             if (branch_.alive)
             {
