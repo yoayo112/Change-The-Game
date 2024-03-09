@@ -8,7 +8,7 @@ Info:
 Tree structure that represents the branching paths of possible lines to be typed in the typing minigame
 
 The TextTree object contains other TextTrees as branches. Each tree in the structure carries a string representing the shared text of all of it's branches.
-Branching represents differences between the strings in the array that cosntructor uses as input.
+Branching represents differences between the strings in the array that constructor uses as input.
 For example: TextTree({"you can type", "you can also", "you even can"}) will create a tree with the following structure:
 
  "you " ---- "can " ---- "type"
@@ -44,25 +44,17 @@ public class TextTree
     public void Kill() => alive = false;
     public void Revive() => alive = true;
 
-
     public TextTree(string[] strings_)
     {
         for (int i = 0; i < strings_.Length; i++)
             strings_[i] = strings_[i].ToLower();
 
-        Debug.Log("Constructor Called");
-
         Set_Root(null);
         Set_Text(Find_Common_String(strings_));  //The text for this branch of the tree is the common starting string among all input strings. The root text can be empty if there is no common string.
 
-        Debug.Log("Text set to: " + text);
         branches = new List<TextTree>();
         for (int i = 0; i < strings_.Length; i++) //To build out the branches, we remove this common string from each input string
             strings_[i] = strings_[i].Remove(0, text.Length);
-
-        Debug.Log("Building branches with the following strings:");
-        for (int i = 0; i < strings_.Length; i++)
-            Debug.Log(strings_[i]);
 
         Build_Branches(strings_);
 
@@ -96,10 +88,8 @@ public class TextTree
     public void Build_Branches(string[] strings_)
     // Adds branches to this tree based on given array of strings
     {
-        Debug.Log("Build Branches called");
         if (strings_.Length == 0 || strings_[0].Length == 0)
         {
-            Debug.Log("No more branches to build");
             return; //No more branches to build if input string or array is empty.
         }
 
@@ -107,40 +97,33 @@ public class TextTree
         List<string> group_ = new List<string>();
         for (int i = 0; i < strings_.Length; i++)
         {
-            Debug.Log("Checking groups for: " + strings_[i]);
 
             if (grouped_[i] || strings_[i].Length == 0)
             { //No branch is made if the string is already grouped or empty
-                Debug.Log("Already grouped. Continuing.");
                 continue;
             }
 
             grouped_[i] = true;
             group_.Add(strings_[i]);
-            Debug.Log("Added to new group");
-            for (int j = 1; i + j < strings_.Length; j++) //We compare the string only to strings further down the list as earlier strings have already been grouped
+
+            //We compare the string only to strings further down the list as earlier strings have already been grouped
+            for (int j = 1; i + j < strings_.Length; j++) 
             {
-                Debug.Log("Checking " + strings_[i + j]);
+                if (grouped_[i + j])        //Go to next string if already grouped.
+                    continue;
 
-                if (grouped_[i + j])
-                    Debug.Log("Already grouped");
-
-                else if (Has_Common_String(strings_[i], strings_[i + j]))
-                {                                                                         //If the second string has not been grouped AND the strings share a starting string:
-                    grouped_[i + j] = true;                                               //Mark new string as grouped
-                    group_.Add(strings_[i + j]);
-                    Debug.Log(strings_[i + j] + " Added to group.");     //Add the second string to the group
+                if (Has_Common_String(strings_[i], strings_[i + j]))
+                {                                                                    //If the second string has not been grouped AND the strings share a starting string:
+                    grouped_[i + j] = true;                                          //Mark new string as grouped
+                    group_.Add(strings_[i + j]);                                     //Add the second string to the group   
                 }
-                else
-                    Debug.Log("No common string found.");
             }
 
-            Debug.Log("Group found: ");
-            foreach (string line_ in group_)
-                Debug.Log(line_);
-
             Add_Branch(new TextTree(group_.ToArray()));
-            group_.Clear();//We create a new tree using the grouped array. This represents a branch to this tree and will recursively build until the string lengths are 0.
+            //We create a new tree using the grouped array. This represents a branch to this tree and will 
+            //recursively build until the string lengths are 0.
+
+            group_.Clear();  //Clear the group_ for next iteration of loop
         }
     }
 
@@ -175,11 +158,19 @@ public class TextTree
     }
 
     public string Get_Text_Upto_Branch()
-    // Returns a string concatenating the text from the tree from the root to this branch.
+    // Returns a string concatenating the text from the tree from the root upto and not including this branch
     {
         if (root == null)
             return string.Empty;
         return root.Get_Text_Upto_Branch() + root.text;
+    }
+
+    public string Get_Text_To_End()
+    // Returns a string concatenating the text from this branch's first branch to the end, always taking the first branch.
+    {
+        if (branches.Count == 0)
+            return string.Empty;
+        return branches[0].text + branches[0].Get_Text_To_End();
     }
 
     private string Find_Common_String(string stringA_, string stringB_)

@@ -25,7 +25,7 @@ public class InkSplatter : MonoBehaviour
     public float slideLength = 10f;     //How far the splats will slide down the y axis
     public float startOpacity = 1f;     //The starting opacity
 
-    public float xRange = 88.8f;        //How far in the x direction the random splat may fall
+    public float xRange = 88.8f;        //How far in the x direction the random splat may be placed
     public float yRange = 50f;          //How far in the y direction
 
     public bool followParent = false;   //Will the splats follow the object as it moves?
@@ -63,6 +63,12 @@ public class InkSplatter : MonoBehaviour
         StartCoroutine(Make_Splat());
     }
 
+    public void Splat(int val_)
+    {
+        for (int i = 0; i < val_; i++)
+            Splat();
+    }
+
     public IEnumerator Make_Splat()
     { 
         float deltaX_ = Random.Range(-xRange, xRange);
@@ -89,19 +95,18 @@ public class InkSplatter : MonoBehaviour
 
         while (duration < 0f)   //Splat stays and follows it's parent. Object must be destroyed elsewhere.
         {
-            if (followParent)
-            {
-                originalPos_ = _objectPos + delta_;
-                originalRot_ = _objectRot;
-            }
+            if (splat_ == null) //End loop if splat_ is destroyed.
+                break;
 
+            originalPos_ = _objectPos + delta_;
+            originalRot_ = _objectRot;
             splat_.transform.position = originalPos_;
             splat_.transform.rotation = originalRot_;
+
             yield return null;
         }
 
-        while (timeAlive_ < duration)   //For duration > 0, the splat stays for duration seconds and slides down the y axis in that time over slideLength.
-                                                    
+        while (timeAlive_ < duration)   //For duration > 0, the splat stays for duration seconds and slides down the y axis in that time over slideLength.                                       
         {
             if (followParent)
             {
@@ -117,7 +122,9 @@ public class InkSplatter : MonoBehaviour
             yield return null;
             timeAlive_ += Time.deltaTime;
         }
-        Destroy(splat_);
+
+        if (splat_ != null)         //If splat still exists, destroy it.
+            Destroy(splat_);  
     }
 
     public void Remove_Splats()
