@@ -56,9 +56,6 @@ public class TextTree
         for (int i = 0; i < strings_.Length; i++) //To build out the branches, we remove this common string from each input string
             strings_[i] = strings_[i].Remove(0, text.Length);
 
-        for (int i = 0; i < strings_.Length; i++)
-            Debug.Log(strings_[i]);
-
         Build_Branches(strings_);
 
         Revive();
@@ -121,9 +118,6 @@ public class TextTree
                     group_.Add(strings_[i + j]);                                     //Add the second string to the group   
                 }
             }
-
-            foreach (string line_ in group_)
-                Debug.Log(line_);
 
             Add_Branch(new TextTree(group_.ToArray()));
             //We create a new tree using the grouped array. This represents a branch to this tree and will 
