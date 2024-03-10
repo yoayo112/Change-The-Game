@@ -137,7 +137,7 @@ public class TypingGame : MonoBehaviour
 
             lastLine_ = branch_.Get_Text_Upto_Branch();
 
-            int maxRemove_ = branchText_.Length + dispNextLine_.Length + lastLine_.Length - AVAILABLE_LINES_WIDTH;  //Maximum characters to remove from the left.
+            int maxRemove_ = Math.Max(0, branchText_.Length + dispNextLine_.Length + lastLine_.Length - AVAILABLE_LINES_WIDTH);  //Maximum characters to remove from the left.
                                                                                                                     //Total length of line - number of characters shown on available line.
             if (branch_.alive)
                 dispGreenLine_ = lastLine_ + _typedLine;
@@ -185,7 +185,7 @@ public class TypingGame : MonoBehaviour
             if (keysPressed_ == "\b")
                 Back_Space();
             else if (keysPressed_ == "q")
-                Move_Line_Left();
+                inkSplatter.Splat(10);
             else if (keysPressed_.Length == 1)
                 Attempt_Letter(keysPressed_);
         }
