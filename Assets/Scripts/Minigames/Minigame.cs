@@ -4,15 +4,30 @@ using UnityEngine;
 
 public class Minigame : MonoBehaviour
 {
-    // Start is called before the first frame update
+
+    public Canvas canvas;
+    public Camera camera;
     void Start()
     {
         
     }
-
-    // Update is called once per frame
     void Update()
     {
         
     }
+
+    private void OnEnable() //Subscrizzle.
+    {
+        MinigameEventManager.onStart += Start_Game;
+    }
+    private void OnDisable() //De-subscrizzle
+    {
+        MinigameEventManager.onStart -= Start_Game;
+    }
+
+    private virtual void Start_Game() 
+    {
+        canvas = new Canvas(;)
+    }
+
 }
