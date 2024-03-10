@@ -113,7 +113,13 @@ public class GridShooterController : MonoBehaviour
         {
             if(!_isSpawning)
             {
-                StartCoroutine(Create_Target_Group(_targetGroup));
+                int rand1 = Random.Range(1,10);
+                int rand2 = Random.Range(1,10);
+                int rand3 = Random.Range(1,10);
+
+                int[] group_ = new int[]{rand1,rand2,rand3};
+
+                StartCoroutine(Create_Target_Group(group_));
             }
 
             if(_isReloading)
@@ -215,6 +221,20 @@ public class GridShooterController : MonoBehaviour
             yield return new WaitForSeconds(groupSpawnRate);
         }
 
+        _isSpawning = false;
+    }
+
+    IEnumerator Create_Target_Group(int[] group_)
+    {
+        _isSpawning = true;
+
+        foreach(int pos_ in group_)
+        {
+            _targets.Create_Target(pos_);
+            _totalTargets++;
+            yield return new WaitForSeconds(targetSpawnRate);
+        }
+        yield return new WaitForSeconds(groupSpawnRate);
         _isSpawning = false;
     }
 
@@ -434,7 +454,9 @@ public class GridShooterController : MonoBehaviour
             new int[]{4,5,6},
             new int[]{7,8,9},
             new int[]{1,5,9},
-            new int[]{7,5,3}
+            new int[]{7,5,3},
+            new int[]{1,4,7}
         };
     }
 }
+
