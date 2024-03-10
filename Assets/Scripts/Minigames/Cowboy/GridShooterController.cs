@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class GridShooter : MonoBehaviour
+public class GridShooterController : MonoBehaviour
 {
     //-----------------------------------------------------------------------------------
     //  General Game class members
@@ -86,7 +86,7 @@ public class GridShooter : MonoBehaviour
     }
     void Start() // Called before first frame update.
     {
-        _parent = transform.parent;
+        _parent = transform;
         Setup_Grid();
         Setup_Target_Group();
 
@@ -132,7 +132,7 @@ public class GridShooter : MonoBehaviour
     //--------------------------------------------------------------------------------------------
     private void Set_Aim(int pos_)
     {
-        _reticle.transform.position = _gridPositions[pos_];
+        _reticle.transform.localPosition = _gridPositions[pos_];
     }
 
     private void Set_Ammo_Display()
@@ -223,10 +223,12 @@ public class GridShooter : MonoBehaviour
     {
         _currentAmmo--;
         Set_Ammo_Display();
+
         audioSource.PlayOneShot(audioClipArray[0],volume);
-        GameObject clone = Instantiate(bangSprite,_gridPositions[_aimPos],transform.rotation);
-        clone.transform.SetParent(_parent);
+
+        GameObject clone = Instantiate(bangSprite,Vector3.zero,transform.rotation,_parent);
         clone.transform.localScale = _spriteScale;
+        clone.transform.localPosition = _gridPositions[_aimPos];
         Destroy(clone, 0.1f);
 
         if(_targets.Has_Target(_aimPos))
@@ -399,28 +401,29 @@ public class GridShooter : MonoBehaviour
     //--------------------------------------------------------------------------
     private void Setup_Grid()
     {
+        float posVal_ = 130.5f;
+        float negVal_ = -130.5f;
+
         //Top Row
-        _gridPositions.Add(1, new Vector3(-2.9f, 2.9f,0f));
-        _gridPositions.Add(2, new Vector3(0f,    2.9f,0f));
-        _gridPositions.Add(3, new Vector3(2.9f,  2.9f,0f));
+        _gridPositions.Add(1, new Vector3(negVal_, posVal_, 0f));
+        _gridPositions.Add(2, new Vector3(0f,      posVal_, 0f));
+        _gridPositions.Add(3, new Vector3(posVal_, posVal_, 0f));
         //Middle Row
-        _gridPositions.Add(4, new Vector3(-2.9f, 0f,0f));
-        _gridPositions.Add(5, new Vector3(0f,    0f,0f));
-        _gridPositions.Add(6, new Vector3(2.9f,  0f,0f));
+        _gridPositions.Add(4, new Vector3(negVal_, 0f, 0f));
+        _gridPositions.Add(5, new Vector3(0f,      0f, 0f));
+        _gridPositions.Add(6, new Vector3(posVal_, 0f, 0f));
         //Bottom Row
-        _gridPositions.Add(7, new Vector3(-2.9f, -2.9f,0f));
-        _gridPositions.Add(8, new Vector3(0f,    -2.9f,0f));
-        _gridPositions.Add(9, new Vector3(2.9f,  -2.9f,0f));
+        _gridPositions.Add(7, new Vector3(negVal_, negVal_, 0f));
+        _gridPositions.Add(8, new Vector3(0f,      negVal_, 0f));
+        _gridPositions.Add(9, new Vector3(posVal_, negVal_, 0f));
 
-        _grid = Instantiate(gridSprite, _gridPositions[5], transform.rotation);
-        _grid.transform.SetParent(_parent);
+        _grid = Instantiate(gridSprite, Vector3.zero, transform.rotation,_parent);
         _grid.transform.localScale = _spriteScale;
+        _grid.transform.localPosition = _gridPositions[5];
 
-        Debug.Log($"Grid Parent: {_grid.transform.parent}");
-
-        _reticle = Instantiate(reticleSprite, _gridPositions[5], transform.rotation);
-        _reticle.transform.SetParent(_parent);
+        _reticle = Instantiate(reticleSprite, Vector3.zero, transform.rotation,_parent);
         _reticle.transform.localScale = _spriteScale;
+        _reticle.transform.localPosition = _gridPositions[5];
         
     }
     private void Setup_Target_Group()

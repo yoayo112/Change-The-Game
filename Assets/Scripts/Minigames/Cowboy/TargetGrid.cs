@@ -50,9 +50,9 @@ public class TargetGrid
     {
         if(!_hasTarget[pos_])
         {
-            _currentTargets[pos_] = UnityEngine.Object.Instantiate(_target,_grid[pos_],_rotation);
-            _currentTargets[pos_].transform.SetParent(_parent);
+            _currentTargets[pos_] = UnityEngine.Object.Instantiate(_target,Vector3.zero,_rotation,_parent);
             _currentTargets[pos_].transform.localScale = _spriteScale;
+            _currentTargets[pos_].transform.localPosition = _grid[pos_];
             _hasTarget[pos_] = true;
             _timeAlive[pos_] = 0f;
         }
