@@ -24,6 +24,7 @@ public class InkSplatter : MonoBehaviour
 
     public float slideLength = 10f;     //How far the splats will slide down the y axis
     public float startOpacity = 1f;     //The starting opacity
+    public float endOpacity = 0f;
 
     public float xRange = 88.8f;        //How far in the x direction the random splat may be placed
     public float yRange = 50f;          //How far in the y direction
@@ -88,10 +89,9 @@ public class InkSplatter : MonoBehaviour
 
         SpriteRenderer sr_ = splat_.GetComponent<SpriteRenderer>();
         sr_.sortingOrder = _sortingOrder;
+        sr_.color = new Color(1f,1f,1f, startOpacity);
 
         float timeAlive_ = 0f;
-        float opacity_;
-        float percentage_;
 
         while (duration < 0f)   //Splat stays and follows it's parent. Object must be destroyed elsewhere.
         {
@@ -106,6 +106,10 @@ public class InkSplatter : MonoBehaviour
             yield return null;
         }
 
+        float opacity_;
+        float opacityDelta_ = startOpacity - endOpacity;
+        float percentage_;
+
         while (timeAlive_ < duration)   //For duration > 0, the splat stays for duration seconds and slides down the y axis in that time over slideLength.                                       
         {
             if (followParent)
@@ -114,7 +118,7 @@ public class InkSplatter : MonoBehaviour
                 originalRot_ = _objectRot;
             }
             percentage_ = timeAlive_ / duration;
-            opacity_ = startOpacity * (1 - percentage_);
+            opacity_ = startOpacity - (opacityDelta_ * percentage_);
 
             sr_.color = new Color(1f, 1f, 1f, opacity_);
             splat_.transform.position = originalPos_ + new Vector3(0, -slideLength * percentage_, 0);
