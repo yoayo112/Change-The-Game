@@ -45,8 +45,8 @@ public class PartyMovement : MonoBehaviour
     void Start()
     {
         Transform global = GameObject.Find("_GLOBAL_").GetComponent<Transform>();
-        player_ = global.GetChild(0).GetComponent<GlobalMain>().GetPlayer().GetComponent<Transform>();
-        inParty_ = global.GetChild(0).GetComponent<GlobalMain>().IsInParty(transform.gameObject);
+        player_ = global.GetChild(0).GetComponent<GlobalMain>().Get_Player().GetComponent<Transform>();
+        inParty_ = global.GetChild(0).GetComponent<GlobalMain>().Is_In_Party(transform.gameObject);
         animator_ = transform.GetChild(0).GetComponent<Animator>();
         running = false;
         moving = false;

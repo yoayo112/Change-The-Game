@@ -21,11 +21,11 @@ public class GlobalMain : MonoBehaviour
 {
     //we can put global information here that can be both dynamic and static between scenes.
     private GameObject player_;
-    public GameObject GetPlayer()
+    public GameObject Get_Player()
     {
         return player_;
     }
-    public void SetPlayer(GameObject p)
+    public void Set_Player(GameObject p)
     {
         player_ = p;
         //initialize prefab as player object
@@ -34,7 +34,7 @@ public class GlobalMain : MonoBehaviour
         
     }
     private List<GameObject> party_;
-    public void SetParty(List<GameObject> others)
+    public void Set_Party(List<GameObject> others)
     {
         //set all characters as NPC's
         foreach (GameObject character in others)
@@ -45,17 +45,17 @@ public class GlobalMain : MonoBehaviour
         }
         party_ = others;
     }
-    public List<GameObject> GetParty()
+    public List<GameObject> Get_Party()
     {
         return party_;
     }
-    public void PartyPush(GameObject npc)
+    public void Party_Push(GameObject npc)
     {
         //some logic here to make sure the npc is a valid party member and has the correct components.
         //if components ? do nothing : add npc movement script etc.
         party_.Add(npc);
     }
-    public bool IsInParty(GameObject npc)
+    public bool Is_In_Party(GameObject npc)
     {
         return party_.Contains(npc);
     }

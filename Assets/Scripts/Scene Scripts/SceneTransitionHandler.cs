@@ -36,7 +36,7 @@ public class FadeHandler : MonoBehaviour
         //player_ = Instantiate(global.GetChild(0).GetComponent<GlobalMain>().GetPlayer());
         //Transform global = GlobalService.Get_Global();
         
-        player_ = Instantiate(GlobalService.Get_Main().GetPlayer());
+        player_ = Instantiate(GlobalService.Get_Main().Get_Player());
         body_ = player_.GetComponent<Transform>().GetChild(0).GetComponent<Transform>();
 
         //set fade transition render camera to main camera
