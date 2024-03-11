@@ -32,12 +32,12 @@ public class GlobalService
 
     static public GameObject Get_Player()
     {
-        return Get_Main().GetPlayer();
+        return Get_Main().Get_Player();
     }
 
     static public List<GameObject> Get_Party()
     {
-        return Get_Main().GetParty();
+        return Get_Main().Get_Party();
     }
 
 

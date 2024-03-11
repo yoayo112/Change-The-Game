@@ -33,8 +33,7 @@ public class PlayerAction : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Transform global = GameObject.Find("_GLOBAL_").GetComponent<Transform>();
-        player_ = global.GetChild(0).GetComponent<GlobalMain>().Get_Player().GetComponent<Transform>();
+        player_ = GlobalService.Get_Player().GetComponent<Transform>();
         animator_ = player_.GetChild(0).GetComponent<Animator>();
         animator_.runtimeAnimatorController = movementController;
         body_ = player_.GetChild(0).GetComponent<Transform>();

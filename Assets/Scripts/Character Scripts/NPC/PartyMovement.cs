@@ -44,9 +44,8 @@ public class PartyMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Transform global = GameObject.Find("_GLOBAL_").GetComponent<Transform>();
-        player_ = global.GetChild(0).GetComponent<GlobalMain>().Get_Player().GetComponent<Transform>();
-        inParty_ = global.GetChild(0).GetComponent<GlobalMain>().Is_In_Party(transform.gameObject);
+        player_ = GlobalService.Get_Player().GetComponent<Transform>();
+        inParty_ = GlobalService.Get_Main().Is_In_Party(transform.gameObject);
         animator_ = transform.GetChild(0).GetComponent<Animator>();
         running = false;
         moving = false;
@@ -109,7 +108,7 @@ public class PartyMovement : MonoBehaviour
             controller_.Move(moveDir.normalized * walkSpeed * Time.deltaTime);
             //UpdateAudio("Walk");
         }
-        else
+        else // just for gravity
         {
             controller_.Move(new Vector3(0f, moveDir.normalized.y, 0f));
         }

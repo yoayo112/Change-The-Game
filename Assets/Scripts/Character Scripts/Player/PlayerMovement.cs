@@ -39,13 +39,13 @@ public class PlayerMovement : MonoBehaviour
     //  Movement
     //--------------------------------------------------------
     //Exposed
-    [Header("Movement Members")]
-    public CharacterController controller;
     [Header("Movement Settings")]
     public float walkSpeed = 2f;
     public float runSpeed = 4f;
     public float turnSmoothTime = 0.1f;
     //Unexposed
+
+    public CharacterController controller_;
     private float fallSpeed;
     private float turnSmoothVelocity;
     private float normalizedSpeed;
@@ -77,6 +77,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         //set all components
+        controller_ = GlobalService.Get_Player().GetComponent<CharacterController>();
         running = false;
         runHasToggled = false;
         //Cursor.lockState = CursorLockMode.Locked;
@@ -169,7 +170,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward; // Makes sure direction is correct with respect to camera
         
         //apply gravity
-        if (controller.isGrounded)
+        if (controller_.isGrounded)
         {
             fallSpeed = 0f;
             falling = false;
@@ -183,7 +184,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(moving && running) //Handle running movement
         {   
-            controller.Move(moveDir.normalized * runSpeed * Time.deltaTime);
+            controller_.Move(moveDir.normalized * runSpeed * Time.deltaTime);
             playerSpeed = runSpeed;
     
             UpdateAudio("Run");
@@ -192,12 +193,12 @@ public class PlayerMovement : MonoBehaviour
         else if (moving) //handle walking movement
         {
             playerSpeed = walkSpeed;
-            controller.Move(moveDir.normalized * walkSpeed * Time.deltaTime);
+            controller_.Move(moveDir.normalized * walkSpeed * Time.deltaTime);
             UpdateAudio("Walk");
         }
         else
         {
-            controller.Move(new Vector3(0f, moveDir.normalized.y, 0f));
+            controller_.Move(new Vector3(0f, moveDir.normalized.y, 0f));
         }
     }
 
