@@ -30,6 +30,16 @@ public class GlobalService
         return Get_Global().GetChild(1).GetComponent<Camera>();
     }
 
+    static public GameObject Get_Player()
+    {
+        return Get_Main().GetPlayer();
+    }
+
+    static public List<GameObject> Get_Party()
+    {
+        return Get_Main().GetParty();
+    }
+
 
 
 }

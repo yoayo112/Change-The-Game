@@ -1,4 +1,4 @@
-﻿/*
+/*
 Project: Change the Game
 File: TypingGame.cs
 Date Created: Feburary 26, 2024
@@ -8,14 +8,20 @@ Info:
 Script that controls the Priestess' typing minigame.
 */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class TypingGame : MonoBehaviour
 {
+    public const int NUM_AVAILABLE_LINES = 3;
+    public const int MAX_GREEN_CHAR = 20;
+    public const int AVAILABLE_LINES_WIDTH = 50;
+
     public InkSplatter inkSplatter;
 
     //-------------------------------------------------------------------------------------
@@ -23,7 +29,7 @@ public class TypingGame : MonoBehaviour
     //-------------------------------------------------------------------------------------
     [Header("Output")]
     public TextMeshProUGUI typedLineOutput = null;
-    public TextMeshProUGUI availableLineOutput = null;
+    public TextMeshProUGUI[] availableLineOutputs = new TextMeshProUGUI[NUM_AVAILABLE_LINES];
     public Text mistakesOutput = null;
     public CameraShake cameraShake;
 
@@ -46,12 +52,13 @@ public class TypingGame : MonoBehaviour
     //-------------------------------------------------------------------------------------
     private string _typedLine = string.Empty; //Represents the player's actual typed line, removing errors they have backspaced. 
     private int _typedCount = 0;        //Running count of characters in _typedLine.
+    private int _totalTypedCount = 0;
     private string _dispTypedLine = string.Empty;   //The line displayed on the left as player input. Includes backspaced errors. Backspaced letters are represented by capitals.
 
     private int _mistakeCount = 0;            //Running count of player mistakes. 
     private bool _isLocked = false;           //Will not accept additional mistake inputs while true.
 
-    private string[] _availableLines = { "Healy Dan, grant divine healing to my wounded body",
+    private string[] _availableLines = { "Healy Dan, grant divine healing to my wounded body asdf asdf asdf asdf asdf asdf asd fasdf asdf asdf asdf asdf asd",
                                          "Healy Dan, grant divine healing for my bloodied brethren",
                                          "Healy Dan, bestow powerful and awesome divine healing to my mortally wounded vessel",
                                          "Healy Dan, bestow powerful and awesome divine healing for my bloodied brethren",
@@ -64,7 +71,7 @@ public class TypingGame : MonoBehaviour
                                          "Shady Haga, do some wicked ass cool shit that I can't think of",
                                          "Shady Haga, do some wicked stupid dumb shit I dunno",
                                          "Shady Haga, do some wicked ass cool shit i guess jesus",
-                                         "Shady Haga, do some fine things for me"};
+                                         "Shady Haga, do some fine things for me" };
 
     //private bool[] _isActiveAvailableLines; // = { true, true, true };      //The line at _availableLines[i] is actively being typed by the player if _isActiveAvailableLines[i] == true;
 
@@ -82,6 +89,7 @@ public class TypingGame : MonoBehaviour
 
     private void Start()
     {
+
         _currentBranch = new TextTree(_availableLines);
         Update_Available_Lines();
         Update_Typed_Line();
@@ -99,48 +107,61 @@ public class TypingGame : MonoBehaviour
     }
 
     private void Update_Available_Lines()
-    //Updates availableLineOutput with available lines, and progress on them.
+    //Updates availableLineOutputs with available lines, and progress on them.
     {
         string dispCurrentLetter_;
         string dispRemainingLine_;
         string dispNextLine_;
-        string dispLastLine_;
+        string dispGreenLine_;
 
         string branchText_;
+        string lastLine_;
 
-        availableLineOutput.text = string.Empty;
+        Clear_Available_Lines();
+        
+        int i = 0;   //Index in foreach loop. 
 
         foreach (TextTree branch_ in _currentBranch.branches)
         {
+            if (i == NUM_AVAILABLE_LINES)    //Will only iterate as long as there are available lines.
+                break;
+
             dispCurrentLetter_ = string.Empty;
             dispRemainingLine_ = string.Empty;
             dispNextLine_ = string.Empty;
-            dispLastLine_ = string.Empty;
+            dispGreenLine_ = string.Empty;
 
             branchText_ = branch_.text;
 
-            if (branch_.branches.Count > 0)
+            dispNextLine_ = branch_.Get_Text_To_End();
+
+            lastLine_ = branch_.Get_Text_Upto_Branch();
+
+            int maxRemove_ = Math.Max(0, branchText_.Length + dispNextLine_.Length + lastLine_.Length - AVAILABLE_LINES_WIDTH);  //Maximum characters to remove from the left.
+                                                                                                                    //Total length of line - number of characters shown on available line.
+            if (branch_.alive)
+                dispGreenLine_ = lastLine_ + _typedLine;
+
+            else
+                dispGreenLine_ = lastLine_ + branchText_;
+
+            if (_totalTypedCount > MAX_GREEN_CHAR)   //Begin removing letters from the left when the length of the typed line is more than the max number of green characters displayed.
             {
-                dispNextLine_ = branch_.branches[0].text;
-
-                if (branch_.branches[0].branches.Count > 0)
-                    dispNextLine_ += " . . . ";
+                int remove_ = Math.Min(_totalTypedCount - MAX_GREEN_CHAR, maxRemove_);    //Only remove up to maxRemove_ characters.
+                dispGreenLine_ = dispGreenLine_.Remove(0, remove_);
             }
-
-
-            if (_currentBranch.root != null && _currentBranch.root.root != null)
-                dispLastLine_ = " . . . ";
-             dispLastLine_ += _currentBranch.text;
 
             if (branch_.alive)
             {
                 dispCurrentLetter_ = Space_To_Underscore(branchText_[_typedCount]);
                 dispRemainingLine_ = branchText_.Remove(0, _typedCount + 1);
 
-                availableLineOutput.text += "<color=green>" + dispLastLine_ + _typedLine + "</color><color=yellow>" + dispCurrentLetter_ + "</color>" + dispRemainingLine_ + dispNextLine_ + "\n";
+                availableLineOutputs[i].text += "<color=green>" + dispGreenLine_ + "</color><color=yellow>" + dispCurrentLetter_ + "</color>" + dispRemainingLine_ + dispNextLine_ + "\n";
             }
             else
-                availableLineOutput.text += "<color=grey>" + dispLastLine_ + branchText_ + dispNextLine_ + "</color>\n";
+                availableLineOutputs[i].text += "<color=grey>" + dispGreenLine_ + dispNextLine_ + "</color>\n";
+
+            i++;
         }
     }
 
@@ -163,6 +184,8 @@ public class TypingGame : MonoBehaviour
 
             if (keysPressed_ == "\b")
                 Back_Space();
+            else if (keysPressed_ == "q")
+                inkSplatter.Splat(10);
             else if (keysPressed_.Length == 1)
                 Attempt_Letter(keysPressed_);
         }
@@ -195,6 +218,7 @@ public class TypingGame : MonoBehaviour
     //Adds typed letter to _typedLine, gets new _currentLetter from _remainingLine, and removes letter from _remainingLine
     {
         _typedCount++;
+        _totalTypedCount++;
 
         _typedLine += typedLetter_;
         _dispTypedLine += typedLetter_;
@@ -209,7 +233,7 @@ public class TypingGame : MonoBehaviour
         audioSource.PlayOneShot(audioClipArray[0], volume);
         StartCoroutine(Lock_Mistake());
 
-        inkSplatter.Splat();
+        //inkSplatter.Splat(10);
     }
 
     private void Back_Space()
@@ -218,6 +242,7 @@ public class TypingGame : MonoBehaviour
             return;
 
         _typedCount--;
+        _totalTypedCount--;
         _typedLine = _typedLine.Remove(_typedLine.Length - 1);
 
         Activate_Valid_Lines();
@@ -252,6 +277,18 @@ public class TypingGame : MonoBehaviour
                 return;
             }
         }
+    }
+
+    private void Move_Line_Left()
+    {
+        float px_ = 27.46f;
+
+        availableLineOutputs[0].transform.position -= new Vector3(px_, 0f, 0f);
+    }
+
+    private void Move_Line_Right()
+    {
+
     }
 
     private void Check_Complete()
@@ -320,6 +357,12 @@ public class TypingGame : MonoBehaviour
         }
 
         return false;
+    }
+
+    private void Clear_Available_Lines() 
+    {
+        for (int i = 0; i < availableLineOutputs.Length; i++)
+            availableLineOutputs[i].text = string.Empty;
     }
 
     private string Space_To_Underscore(char character)

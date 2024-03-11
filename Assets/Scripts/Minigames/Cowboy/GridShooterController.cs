@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class GridShooter : MonoBehaviour
+public class GridShooterController : MonoBehaviour
 {
     //-----------------------------------------------------------------------------------
     //  General Game class members
@@ -12,9 +12,11 @@ public class GridShooter : MonoBehaviour
     [Header("General Members")]
     public GameObject gridSprite; // Reference to rope grid prefab
     private GameObject _grid; // This instances rope grid.
-    public TMP_Text hitsDisplay;
-    public TMP_Text effectivenessDisplay;
+    private Transform _parent;
+    public TMP_Text hitsText;
+    public TMP_Text timerText;
     private Dictionary<int,Vector3> _gridPositions = new Dictionary<int,Vector3>(); // Vector3 positions for grid
+    private Vector3 _spriteScale = new Vector3(45f,45f,1f);
     private int _totalTargets;
     private int _hitTargets; //How many targets player has hit
     private int _missedTargets; //How many targets missed to old age
@@ -51,7 +53,7 @@ public class GridShooter : MonoBehaviour
     public GameObject reticleSprite; // Reference to reticle prefab
     private GameObject _reticle; // This instances reticle.
     public GameObject bangSprite; //Reference to Bang! prefab
-    public TMP_Text ammoDisplay; // UI element for current ammo
+    public TMP_Text ammoText; // UI element for current ammo
     public Slider reloadProgressBar; // UI progress bar for reload
     [Header("Weapon Settings")]
     private int _aimPos; // Current Grid the reticle is at.
@@ -72,14 +74,19 @@ public class GridShooter : MonoBehaviour
 
     void OnEnable()
     {
-        MinigameEventManager.onStart += Start_Minigame;
+        GridShooterEventManager.onStart += Start_Minigame;
+        GridShooterEventManager.onUpdateTimer += Update_Timer;
+        GridShooterEventManager.onTimeOver += Time_Over;
     }
     void OnDisable()
     {
-        MinigameEventManager.onStart -= Start_Minigame;
+        GridShooterEventManager.onStart -= Start_Minigame;
+        GridShooterEventManager.onUpdateTimer -= Update_Timer;
+        GridShooterEventManager.onTimeOver -= Time_Over;
     }
     void Start() // Called before first frame update.
     {
+        _parent = transform;
         Setup_Grid();
         Setup_Target_Group();
 
@@ -87,7 +94,7 @@ public class GridShooter : MonoBehaviour
         _aimPos = 5;
         Set_Aim(_aimPos);
 
-        _targets = new TargetGrid(maxTargetTime, targetSprite,_gridPositions,reticleSprite.transform.rotation);
+        _targets = new TargetGrid(maxTargetTime,_parent,targetSprite,_spriteScale,_gridPositions,reticleSprite.transform.rotation);
         _missedTargets = 0;
         _hitTargets = 0;
         _totalTargets = 0;
@@ -106,7 +113,13 @@ public class GridShooter : MonoBehaviour
         {
             if(!_isSpawning)
             {
-                StartCoroutine(Create_Target_Group(_targetGroup));
+                int rand1 = Random.Range(1,10);
+                int rand2 = Random.Range(1,10);
+                int rand3 = Random.Range(1,10);
+
+                int[] group_ = new int[]{rand1,rand2,rand3};
+
+                StartCoroutine(Create_Target_Group(group_));
             }
 
             if(_isReloading)
@@ -125,28 +138,29 @@ public class GridShooter : MonoBehaviour
     //--------------------------------------------------------------------------------------------
     private void Set_Aim(int pos_)
     {
-        _reticle.transform.position = _gridPositions[pos_];
+        _reticle.transform.localPosition = _gridPositions[pos_];
     }
 
     private void Set_Ammo_Display()
     {
-        ammoDisplay.text = _currentAmmo + "/" + maxAmmo;
+        ammoText.text = _currentAmmo + "/" + maxAmmo;
     }
 
-    private void Set_Hits_Display()
+    private void Set_Hits_Text()
     {
-        hitsDisplay.text = "Hits: " + _hitTargets;
+        hitsText.text = "Hits: " + _hitTargets;
     }
 
-    private void Set_Effectiveness_Display()
+    private void Set_Timer_Text(int seconds_)
     {
-        effectivenessDisplay.text = "Effectiveness: " + _minigameEffectiveness;
+        timerText.text = $"{seconds_}";
     }
+
 
     //---------------------------------------------------------------------------------------------
     //  Event Subscriptions
     //---------------------------------------------------------------------------------------------
-    public void OnTimeOver()
+    public void Time_Over()
     {
         StopAllCoroutines();
         _isSpawning = false;
@@ -154,20 +168,21 @@ public class GridShooter : MonoBehaviour
         _gameRunning = false;
         _targets.Kill_All();
         _minigameEffectiveness = (float)_hitTargets/(float)_totalTargets;
-        Set_Effectiveness_Display();
 
         Reset_State();
     }
+    public void Update_Timer(int seconds_)
+    {
+        Set_Timer_Text(seconds_);
+    }
     public void Start_Minigame()
     {
-        Debug.Log("Start clicked entered.");
         if(!_gameRunning)
         {
             _hitTargets = 0;
-            Set_Hits_Display();
+            Set_Hits_Text();
             _minigameEffectiveness = 0f;
             _gameRunning = true;
-            Debug.Log("Start Clicked ending");
         }
     }
     //--------------------------------------------------------------------------------------------
@@ -193,7 +208,6 @@ public class GridShooter : MonoBehaviour
     IEnumerator Create_Target_Group(int[][] targetGroup_)
     {
         _isSpawning = true;
-        Debug.Log("Spawning Target Group...");
 
         foreach(int[] group_ in targetGroup_)
         {
@@ -208,7 +222,20 @@ public class GridShooter : MonoBehaviour
         }
 
         _isSpawning = false;
-        Debug.Log("Group Spawning Finished!");
+    }
+
+    IEnumerator Create_Target_Group(int[] group_)
+    {
+        _isSpawning = true;
+
+        foreach(int pos_ in group_)
+        {
+            _targets.Create_Target(pos_);
+            _totalTargets++;
+            yield return new WaitForSeconds(targetSpawnRate);
+        }
+        yield return new WaitForSeconds(groupSpawnRate);
+        _isSpawning = false;
     }
 
     
@@ -216,14 +243,18 @@ public class GridShooter : MonoBehaviour
     {
         _currentAmmo--;
         Set_Ammo_Display();
+
         audioSource.PlayOneShot(audioClipArray[0],volume);
-        GameObject clone = Instantiate(bangSprite,_gridPositions[_aimPos],transform.rotation);
+
+        GameObject clone = Instantiate(bangSprite,Vector3.zero,transform.rotation,_parent);
+        clone.transform.localScale = _spriteScale;
+        clone.transform.localPosition = _gridPositions[_aimPos];
         Destroy(clone, 0.1f);
 
         if(_targets.Has_Target(_aimPos))
         {
             _hitTargets++;
-            Set_Hits_Display();
+            Set_Hits_Text();
             _targets.Kill_Target(_aimPos);
         }
     }
@@ -390,21 +421,30 @@ public class GridShooter : MonoBehaviour
     //--------------------------------------------------------------------------
     private void Setup_Grid()
     {
-        //Top Row
-        _gridPositions.Add(1, new Vector3(-2.9f, 2.9f,0f));
-        _gridPositions.Add(2, new Vector3(0f,    2.9f,0f));
-        _gridPositions.Add(3, new Vector3(2.9f,  2.9f,0f));
-        //Middle Row
-        _gridPositions.Add(4, new Vector3(-2.9f, 0f,0f));
-        _gridPositions.Add(5, new Vector3(0f,    0f,0f));
-        _gridPositions.Add(6, new Vector3(2.9f,  0f,0f));
-        //Bottom Row
-        _gridPositions.Add(7, new Vector3(-2.9f, -2.9f,0f));
-        _gridPositions.Add(8, new Vector3(0f,    -2.9f,0f));
-        _gridPositions.Add(9, new Vector3(2.9f,  -2.9f,0f));
+        float posVal_ = 130.5f;
+        float negVal_ = -130.5f;
 
-        _grid = Instantiate(gridSprite, _gridPositions[5], transform.rotation);
-        _reticle = Instantiate(reticleSprite, _gridPositions[5], transform.rotation);
+        //Top Row
+        _gridPositions.Add(1, new Vector3(negVal_, posVal_, 0f));
+        _gridPositions.Add(2, new Vector3(0f,      posVal_, 0f));
+        _gridPositions.Add(3, new Vector3(posVal_, posVal_, 0f));
+        //Middle Row
+        _gridPositions.Add(4, new Vector3(negVal_, 0f, 0f));
+        _gridPositions.Add(5, new Vector3(0f,      0f, 0f));
+        _gridPositions.Add(6, new Vector3(posVal_, 0f, 0f));
+        //Bottom Row
+        _gridPositions.Add(7, new Vector3(negVal_, negVal_, 0f));
+        _gridPositions.Add(8, new Vector3(0f,      negVal_, 0f));
+        _gridPositions.Add(9, new Vector3(posVal_, negVal_, 0f));
+
+        _grid = Instantiate(gridSprite, Vector3.zero, transform.rotation,_parent);
+        _grid.transform.localScale = _spriteScale;
+        _grid.transform.localPosition = _gridPositions[5];
+
+        _reticle = Instantiate(reticleSprite, Vector3.zero, transform.rotation,_parent);
+        _reticle.transform.localScale = _spriteScale;
+        _reticle.transform.localPosition = _gridPositions[5];
+        
     }
     private void Setup_Target_Group()
     {
@@ -414,7 +454,9 @@ public class GridShooter : MonoBehaviour
             new int[]{4,5,6},
             new int[]{7,8,9},
             new int[]{1,5,9},
-            new int[]{7,5,3}
+            new int[]{7,5,3},
+            new int[]{1,4,7}
         };
     }
 }
+
