@@ -77,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         //set all components
-        controller_ = GlobalService.Get_Player().GetComponent<CharacterController>();
+        controller_ = GlobalService.Get_Player_Instance().GetComponent<CharacterController>();
         running = false;
         runHasToggled = false;
         //Cursor.lockState = CursorLockMode.Locked;
@@ -156,6 +156,7 @@ public class PlayerMovement : MonoBehaviour
         {
             playerSpeed = 0f;
             audio.Stop();
+            controller_.Move(new Vector3(0f, -9.8f * Time.deltaTime, 0f));//this is just for gravity when stopped.
         }
         
     }

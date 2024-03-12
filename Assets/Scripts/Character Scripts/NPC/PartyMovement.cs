@@ -1,11 +1,11 @@
 /*
 Project: Change the Game
-File: GlobalMain.cs
+File: PartyMovement.cs
 Date Created: March 06, 2024
 Author(s): Sky Vercauteren
 Info:
 
-Defines the movement behavior of the NPC's in a players party.
+Defines the movement behavior of a given NPC in a players party.
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -29,7 +29,11 @@ public class PartyMovement : MonoBehaviour
     //player
     private Transform player_;
     //this npc
-    private bool inParty_;
+    private static bool inParty_;
+    public static void set_inParty(bool b)
+    {
+        inParty_ = b;
+    }
     private Animator animator_;
     private CharacterController controller_;
     private float fallSpeed_;
@@ -40,11 +44,13 @@ public class PartyMovement : MonoBehaviour
     private float normalizedSpeed;
     private float NPCSpeed;
     public float GetNPCSpeed() { return NPCSpeed; }
+    Vector3 moveDir;
 
     // Start is called before the first frame update
     void Start()
     {
-        player_ = GlobalService.Get_Player().GetComponent<Transform>();
+        controller_ = gameObject.GetComponent<CharacterController>();
+        player_ = GlobalService.Get_Player_Instance().GetComponent<Transform>();
         inParty_ = GlobalService.Get_Main().Is_In_Party(transform.gameObject);
         animator_ = transform.GetChild(0).GetComponent<Animator>();
         running = false;
@@ -58,7 +64,12 @@ public class PartyMovement : MonoBehaviour
         moving = direction.magnitude >= 0.1f;
         animator_.SetFloat("Speed", NPCSpeed);
 
-        //copycat player movement
+        //rotate to look at player
+        Vector3 target = new Vector3(player_.transform.position.x, controller_.transform.position.y, player_.transform.position.z);
+        transform.LookAt(target, Vector3.up);
+        moveDir = transform.TransformDirection(Vector3.forward);
+
+        //copycat player movement bools
         moving = player_.GetComponent<PlayerMovement>().getMoving();
         running = player_.GetComponent<PlayerMovement>().getRunning();
 
@@ -71,16 +82,12 @@ public class PartyMovement : MonoBehaviour
         {
             NPCSpeed = 0f;
             //audio.Stop();
+            controller_.Move(new Vector3(0f, -9.8f * Time.deltaTime, 0f));//this is just for gravity when stopped.
         }
     }
 
     private void UpdateMovement()
     {
-        //rotate to look at player
-        Quaternion rotation = Quaternion.LookRotation(player_.position, Vector3.up);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 0.1f);
-        Vector3 moveDir = Quaternion.Euler(0f, rotation.eulerAngles.y, 0f) * Vector3.forward;
-
         //apply gravity
         if (controller_.isGrounded)
         {

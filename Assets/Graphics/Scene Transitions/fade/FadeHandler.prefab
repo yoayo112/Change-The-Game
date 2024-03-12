@@ -119,11 +119,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5687569838506291456}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2012bd07476c18488999ca958e95f6c, type: 3}
+  m_Script: {fileID: 11500000, guid: 4ee92794dd42eca428699a96f6b57a87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  delayTime: 0
-  portal: {fileID: 169418484887437900}
+  delayTime: 1
+  portal: {fileID: 0}
   goTo: 
   spawnName: 
 --- !u!1 &8418197059520411958
@@ -359,11 +359,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 61c90503664d9dc4eaf27d86ba347f67, type: 3}
---- !u!1 &169418484887437900 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8223917020513934710, guid: 61c90503664d9dc4eaf27d86ba347f67, type: 3}
-  m_PrefabInstance: {fileID: 8104471362734415674}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2486223603458312484 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5978540539837896222, guid: 61c90503664d9dc4eaf27d86ba347f67, type: 3}

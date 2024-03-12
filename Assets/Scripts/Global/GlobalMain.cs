@@ -5,11 +5,7 @@ Date Created: March 06, 2024
 Author(s): Sky Vercauteren
 Info:
 
-A global object, that protects itself from being destroyed on load.
-Used to:
-- initialize gameplay
-- store player and session information
-- pass information between scenes
+A script responsible for managing global data associated with a given session
 */
 
 using System.Collections;
@@ -21,13 +17,14 @@ public class GlobalMain : MonoBehaviour
 {
     //we can put global information here that can be both dynamic and static between scenes.
     private GameObject player_;
-    public GameObject Get_Player()
+    public GameObject Get_Player_Prefab()
     {
         return player_;
     }
-    public void Set_Player(GameObject p)
+    public void Set_Player_Prefab(GameObject p)
     {
         player_ = p;
+        //TODO:
         //initialize prefab as player object
         //remove NPC movement script and anything else.
         //add playermovement.cs, free look camera, etc

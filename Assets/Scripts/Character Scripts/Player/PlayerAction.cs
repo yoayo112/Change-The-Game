@@ -11,19 +11,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
+using TMPro;
 
 public class PlayerAction : MonoBehaviour
 {
     //internal vars
     private Animator animator_;
-    private Door[] doors_;
     private Transform player_;
     private Transform body_;
+    
+
+    private Canvas speechBubble_;
+    private TMP_Text dialogText_;
+    private bool talking_;
     private bool inCombat_;
     public void SetCombat(bool t)
     {
        inCombat_ = t;
     }
+    private Door[] doors_;
+
 
     //exposed vars
     public  RuntimeAnimatorController movementController;
@@ -33,12 +40,24 @@ public class PlayerAction : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player_ = GlobalService.Get_Player().GetComponent<Transform>();
+        //player prefab
+        player_ = GlobalService.Get_Player_Instance().GetComponent<Transform>();
         animator_ = player_.GetChild(0).GetComponent<Animator>();
         animator_.runtimeAnimatorController = movementController;
         body_ = player_.GetChild(0).GetComponent<Transform>();
+
+        //misc
         doors_ = FindObjectsOfType<Door>();
         inCombat_ = false;
+
+        //dialog 
+        speechBubble_ = player_.gameObject.GetComponentInChildren<Canvas>(true);
+        speechBubble_.renderMode = RenderMode.ScreenSpaceCamera;
+        speechBubble_.planeDistance = 3f;
+        speechBubble_.worldCamera = GlobalService.Get_Camera().GetComponentInChildren<Camera>(true);
+        dialogText_ = gameObject.GetComponentInChildren<TextMeshProUGUI>();
+        speechBubble_.gameObject.SetActive(false);
+        
     }
 
     // Update is called once per frame
@@ -49,10 +68,6 @@ public class PlayerAction : MonoBehaviour
         {
             //determine which action to do!
             
-            //for scene specific events:
-            //condition that determines a scene trigger?
-            //call scene event manager function for specific behavior
-            //TODO: make a scene event manager for hometown.
 
             //Door open/close
             Door d_ = GetClosestDoor(doors_);
@@ -84,5 +99,18 @@ public class PlayerAction : MonoBehaviour
             }
         }
         return closestDoor_;
+    }
+
+    //toggles dialog box
+    public void Dialog(string text)
+    {
+        if (!talking_)
+        {
+            talking_ = true;
+            dialogText_.text = text;
+        }
+        else { talking_ = false; }
+        speechBubble_.gameObject.SetActive(talking_);
+        //speechBubble_.enabled = talking_;
     }
 }
