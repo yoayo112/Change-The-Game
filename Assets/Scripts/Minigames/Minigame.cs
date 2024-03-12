@@ -25,9 +25,9 @@ public class Minigame : MonoBehaviour
         MinigameEventManager.onStart -= Start_Game;
     }
 
-    private virtual void Start_Game() 
+    public virtual void Start_Game() 
     {
-        canvas = new Canvas(;)
+        canvas = new Canvas();
     }
 
 }
