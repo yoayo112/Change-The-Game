@@ -7,19 +7,20 @@ Info:
 
 Defines the movement behavior of a given NPC in a players party.
 */
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEditor.Animations;
 
 
 public class PartyMovement : MonoBehaviour
 {
     //Exposed:
     [Header("Movement Settings")]
-    public float walkSpeed = 2f;
-    public float runSpeed = 4f;
-    public float turnSmoothTime = 0.1f;
+    
+    public float followDistance = 5f;
     [Header("Audio Members")]
     public AudioSource audio;
     public AudioClip runSound;
@@ -29,6 +30,8 @@ public class PartyMovement : MonoBehaviour
     //player
     private Transform player_;
     //this npc
+    private float walkSpeed;
+    private float runSpeed;
     private static bool inParty_;
     public static void set_inParty(bool b)
     {
@@ -55,6 +58,10 @@ public class PartyMovement : MonoBehaviour
         animator_ = transform.GetChild(0).GetComponent<Animator>();
         running = false;
         moving = false;
+        //copycat run and walk speeds
+        runSpeed = player_.gameObject.GetComponent<PlayerMovement>().runSpeed -1f;
+        walkSpeed = player_.gameObject.GetComponent<PlayerMovement>().walkSpeed -0.5f;
+        updateAnimationConditions(animator_);
     }
 
     // Update is called once per frame
@@ -73,10 +80,11 @@ public class PartyMovement : MonoBehaviour
         moving = player_.GetComponent<PlayerMovement>().getMoving();
         running = player_.GetComponent<PlayerMovement>().getRunning();
 
+
         //apply movement
-        if (moving && inParty_)
+        if (inParty_ && !Is_Close_To_Player(followDistance))
         {
-            UpdateMovement();
+            Update_Movement();
         }
         else
         {
@@ -86,7 +94,7 @@ public class PartyMovement : MonoBehaviour
         }
     }
 
-    private void UpdateMovement()
+    private void Update_Movement()
     {
         //apply gravity
         if (controller_.isGrounded)
@@ -101,23 +109,60 @@ public class PartyMovement : MonoBehaviour
         }
         moveDir.y = fallSpeed_;
 
-        if (moving && running) //Handle running movement
+        if (running) //Handle running movement
         {
+            Debug.Log("is running at "+runSpeed);
             controller_.Move(moveDir.normalized * runSpeed * Time.deltaTime);
             NPCSpeed = runSpeed;
 
             //UpdateAudio("Run");
 
         }
-        else if (moving) //handle walking movement
+        else //handle walking movement
         {
             NPCSpeed = walkSpeed;
             controller_.Move(moveDir.normalized * walkSpeed * Time.deltaTime);
             //UpdateAudio("Walk");
         }
-        else // just for gravity
+    }
+
+    public bool Is_Close_To_Player(float dist)
+    {
+        //find distance
+        float xd = Math.Abs(player_.position.x - GetComponent<Transform>().position.x);
+        float zd = Math.Abs(player_.position.z - GetComponent<Transform>().position.z);
+        if (xd <= dist && zd <= dist)
         {
-            controller_.Move(new Vector3(0f, moveDir.normalized.y, 0f));
+            return true;
+        }
+        else return false;
+    }
+
+    private void updateAnimationConditions(Animator anim)
+    {
+        //Set run/walk transition conditionals to public player movement speeds
+        ChildAnimatorState[] childStates_ = (anim.runtimeAnimatorController as AnimatorController).layers[0].stateMachine.states;
+        foreach (ChildAnimatorState s_ in childStates_)
+        {
+            AnimatorState state_ = s_.state;
+            string transition_ = state_.name;
+            if (transition_ == "BAKED Walk" || transition_ == "BAKED Run")
+            {
+                AnimatorStateTransition[] ts_ = state_.transitions;
+                foreach (AnimatorStateTransition t_ in ts_)
+                {
+                    if (transition_ == "BAKED Walk" && t_.conditions[0].parameter == "Speed")
+                    {
+                        t_.conditions[0].threshold = walkSpeed;
+                        state_.speed = state_.speed >= 5 ? 1 + (walkSpeed / 50) : 1 - (walkSpeed / 50); // walking animation scales at +/- ~2% movement speed from base anim speed.
+                    }
+                    else if (transition_ == "BAKED Run" && t_.conditions[0].parameter == "Speed")
+                    {
+                        t_.conditions[0].threshold = walkSpeed;
+                        state_.speed = state_.speed >= 10 ? 1 + (runSpeed / 80) : 1 - (runSpeed / 80); //running animation scales at +/- ~1.3% movement speed from base anim speed.
+                    }
+                }
+            }
         }
     }
 }

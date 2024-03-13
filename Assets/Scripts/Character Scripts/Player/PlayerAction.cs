@@ -29,7 +29,6 @@ public class PlayerAction : MonoBehaviour
     {
        inCombat_ = t;
     }
-    private Door[] doors_;
 
 
     //exposed vars
@@ -47,8 +46,8 @@ public class PlayerAction : MonoBehaviour
         body_ = player_.GetChild(0).GetComponent<Transform>();
 
         //misc
-        doors_ = FindObjectsOfType<Door>();
         inCombat_ = false;
+        
 
         //dialog 
         speechBubble_ = player_.gameObject.GetComponentInChildren<Canvas>(true);
@@ -66,14 +65,24 @@ public class PlayerAction : MonoBehaviour
         //Main interact switch
         if (Input.GetButtonDown("Interact"))
         {
-            //determine which action to do!
-            
+            //determine which action to do! (How? Lol)
+            //TODO: General talking with NPC's
+
+            //TODO: Fun result of interacting with:
+            //-Barell?
+            //-table/chair/pew?
+
+            //TODO:
+            //Open Chest
+
 
             //Door open/close
-            Door d_ = GetClosestDoor(doors_);
-            if (doors_.Length > 0 && d_ != null)
+            //Temp solution! Needs to work with every scene!
+            HometownListener htl_ = FindObjectOfType<HometownListener>();
+            Door d_ = GetClosestDoor(htl_.Get_All_Doors());
+            if (d_ != null)
             {
-                d_.SetSwing(true);
+                d_.Operate(true);
             }
         }
 
@@ -89,7 +98,7 @@ public class PlayerAction : MonoBehaviour
         Vector3 location_ = body_.position;
         foreach (Door d_ in all_)
         {
-            Transform door_ = d_.GetComponent<Transform>();
+            Transform door_ = d_.gameObject.GetComponent<Transform>();
             Vector3 direction_ = door_.position - location_;
             float dSqrToTarget_ = direction_.sqrMagnitude;
             if (dSqrToTarget_ < closestDistance_)
