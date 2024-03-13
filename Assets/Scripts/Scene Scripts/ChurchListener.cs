@@ -41,10 +41,8 @@ public class ChurchListener : MonoBehaviour
         if (inParty == false && Input.GetButtonDown("Interact"))
         {
             
-            //find distance
-            float xd = Math.Abs(body_.position.x - priestess_.position.x);
-            float zd = Math.Abs(body_.position.z - priestess_.position.z);
-            if (xd <= 3 && zd <= 3) // three is totally arbitrary lol
+            
+            if (priestess_.GetComponent<PartyMovement>().Is_Close_To_Player(3)) // three is totally arbitrary lol
             {
                 //trigger initial dialog and add priestess to party!
                 string[] words = new string[] { "I am in your party now uwu", "Seanster the Meaunster", "Everyone Tell Sam He's Gay, Ok?", "OMG! Sam is the cutest boy in town!", "Hey There Cowboy ;)" };

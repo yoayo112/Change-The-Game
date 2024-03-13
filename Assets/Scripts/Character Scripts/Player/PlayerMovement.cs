@@ -4,7 +4,7 @@ File: PlayerMovement.cs
 Date Created: February 2, 2024
 Author(s): Elijah Theander, Sky Vercauteren
 Info: Version 3.1
-(V1: cowboy movement, V2: cowboy movement new camera, V3: cowboy movement cinemachine.)
+(V1: cowboy movement, V2: cowboy movement new camera, V3: cowboy movement cinemachine. V4: Player Movement using GlobalService)
 
 Handles player input on the selected character in the overworld.
 */
@@ -12,6 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEditor.Animations;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -98,6 +99,8 @@ public class PlayerMovement : MonoBehaviour
         midMinRad = midStartRad * maxZoomIn;
         botMinRad = botStartRad * maxZoomIn;
 
+        updateAnimationConditions(animator);
+        
     }
 
     void Update()
@@ -267,4 +270,33 @@ public class PlayerMovement : MonoBehaviour
         virtualCam.m_Orbits[1].m_Radius = midCurRad;
         virtualCam.m_Orbits[2].m_Radius = botCurRad;
     }
+
+    private void updateAnimationConditions(Animator anim)
+    {
+        //Set run/walk transition conditionals to public player movement speeds
+        ChildAnimatorState[] childStates_ = (anim.runtimeAnimatorController as AnimatorController).layers[0].stateMachine.states;
+        foreach (ChildAnimatorState s_ in childStates_)
+        {
+            AnimatorState state_ = s_.state;
+            string transition_ = state_.name;
+            if (transition_ == "Walk" || transition_ == "Run")
+            {
+                AnimatorStateTransition[] ts_ = state_.transitions;
+                foreach (AnimatorStateTransition t_ in ts_)
+                {
+                    if (transition_ == "Walk" && t_.conditions[0].parameter == "Speed")
+                    {
+                        t_.conditions[0].threshold = walkSpeed + 1; 
+                        state_.speed = state_.speed >= 5 ? 1 + (walkSpeed / 50) : 1 - (walkSpeed / 50); // walking animation scales at +/- ~2% movement speed from base anim speed.
+                    }
+                    else if (transition_ == "Run" && t_.conditions[0].parameter == "Speed")
+                    {
+                        t_.conditions[0].threshold = walkSpeed + 1;
+                        state_.speed = state_.speed >= 10 ?  1 + (runSpeed/80): 1 - (runSpeed/80); //running animation scales at +/- ~1.3% movement speed from base anim speed.
+                    }
+                }
+            }
+        }
+    }
+
 }

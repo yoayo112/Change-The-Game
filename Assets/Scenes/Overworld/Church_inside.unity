@@ -14941,9 +14941,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1438dc0007d7f2b4aa2d184833dffaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 2
-  runSpeed: 4
-  turnSmoothTime: 0.1
+  followDistance: 3.5
   audio: {fileID: 0}
   runSound: {fileID: 0}
   walkSound: {fileID: 0}
