@@ -69,6 +69,22 @@ public class GlobalService
         return Get_Main().Get_Party();
     }
 
+    //returns true if the prefab is listen in the party AND the prefab is real in _Global_
+    static public List<GameObject> Get_Real_Party()
+    {
+        List<GameObject> party = Get_Party();
+        List<GameObject> realMembers = new List<GameObject>();
+        for (int i = 0; i < party.Count; i++)
+        {
+            GameObject member = Get_Child(party[i].name);
+            if (member != null)
+            {
+                realMembers.Add(member);
+            }
+        }
+        return realMembers;
+    }
+
     //saves/stores an object to _GLOBAL_
     static public void Add_Global_Object(GameObject o)
     {

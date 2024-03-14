@@ -12,6 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using UnityEditor;
 using UnityEditor.Animations;
 
 
@@ -30,24 +31,28 @@ public class PartyMovement : MonoBehaviour
     //player
     private Transform player_;
     //this npc
-    private float walkSpeed;
-    private float runSpeed;
+    private float walkSpeed_;
+    private float runSpeed_;
     private static bool inParty_;
     public static void set_inParty(bool b)
     {
         inParty_ = b;
     }
+    public static bool get_inParty()
+    {
+        return inParty_;
+    }
     private Animator animator_;
     private CharacterController controller_;
     private float fallSpeed_;
     private bool falling_;
-    private bool moving;
-    private bool running;
-    private Vector3 direction;
-    private float normalizedSpeed;
-    private float NPCSpeed;
-    public float GetNPCSpeed() { return NPCSpeed; }
-    Vector3 moveDir;
+    private bool moving_;
+    private bool running_;
+    private Vector3 direction_;
+    private float normalizedSpeed_;
+    private float NPCSpeed_;
+    public float Get_NPC_Speed() { return NPCSpeed_; }
+    private Vector3 moveDir_;
 
     // Start is called before the first frame update
     void Start()
@@ -56,11 +61,11 @@ public class PartyMovement : MonoBehaviour
         player_ = GlobalService.Get_Player_Instance().GetComponent<Transform>();
         inParty_ = GlobalService.Get_Main().Is_In_Party(transform.gameObject);
         animator_ = transform.GetChild(0).GetComponent<Animator>();
-        running = false;
-        moving = false;
+        running_ = false;
+        moving_ = false;
         //copycat run and walk speeds
-        runSpeed = player_.gameObject.GetComponent<PlayerMovement>().runSpeed -1f;
-        walkSpeed = player_.gameObject.GetComponent<PlayerMovement>().walkSpeed -0.5f;
+        runSpeed_ = player_.gameObject.GetComponent<PlayerMovement>().runSpeed -1.5f;
+        walkSpeed_ = player_.gameObject.GetComponent<PlayerMovement>().walkSpeed -1f;
         updateAnimationConditions(animator_);
     }
 
@@ -68,17 +73,17 @@ public class PartyMovement : MonoBehaviour
     void Update()
     {
         //trigger animations
-        moving = direction.magnitude >= 0.1f;
-        animator_.SetFloat("Speed", NPCSpeed);
+        moving_ = direction_.magnitude >= 0.1f;
+        animator_.SetFloat("Speed", NPCSpeed_);
 
         //rotate to look at player
         Vector3 target = new Vector3(player_.transform.position.x, controller_.transform.position.y, player_.transform.position.z);
         transform.LookAt(target, Vector3.up);
-        moveDir = transform.TransformDirection(Vector3.forward);
+        moveDir_ = transform.TransformDirection(Vector3.forward);
 
         //copycat player movement bools
-        moving = player_.GetComponent<PlayerMovement>().getMoving();
-        running = player_.GetComponent<PlayerMovement>().getRunning();
+        moving_ = player_.GetComponent<PlayerMovement>().getMoving();
+        running_ = player_.GetComponent<PlayerMovement>().getRunning();
 
 
         //apply movement
@@ -88,7 +93,7 @@ public class PartyMovement : MonoBehaviour
         }
         else
         {
-            NPCSpeed = 0f;
+            NPCSpeed_ = 0f;
             //audio.Stop();
             controller_.Move(new Vector3(0f, -9.8f * Time.deltaTime, 0f));//this is just for gravity when stopped.
         }
@@ -107,21 +112,20 @@ public class PartyMovement : MonoBehaviour
             fallSpeed_ -= 9.8f * Time.deltaTime;
             falling_ = true;
         }
-        moveDir.y = fallSpeed_;
+        moveDir_.y = fallSpeed_;
 
-        if (running) //Handle running movement
+        if (running_) //Handle running movement
         {
-            Debug.Log("is running at "+runSpeed);
-            controller_.Move(moveDir.normalized * runSpeed * Time.deltaTime);
-            NPCSpeed = runSpeed;
+            controller_.Move(moveDir_.normalized * runSpeed_ * Time.deltaTime);
+            NPCSpeed_ = runSpeed_;
 
             //UpdateAudio("Run");
 
         }
         else //handle walking movement
         {
-            NPCSpeed = walkSpeed;
-            controller_.Move(moveDir.normalized * walkSpeed * Time.deltaTime);
+            NPCSpeed_ = walkSpeed_;
+            controller_.Move(moveDir_.normalized * walkSpeed_ * Time.deltaTime);
             //UpdateAudio("Walk");
         }
     }
@@ -153,13 +157,13 @@ public class PartyMovement : MonoBehaviour
                 {
                     if (transition_ == "BAKED Walk" && t_.conditions[0].parameter == "Speed")
                     {
-                        t_.conditions[0].threshold = walkSpeed;
-                        state_.speed = state_.speed >= 5 ? 1 + (walkSpeed / 50) : 1 - (walkSpeed / 50); // walking animation scales at +/- ~2% movement speed from base anim speed.
+                        t_.conditions[0].threshold = walkSpeed_;
+                        state_.speed = state_.speed >= 5 ? 1 + (walkSpeed_ / 50) : 1 - (walkSpeed_ / 50); // walking animation scales at +/- ~2% movement speed from base anim speed.
                     }
                     else if (transition_ == "BAKED Run" && t_.conditions[0].parameter == "Speed")
                     {
-                        t_.conditions[0].threshold = walkSpeed;
-                        state_.speed = state_.speed >= 10 ? 1 + (runSpeed / 80) : 1 - (runSpeed / 80); //running animation scales at +/- ~1.3% movement speed from base anim speed.
+                        t_.conditions[0].threshold = walkSpeed_;
+                        state_.speed = state_.speed >= 10 ? 1 + (runSpeed_ / 80) : 1 - (runSpeed_ / 80); //running animation scales at +/- ~1.3% movement speed from base anim speed.
                     }
                 }
             }
