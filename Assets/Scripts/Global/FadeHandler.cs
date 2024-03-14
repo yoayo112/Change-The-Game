@@ -19,8 +19,14 @@ public class FadeHandler : MonoBehaviour
     public float delayTime = 1f;
     [Header("Geographic Objects")]
     [Help("Use: \n - Drag the portal object inside a doorway or location to trigger the scene. \n - Type the name of the scene you are going to. \n - Type the name of the spawn object *in the destination scene* you want to start from.", UnityEditor.MessageType.Info)]
+
+    [Header("The Name of THIS Scene")]
+    public string scene;
+    [Header("The object that triggers a transition")]
     public GameObject portal;
+    [Header("The Scene we want to end up in")]
     public string goTo; //the name of the new scene
+    [Header("The Spawn Point within that scene to start from (All Scenes Should have 'Main Spawn' as there is one inside this prefab)")]
     public string spawnName; // the name of the spawn within that scene.
 
     //unexposed
@@ -28,6 +34,11 @@ public class FadeHandler : MonoBehaviour
     private GameObject player_;
     private Transform body_;
     static string newSpawn = "";
+
+    //Invoked by the fade out to broadcast the scene is ending
+    public delegate void End();
+    public static event End end;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,7 +60,13 @@ public class FadeHandler : MonoBehaviour
         //move player to correct spawn location.
         if (newSpawn != "")
         {
-            player_.GetComponent<Transform>().position = GameObject.Find(newSpawn).GetComponent<Transform>().position;
+            Transform spawnPos = GameObject.Find(newSpawn).GetComponent<Transform>();
+            player_.GetComponent<Transform>().position = spawnPos.position;
+            List<GameObject> party = GlobalService.Get_Real_Party();
+            foreach(GameObject member in party)
+            {
+                member.GetComponent<Transform>().position = spawnPos.position;
+            }
         }
         else
         {
@@ -69,6 +86,7 @@ public class FadeHandler : MonoBehaviour
 
     IEnumerator fadeOut(string name)
     {
+        end?.Invoke();
         animator_.SetTrigger("fade-out");
         newSpawn = spawnName;
         yield return new WaitForSeconds(delayTime);

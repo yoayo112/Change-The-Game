@@ -41,8 +41,8 @@ public class PlayerMovement : MonoBehaviour
     //--------------------------------------------------------
     //Exposed
     [Header("Movement Settings")]
-    public float walkSpeed = 2f;
-    public float runSpeed = 4f;
+    public float walkSpeed;
+    public float runSpeed;
     public float turnSmoothTime = 0.1f;
     //Unexposed
 
@@ -100,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
         botMinRad = botStartRad * maxZoomIn;
 
         updateAnimationConditions(animator);
-        
+
     }
 
     void Update()
@@ -273,28 +273,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void updateAnimationConditions(Animator anim)
     {
-        //Set run/walk transition conditionals to public player movement speeds
+        //Set run/walk animation speeds relative to public player movement speeds
         ChildAnimatorState[] childStates_ = (anim.runtimeAnimatorController as AnimatorController).layers[0].stateMachine.states;
         foreach (ChildAnimatorState s_ in childStates_)
         {
             AnimatorState state_ = s_.state;
-            string transition_ = state_.name;
-            if (transition_ == "Walk" || transition_ == "Run")
+            string s_name_ = state_.name;
+            if (s_name_ == "Walk")
             {
-                AnimatorStateTransition[] ts_ = state_.transitions;
-                foreach (AnimatorStateTransition t_ in ts_)
-                {
-                    if (transition_ == "Walk" && t_.conditions[0].parameter == "Speed")
-                    {
-                        t_.conditions[0].threshold = walkSpeed + 1; 
-                        state_.speed = state_.speed >= 5 ? 1 + (walkSpeed / 50) : 1 - (walkSpeed / 50); // walking animation scales at +/- ~2% movement speed from base anim speed.
-                    }
-                    else if (transition_ == "Run" && t_.conditions[0].parameter == "Speed")
-                    {
-                        t_.conditions[0].threshold = walkSpeed + 1;
-                        state_.speed = state_.speed >= 10 ?  1 + (runSpeed/80): 1 - (runSpeed/80); //running animation scales at +/- ~1.3% movement speed from base anim speed.
-                    }
-                }
+                state_.speed = walkSpeed >= 1 ? 1 + (walkSpeed / 25) : 1 - (walkSpeed / 25); // walking animation scales at +/- ~4% movement speed from base anim speed.
+            }else if(s_name_ == "Run")
+            {
+                state_.speed = runSpeed >= 3 ? 1 + (runSpeed / 65) : 1 - (runSpeed / 65); //running animation scales at +/- ~1.5% movement speed from base anim speed.
             }
         }
     }

@@ -22,6 +22,10 @@ public class PlayerAction : MonoBehaviour
     
 
     private Canvas speechBubble_;
+    public bool isDialogActive()
+    {
+        return speechBubble_.gameObject.active;
+    }
     private TMP_Text dialogText_;
     private bool talking_;
     private bool inCombat_;
@@ -78,12 +82,12 @@ public class PlayerAction : MonoBehaviour
 
             //Door open/close
             //Temp solution! Needs to work with every scene!
-            HometownListener htl_ = FindObjectOfType<HometownListener>();
-            Door d_ = GetClosestDoor(htl_.Get_All_Doors());
-            if (d_ != null)
-            {
-                d_.Operate(true);
-            }
+            //HometownListener htl_ = FindObjectOfType<HometownListener>();
+            //Door d_ = GetClosestDoor(htl_.Get_All_Doors());
+            //if (d_ != null)
+            //{
+            //    d_.Operate(true);
+            //}
         }
 
         
