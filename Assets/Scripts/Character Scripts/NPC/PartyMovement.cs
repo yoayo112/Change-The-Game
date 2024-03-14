@@ -33,12 +33,12 @@ public class PartyMovement : MonoBehaviour
     //this npc
     private float walkSpeed_;
     private float runSpeed_;
-    private static bool inParty_;
-    public static void set_inParty(bool b)
+    private bool inParty_;
+    public void set_inParty(bool b)
     {
         inParty_ = b;
     }
-    public static bool get_inParty()
+    public bool get_inParty()
     {
         return inParty_;
     }

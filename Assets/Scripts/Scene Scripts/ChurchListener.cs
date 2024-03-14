@@ -25,8 +25,8 @@ public class ChurchListener : SceneListener
     void Start()
     {
         player_ = GlobalService.Get_Player_Instance();
-        priestess_ = GameObject.Find("PRIESTESS_PREFAB").GetComponent<Transform>();
-        inParty = PartyMovement.get_inParty();
+        priestess_ = GameObject.Find("PRIESTESS_PREFAB(Original)").GetComponent<Transform>();
+        inParty = GameObject.Find("PRIESTESS_PREFAB") != null;
         if (inParty) { Destroy(priestess_.gameObject); }
     }
 
@@ -44,9 +44,10 @@ public class ChurchListener : SceneListener
                 //trigger initial dialog and add priestess to party!
                 string[] words = new string[] { "I am in your party now uwu", "Seanster the Meaunster", "Everyone Tell Sam He's Gay, Ok?", "OMG! Sam is the cutest boy in town!", "Hey There Cowboy ;)" };
                 player_.GetComponent<PlayerAction>().Dialog(words[Random.Range(0, words.Length -1)]);
+                priestess_.gameObject.name = "PRIESTESS_PREFAB";
                 GlobalService.Get_Main().Party_Push(priestess_.gameObject);
                 inParty = true;
-                PartyMovement.set_inParty(true);
+                priestess_.GetComponent<PartyMovement>().set_inParty(true);
                 GlobalService.Add_Global_Object(priestess_.gameObject);
             }
         }

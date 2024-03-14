@@ -56,16 +56,17 @@ public class FadeHandler : MonoBehaviour
 
         //also we need the fade animator
         animator_ = transform.GetChild(0).GetComponent<Animator>();
-        
-        //move player to correct spawn location.
+
+        //move player (and party) to correct spawn location.
+        List<GameObject> party = GlobalService.Get_Real_Party();
         if (newSpawn != "")
         {
-            Transform spawnPos = GameObject.Find(newSpawn).GetComponent<Transform>();
-            player_.GetComponent<Transform>().position = spawnPos.position;
-            List<GameObject> party = GlobalService.Get_Real_Party();
+            Vector3 spawnPosition_ = GameObject.Find(newSpawn).GetComponent<Transform>().position;
+            player_.GetComponent<Transform>().position = spawnPosition_;
+            int xOffset = 1;
             foreach(GameObject member in party)
             {
-                member.GetComponent<Transform>().position = spawnPos.position;
+                member.GetComponent<Transform>().position = new Vector3(spawnPosition_.x + xOffset, spawnPosition_.y, spawnPosition_.z);
             }
         }
         else

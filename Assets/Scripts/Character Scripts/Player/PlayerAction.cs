@@ -85,7 +85,7 @@ public class PlayerAction : MonoBehaviour
             //HometownListener htl_ = FindObjectOfType<HometownListener>();
             //Door d_ = GetClosestDoor(htl_.Get_All_Doors());
             //if (d_ != null)
-            //{
+           // {
             //    d_.Operate(true);
             //}
         }
