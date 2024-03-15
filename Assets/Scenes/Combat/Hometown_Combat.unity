@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: d54544f460597a642bc43fe1c75b1975, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.76436937, g: 0.8170301, b: 0.9617955, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -25963,84 +25963,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 412168132446970098, guid: d03e47fc82dec4e44af935a6eb7e59b0, type: 3}
   m_PrefabInstance: {fileID: 246003004}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1885453848
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1773455099288250356, guid: 91ea8f497c702c54fa074421de7f96d7, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 93.22009
-      objectReference: {fileID: 0}
-    - target: {fileID: 1773455099288250356, guid: 91ea8f497c702c54fa074421de7f96d7, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.281668
-      objectReference: {fileID: 0}
-    - target: {fileID: 1773455099288250356, guid: 91ea8f497c702c54fa074421de7f96d7, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 82.32442
-      objectReference: {fileID: 0}
-    - target: {fileID: 1773455099288250356, guid: 91ea8f497c702c54fa074421de7f96d7, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1773455099288250356, guid: 91ea8f497c702c54fa074421de7f96d7, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1773455099288250356, guid: 91ea8f497c702c54fa074421de7f96d7, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1773455099288250356, guid: 91ea8f497c702c54fa074421de7f96d7, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1773455099288250356, guid: 91ea8f497c702c54fa074421de7f96d7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1773455099288250356, guid: 91ea8f497c702c54fa074421de7f96d7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1773455099288250356, guid: 91ea8f497c702c54fa074421de7f96d7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5687569838506291456, guid: 91ea8f497c702c54fa074421de7f96d7, type: 3}
-      propertyPath: m_Name
-      value: FadeHandler
-      objectReference: {fileID: 0}
-    - target: {fileID: 5957214062728591680, guid: 91ea8f497c702c54fa074421de7f96d7, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -71.82
-      objectReference: {fileID: 0}
-    - target: {fileID: 5957214062728591680, guid: 91ea8f497c702c54fa074421de7f96d7, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.36
-      objectReference: {fileID: 0}
-    - target: {fileID: 5957214062728591680, guid: 91ea8f497c702c54fa074421de7f96d7, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -66.28
-      objectReference: {fileID: 0}
-    - target: {fileID: 9118006168413009965, guid: 91ea8f497c702c54fa074421de7f96d7, type: 3}
-      propertyPath: portal
-      value: 
-      objectReference: {fileID: 1885453849}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 91ea8f497c702c54fa074421de7f96d7, type: 3}
---- !u!1 &1885453849 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 169418484887437900, guid: 91ea8f497c702c54fa074421de7f96d7, type: 3}
-  m_PrefabInstance: {fileID: 1885453848}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1885503197 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7112634745724499978, guid: 7ed07ef60be3cef46b3701c8684d1426, type: 3}
@@ -29208,7 +29130,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 486246991}
-  - {fileID: 1885453848}
   - {fileID: 882625332}
   - {fileID: 93850028}
   - {fileID: 1005044992693603648}

@@ -15,7 +15,7 @@ using UnityEngine.SceneManagement;
 
 public class GlobalMain : MonoBehaviour
 {
-    //we can put global information here that can be both dynamic and static between scenes.
+    //PLAYER INFORMATION
     private GameObject player_;
     public GameObject Get_Player_Prefab()
     {
@@ -30,6 +30,8 @@ public class GlobalMain : MonoBehaviour
         //add playermovement.cs, free look camera, etc
         
     }
+
+    //PARTY INFORMATION
     private List<GameObject> party_;
     public void Set_Party(List<GameObject> others)
     {
@@ -56,6 +58,23 @@ public class GlobalMain : MonoBehaviour
     {
         return party_.Contains(npc);
     }
+
+    //TEMP ENEMY INFORMATION
+    //this just holds a list of strings, since the combat scene is responsible for resource.load and spawn.
+    private List<string> enemies;
+    public void Set_Enemies(List<string> baddies)
+    {
+        enemies = baddies;
+    }
+    public List<string> Get_Enemies()
+    {
+        return enemies;
+    }
+    public void Reset_Enemies()
+    {
+        enemies.Clear();
+    }
+
 
     // Start is called before the first frame update
     void Start()

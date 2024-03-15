@@ -26,11 +26,11 @@ public class SceneListener : MonoBehaviour
 
     private void OnEnable()
     {
-        FadeHandler.end += End;
+        SceneTransition.end += End;
     }
     private void OnDisable()
     {
-        FadeHandler.end -= End;
+        SceneTransition.end -= End;
     }
 
 
