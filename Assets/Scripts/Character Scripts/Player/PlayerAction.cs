@@ -37,6 +37,7 @@ public class PlayerAction : MonoBehaviour
 
     //exposed vars
     public  RuntimeAnimatorController movementController;
+    public float interactionDistance;
     
 
 
@@ -69,50 +70,30 @@ public class PlayerAction : MonoBehaviour
         //Main interact switch
         if (Input.GetButtonDown("Interact"))
         {
-            //determine which action to do! (How? Lol)
-            //TODO: General talking with NPC's
-
-            //TODO: Fun result of interacting with:
-            //-Barell?
-            //-table/chair/pew?
-
-            //TODO:
-            //Open Chest
-
-
-            //Door open/close
-            //Temp solution! Needs to work with every scene!
-            //HometownListener htl_ = FindObjectOfType<HometownListener>();
-            //Door d_ = GetClosestDoor(htl_.Get_All_Doors());
-            //if (d_ != null)
-           // {
-            //    d_.Operate(true);
-            //}
-        }
-
-        
-    }
-
-    //finds which door is closest to the cowboy.
-    private Door GetClosestDoor(Door[] all_)
-    {
-        //according to some folks online, the most resource friendly way to find the real distance between points is by using squares.
-        Door closestDoor_ = null;
-        float closestDistance_ = Mathf.Infinity;
-        Vector3 location_ = body_.position;
-        foreach (Door d_ in all_)
-        {
-            Transform door_ = d_.gameObject.GetComponent<Transform>();
-            Vector3 direction_ = door_.position - location_;
-            float dSqrToTarget_ = direction_.sqrMagnitude;
-            if (dSqrToTarget_ < closestDistance_)
+            Collider[] hitColliders = Physics.OverlapSphere(body_.position, interactionDistance);
+            for(int i = 0; i < hitColliders.Length; i++)
             {
-                closestDistance_ = dSqrToTarget_;
-                closestDoor_ = d_;
+                GameObject nearbyThing = hitColliders[i].gameObject;
+                switch(nearbyThing.tag)
+                {
+                    case "NPC":
+                        //dialog stuff
+                        break;
+                    case "Door":
+                        nearbyThing.GetComponentInChildren<Door>().Operate(true);
+                        break;
+                       
+                        //TODO: Fun result of interacting with:
+                        //-Barell?
+                        //-table/chair/pew?
+
+                        //TODO:
+                        //Open Chest
+                }
             }
-        }
-        return closestDoor_;
+        }  
     }
+
 
     //toggles dialog box
     public void Dialog(string text)

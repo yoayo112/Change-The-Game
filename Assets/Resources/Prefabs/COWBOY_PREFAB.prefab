@@ -248,6 +248,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementController: {fileID: 9100000, guid: 169af269ea53cb34a9df44216ee01159, type: 2}
+  interactionDistance: 3
 --- !u!114 &4235340291554699459
 MonoBehaviour:
   m_ObjectHideFlags: 0

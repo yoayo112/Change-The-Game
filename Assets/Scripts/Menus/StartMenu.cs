@@ -35,7 +35,7 @@ public class StartMenu : MonoBehaviour
         main_.Set_Party(new List<GameObject>());
 
         //This should actually probably be a cutscene.
-        SceneManager.LoadScene("HomeTown_v2"); //should probably start at family farm at some point but Oh well
+        SceneManager.LoadScene("Family Farm"); //should probably start at family farm at some point but Oh well
     }
 
     public void Quit()

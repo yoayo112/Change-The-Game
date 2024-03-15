@@ -12,7 +12,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
-using UnityEditor.Animations;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -98,8 +97,6 @@ public class PlayerMovement : MonoBehaviour
         topMinRad = topStartRad * maxZoomIn;
         midMinRad = midStartRad * maxZoomIn;
         botMinRad = botStartRad * maxZoomIn;
-
-        updateAnimationConditions(animator);
 
     }
 
@@ -269,24 +266,6 @@ public class PlayerMovement : MonoBehaviour
         virtualCam.m_Orbits[0].m_Radius = topCurRad;
         virtualCam.m_Orbits[1].m_Radius = midCurRad;
         virtualCam.m_Orbits[2].m_Radius = botCurRad;
-    }
-
-    private void updateAnimationConditions(Animator anim)
-    {
-        //Set run/walk animation speeds relative to public player movement speeds
-        ChildAnimatorState[] childStates_ = (anim.runtimeAnimatorController as AnimatorController).layers[0].stateMachine.states;
-        foreach (ChildAnimatorState s_ in childStates_)
-        {
-            AnimatorState state_ = s_.state;
-            string s_name_ = state_.name;
-            if (s_name_ == "Walk")
-            {
-                state_.speed = walkSpeed >= 1 ? 1 + (walkSpeed / 25) : 1 - (walkSpeed / 25); // walking animation scales at +/- ~4% movement speed from base anim speed.
-            }else if(s_name_ == "Run")
-            {
-                state_.speed = runSpeed >= 3 ? 1 + (runSpeed / 65) : 1 - (runSpeed / 65); //running animation scales at +/- ~1.5% movement speed from base anim speed.
-            }
-        }
     }
 
 }

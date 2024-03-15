@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using UnityEditor;
-using UnityEditor.Animations;
 
 
 public class PartyMovement : MonoBehaviour
@@ -66,7 +65,6 @@ public class PartyMovement : MonoBehaviour
         //copycat run and walk speeds
         runSpeed_ = player_.gameObject.GetComponent<PlayerMovement>().runSpeed -1.5f;
         walkSpeed_ = player_.gameObject.GetComponent<PlayerMovement>().walkSpeed -1f;
-        updateAnimationConditions(animator_);
     }
 
     // Update is called once per frame
@@ -140,33 +138,5 @@ public class PartyMovement : MonoBehaviour
             return true;
         }
         else return false;
-    }
-
-    private void updateAnimationConditions(Animator anim)
-    {
-        //Set run/walk transition conditionals to public player movement speeds
-        ChildAnimatorState[] childStates_ = (anim.runtimeAnimatorController as AnimatorController).layers[0].stateMachine.states;
-        foreach (ChildAnimatorState s_ in childStates_)
-        {
-            AnimatorState state_ = s_.state;
-            string transition_ = state_.name;
-            if (transition_ == "BAKED Walk" || transition_ == "BAKED Run")
-            {
-                AnimatorStateTransition[] ts_ = state_.transitions;
-                foreach (AnimatorStateTransition t_ in ts_)
-                {
-                    if (transition_ == "BAKED Walk" && t_.conditions[0].parameter == "Speed")
-                    {
-                        t_.conditions[0].threshold = walkSpeed_;
-                        state_.speed = state_.speed >= 5 ? 1 + (walkSpeed_ / 50) : 1 - (walkSpeed_ / 50); // walking animation scales at +/- ~2% movement speed from base anim speed.
-                    }
-                    else if (transition_ == "BAKED Run" && t_.conditions[0].parameter == "Speed")
-                    {
-                        t_.conditions[0].threshold = walkSpeed_;
-                        state_.speed = state_.speed >= 10 ? 1 + (runSpeed_ / 80) : 1 - (runSpeed_ / 80); //running animation scales at +/- ~1.3% movement speed from base anim speed.
-                    }
-                }
-            }
-        }
     }
 }

@@ -14,11 +14,16 @@ using UnityEngine;
 
 public class HometownListener : SceneListener
 {
-    
+    [Header("Destroy these conditionally")]
+    public GameObject fish;
+    public GameObject squid;
+    public GameObject squidPortal;
 
     // Start is called before the first frame update
     void Start()
     {
+        if(GlobalService.Get_Party().Count > 0) { Destroy(fish); }
+        else { Destroy(squid); Destroy(squidPortal); }
         player_ = GlobalService.Get_Player_Instance();
         doors_ = FindObjectsOfType<Door>();
     }
@@ -29,7 +34,7 @@ public class HometownListener : SceneListener
         
     }
 
-    private void End()
+    protected override void End()
     {
         
     }

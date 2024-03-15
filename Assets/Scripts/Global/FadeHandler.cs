@@ -17,11 +17,12 @@ public class FadeHandler : MonoBehaviour
 {
     //exposed
     public float delayTime = 1f;
+    #if UNITY_EDITOR
     [Header("Geographic Objects")]
     [Help("Use: \n - Drag the portal object inside a doorway or location to trigger the scene. \n - Type the name of the scene you are going to. \n - Type the name of the spawn object *in the destination scene* you want to start from.", UnityEditor.MessageType.Info)]
+    #endif
 
-    [Header("The Name of THIS Scene")]
-    public string scene;
+    //transition vars
     [Header("The object that triggers a transition")]
     public GameObject portal;
     [Header("The Scene we want to end up in")]

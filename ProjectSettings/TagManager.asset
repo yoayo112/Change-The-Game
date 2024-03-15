@@ -10,6 +10,7 @@ TagManager:
   - Perch_4
   - Perch
   - splat
+  - Door
   layers:
   - Default
   - TransparentFX
