@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,12 +10,7 @@ public class CombatTransition : SceneTransition
 
     //reference each enemy. We can do this randomly or something later, for now lets just get each one.
     [Header("List the name of the prefabs you want to fight")]
-    public string mainEnemy = "";
-    public string enemy2 = "";
-    public string enemy3 = "";
-    public string enemy4 = "";
-    public string enemy5 = "";
-    public string enemy6 = "";
+    public string[] enemies;
 
     // Start is called before the first frame update
     void Start()
@@ -34,8 +30,7 @@ public class CombatTransition : SceneTransition
         {
             StartCoroutine(fadeOut(goTo));
             //pass in the enemies
-            List<string> baddies = new List<string> { mainEnemy, enemy2, enemy3, enemy4, enemy5, enemy6 };
-            GlobalService.Get_Main().Set_Enemies(baddies);
+            GlobalService.Get_Main().Set_Enemies(enemies.ToList());
         }
 
     }

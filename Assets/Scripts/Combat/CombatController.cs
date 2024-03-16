@@ -2,7 +2,7 @@
 Project: Change the Game
 File: CombatController.cs
 Date Created: March 01, 2024
-Author(s): Elijah Theander, Sean Thornton
+Author(s): Elijah Theander, Sean Thornton, Sky Vercauteren
 Info:
 
 State Machine based handling of turn based combat.
@@ -31,6 +31,10 @@ public class CombatController : MonoBehaviour
 
     public static List<Character> enemies { get; private set; } //List holding the scripts of the enemies
     public static List<Character> players { get; private set; } //List holding the scripts of the players
+
+    //Spawn Positions
+    public GameObject[] partySpawns;
+    public GameObject[] baddySpawns;
 
     private static List<Character> _turnQueue = new List<Character>(); // Total list managing turn order
 
@@ -65,14 +69,41 @@ public class CombatController : MonoBehaviour
 
     void Start()
     {
+        //disable the overworld camera
+        GlobalService.Get_Camera().SetActive(false); //TODO change this back when combat ends!
+
         //Find all Player and enemy character controls, put them in a list, and sort.
 
-
+        //Partry members first
+        GameObject mainCharacter = GlobalService.Get_Player_Instance();
+        List<GameObject> party = GlobalService.Get_Party_Instances();
         players = new List<Character>();
-        enemies = new List<Character>();
 
-        Character[] allCharacters = GameObject.FindObjectsByType<Character>(FindObjectsSortMode.None);
-        _turnQueue = new List<Character>(allCharacters);
+        //Also lets spawn, initialize and reposition the prefabs while were at it!
+        mainCharacter.GetComponent<PlayerAction>().Set_Combat(true); //TODO! set combat to false when combat ends
+        players.Add(mainCharacter.GetComponent<Character>());
+        mainCharacter.transform.position = partySpawns[0].transform.position;
+        int j = 1;
+        foreach(GameObject member in party)
+        {
+            players.Add(member.GetComponent<Character>());
+            member.transform.position = partySpawns[j].transform.position;
+            member.GetComponent<PartyMovement>().Set_Combat(true); //TODO! set combat to false when combat ends
+        }
+
+        //ok now the neerdowells
+        enemies = new List<Character>();
+        List<string> enemyNames = GlobalService.Get_Main().Get_Enemies();
+        for(int i = 0; i < enemyNames.Count; i++)
+        {
+            GameObject baddy = Instantiate(Resources.Load<GameObject>(enemyNames[i]));
+            enemies.Add(baddy.GetComponent<Character>());
+            baddy.transform.position = baddySpawns[i].transform.position;
+            baddy.GetComponent<BasicNPCMovement>().Set_Combat(true); // TODO: Set to false after combat ends
+        }
+
+        //Character[] allCharacters = GameObject.FindObjectsByType<Character>(FindObjectsSortMode.None);
+        _turnQueue = new List<Character>(players.Union(enemies));
         turnNumber = 0;
 
         int playerCount_ = 0;

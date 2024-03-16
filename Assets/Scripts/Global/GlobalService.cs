@@ -70,7 +70,7 @@ public class GlobalService
     }
 
     //returns true if the prefab is listen in the party AND the prefab is real in _Global_
-    static public List<GameObject> Get_Real_Party()
+    static public List<GameObject> Get_Party_Instances()
     {
         List<GameObject> party = Get_Party();
         List<GameObject> realMembers = new List<GameObject>();

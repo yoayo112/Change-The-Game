@@ -24,7 +24,7 @@ public class StartMenu : MonoBehaviour
     {
         //this is literally just so the cowboy is interactable in the start menu.      
         main_ = GlobalService.Get_Main();            // = GameObject.Find("_GLOBAL_").GetComponent<Transform>().GetChild(0).GetComponent<GlobalMain>();
-        GameObject player_ = Instantiate(Resources.Load<GameObject>("Prefabs/COWBOY_PREFAB"));
+        GameObject player_ = Instantiate(Resources.Load<GameObject>("COWBOY_PREFAB"));
         GlobalService.Set_Player_Instance(player_);
     }
 
@@ -35,7 +35,7 @@ public class StartMenu : MonoBehaviour
         main_.Set_Party(new List<GameObject>());
 
         //This should actually probably be a cutscene.
-        SceneManager.LoadScene("Family Farm"); //should probably start at family farm at some point but Oh well
+        SceneManager.LoadScene("Church_inside"); //should probably start at family farm at some point but Oh well
     }
 
     public void Quit()

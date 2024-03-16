@@ -28,15 +28,26 @@ public class PlayerAction : MonoBehaviour
     }
     private TMP_Text dialogText_;
     private bool talking_;
-    private bool inCombat_;
-    public void SetCombat(bool t)
+    private bool inCombat_ = false;
+    public void Set_Combat(bool t)
     {
        inCombat_ = t;
+        if (t == true)
+        {
+            gameObject.GetComponent<PlayerMovement>().Set_Combat(true);
+            animator_.runtimeAnimatorController = combatController;
+        }
+        else
+        {
+            gameObject.GetComponent<PlayerMovement>().Set_Combat(false);
+            animator_.runtimeAnimatorController = movementController;
+        }
     }
 
 
     //exposed vars
-    public  RuntimeAnimatorController movementController;
+    public RuntimeAnimatorController movementController;
+    public RuntimeAnimatorController combatController;
     public float interactionDistance;
     
 
@@ -50,8 +61,6 @@ public class PlayerAction : MonoBehaviour
         animator_.runtimeAnimatorController = movementController;
         body_ = player_.GetChild(0).GetComponent<Transform>();
 
-        //misc
-        inCombat_ = false;
         
 
         //dialog 
@@ -68,7 +77,7 @@ public class PlayerAction : MonoBehaviour
     void Update()
     {
         //Main interact switch
-        if (Input.GetButtonDown("Interact"))
+        if (Input.GetButtonDown("Interact") && inCombat_ == false)
         {
             Collider[] hitColliders = Physics.OverlapSphere(body_.position, interactionDistance);
             for(int i = 0; i < hitColliders.Length; i++)

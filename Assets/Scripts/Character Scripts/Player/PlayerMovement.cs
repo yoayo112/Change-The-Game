@@ -60,6 +60,11 @@ public class PlayerMovement : MonoBehaviour
     private bool running;
     public bool getRunning() { return running; }
     private bool falling;
+    private bool inCombat = false;
+    public void Set_Combat(bool b)
+    {
+        inCombat = b;
+    }
 
     //--------------------------------------------------------
     //  Audio
@@ -102,62 +107,70 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        // Get Inputs!
-        hInput = Input.GetAxis("Horizontal") * gameObject.transform.right;
-        vInput = Input.GetAxis("Vertical") * gameObject.transform.forward;
-        
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical = Input.GetAxisRaw("Vertical");
-
-        float mouseScroll = Input.GetAxis("Mouse ScrollWheel");
-
-        //add scroll zoom
-        if(mouseScroll != 0f)
+        if(inCombat == false)
         {
-            if(mouseScroll > 0)
+            // Get Inputs!
+            hInput = Input.GetAxis("Horizontal") * gameObject.transform.right;
+            vInput = Input.GetAxis("Vertical") * gameObject.transform.forward;
+
+            float horizontal = Input.GetAxisRaw("Horizontal");
+            float vertical = Input.GetAxisRaw("Vertical");
+
+            float mouseScroll = Input.GetAxis("Mouse ScrollWheel");
+
+            //add scroll zoom
+            if (mouseScroll != 0f)
             {
-                UpdateCamRadius("Zoom_in");
+                if (mouseScroll > 0)
+                {
+                    UpdateCamRadius("Zoom_in");
+                }
+                else
+                {
+                    UpdateCamRadius("Zoom_out");
+                }
+            }
+
+            //get applied movement
+            Vector3 move = hInput + vInput;
+            normalizedSpeed = Vector3.Dot(move.normalized, move.normalized);
+
+            direction = new Vector3(horizontal, 0f, vertical).normalized;
+
+            //trigger animations
+            moving = direction.magnitude >= 0.1f;
+            if (Input.GetButton("Run"))
+            {
+                if (!runHasToggled)
+                {
+                    running = !running;
+                    runHasToggled = true;
+                }
             }
             else
             {
-                UpdateCamRadius("Zoom_out");
+                runHasToggled = false;
             }
-        }
 
-        //get applied movement
-        Vector3 move = hInput + vInput;
-        normalizedSpeed = Vector3.Dot(move.normalized,move.normalized);
+            animator.SetFloat("Speed", playerSpeed);
 
-        direction = new Vector3(horizontal,0f,vertical).normalized;
-
-        //trigger animations
-        moving = direction.magnitude >= 0.1f;
-        if(Input.GetButton("Run"))
-        {
-            if(!runHasToggled)
+            //apply movement
+            if (moving)
             {
-                running = !running;
-                runHasToggled = true;
+                UpdateMovement();
+            }
+            else
+            {
+                playerSpeed = 0f;
+                audio.Stop();
+                controller_.Move(new Vector3(0f, -9.8f * Time.deltaTime, 0f));//this is just for gravity when stopped.
             }
         }
-        else
+        else // we still want gravity though!!!!
         {
-            runHasToggled = false;
-        }
-
-        animator.SetFloat("Speed", playerSpeed);
-
-        //apply movement
-        if(moving)
-        {
-            UpdateMovement();
-        }
-        else
-        {
-            playerSpeed = 0f;
-            audio.Stop();
             controller_.Move(new Vector3(0f, -9.8f * Time.deltaTime, 0f));//this is just for gravity when stopped.
         }
+        
         
     }
 

@@ -52,6 +52,21 @@ public class PartyMovement : MonoBehaviour
     private float NPCSpeed_;
     public float Get_NPC_Speed() { return NPCSpeed_; }
     private Vector3 moveDir_;
+    private bool inCombat = false;
+    public void Set_Combat(bool b)
+    {
+        inCombat = b;
+        if(b == true)
+        {
+            animator_.runtimeAnimatorController = combatController;
+        }
+        else
+        {
+            animator_.runtimeAnimatorController = movementController;
+        }
+    }
+    public RuntimeAnimatorController movementController;
+    public RuntimeAnimatorController combatController;
 
     // Start is called before the first frame update
     void Start()
@@ -70,31 +85,39 @@ public class PartyMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //trigger animations
-        moving_ = direction_.magnitude >= 0.1f;
-        animator_.SetFloat("Speed", NPCSpeed_);
-
-        //rotate to look at player
-        Vector3 target = new Vector3(player_.transform.position.x, controller_.transform.position.y, player_.transform.position.z);
-        transform.LookAt(target, Vector3.up);
-        moveDir_ = transform.TransformDirection(Vector3.forward);
-
-        //copycat player movement bools
-        moving_ = player_.GetComponent<PlayerMovement>().getMoving();
-        running_ = player_.GetComponent<PlayerMovement>().getRunning();
-
-
-        //apply movement
-        if (inParty_ && !Is_Close_To_Player(followDistance))
+        if(inCombat == false)
         {
-            Update_Movement();
+            //trigger animations
+            moving_ = direction_.magnitude >= 0.1f;
+            animator_.SetFloat("Speed", NPCSpeed_);
+
+            //rotate to look at player
+            Vector3 target = new Vector3(player_.transform.position.x, controller_.transform.position.y, player_.transform.position.z);
+            transform.LookAt(target, Vector3.up);
+            moveDir_ = transform.TransformDirection(Vector3.forward);
+
+            //copycat player movement bools
+            moving_ = player_.GetComponent<PlayerMovement>().getMoving();
+            running_ = player_.GetComponent<PlayerMovement>().getRunning();
+
+
+            //apply movement
+            if (inParty_ && !Is_Close_To_Player(followDistance))
+            {
+                Update_Movement();
+            }
+            else
+            {
+                NPCSpeed_ = 0f;
+                //audio.Stop();
+                controller_.Move(new Vector3(0f, -9.8f * Time.deltaTime, 0f));//this is just for gravity when stopped.
+            }
         }
-        else
+        else // we still want gravity though!!!
         {
-            NPCSpeed_ = 0f;
-            //audio.Stop();
             controller_.Move(new Vector3(0f, -9.8f * Time.deltaTime, 0f));//this is just for gravity when stopped.
         }
+        
     }
 
     private void Update_Movement()

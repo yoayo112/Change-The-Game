@@ -35,7 +35,7 @@ public class BasicTransition : SceneTransition
         animator_ = transform.GetChild(0).GetComponent<Animator>();
 
         //move player (and party) to correct spawn location.
-        List<GameObject> party = GlobalService.Get_Real_Party();
+        List<GameObject> party = GlobalService.Get_Party_Instances();
         if (newSpawn != "")
         {
             Spawn_Party(newSpawn, party);
