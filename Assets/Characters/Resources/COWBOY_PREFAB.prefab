@@ -229,7 +229,7 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2.0000002
+  m_Height: 2.05
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
@@ -286,6 +286,7 @@ MonoBehaviour:
   walkSpeed: 2.5
   runSpeed: 6
   turnSmoothTime: 0.1
+  combatTarget: {fileID: 0}
   controller_: {fileID: 815239057514384354}
   audio: {fileID: 5812050262680385871}
   runSound: {fileID: 8300000, guid: ad7257c09f507b34ba9bbcc8223ae7ad, type: 3}

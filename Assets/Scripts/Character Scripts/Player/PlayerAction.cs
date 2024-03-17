@@ -39,7 +39,7 @@ public class PlayerAction : MonoBehaviour
         }
         else
         {
-            gameObject.GetComponent<PlayerMovement>().Set_Combat(false);
+            gameObject.GetComponent<BasicNPCMovement>().Set_Combat(false);
             animator_.runtimeAnimatorController = movementController;
         }
     }

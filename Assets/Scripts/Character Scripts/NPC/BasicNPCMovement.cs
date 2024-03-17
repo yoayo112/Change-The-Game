@@ -1,15 +1,29 @@
+/*
+Project: Change the Game
+File: PlayerAction.cs
+Date Created: March 16, 2024
+Author(s): Sky Vercauteren
+Info:
+
+a basic class to define movement for NPC's and enemies.
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BasicNPCMovement : MonoBehaviour
 {
+    //exposed
+    public Animator animator;
 
+    //unexposed
     private CharacterController controller_;
     private bool inCombat = false;
     public void Set_Combat(bool b)
     {
         inCombat = b;
+        animator.SetBool("Combat", true);
     }
 
     // Start is called before the first frame update

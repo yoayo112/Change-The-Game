@@ -5,7 +5,7 @@ Date Created: February 2, 2024
 Author(s): Sky Vercauteren
 Info:
 
-Used to control the actions that are unique to the cowboy according to player input.
+Used to control the handful of actions that are unique to the cowboy according to player input.
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -21,7 +21,7 @@ public class CowboyAction : MonoBehaviour
     private List<ConstraintSource> sources_;
     Timer holster;
     private bool inCombat_;
-    public void SetCombat(bool t)
+    public void Set_Combat(bool t)
     {
         inCombat_ = t;
     }
@@ -48,15 +48,11 @@ public class CowboyAction : MonoBehaviour
     void Update()
     {
         //COMBAT = true;
-        if (inCombat_)
+        if (inCombat_ && holster != null)
         {
-            animator_.runtimeAnimatorController = combatController;
-            if (holster != null) { holster.Update(); }
+            holster.Update(); 
         }
-        else
-        {
-            animator_.runtimeAnimatorController = movementController;
-        }
+
         //"Mlady"
         if (Input.GetButtonDown("Hat"))
         {
@@ -69,20 +65,7 @@ public class CowboyAction : MonoBehaviour
             {
                 animator_.SetTrigger("movingHat");
             }
-        }
-
-        //Main interact switch
-        if (Input.GetButtonDown("Interact"))
-        {
-            if(inCombat_)
-            {
-                holster = new Timer(PutAway, 3f);
-                GetOut();
-                animator_.SetTrigger("attack");
-            }
-        }
-
-        
+        }  
     }
 
     private void PutAway()
@@ -105,5 +88,15 @@ public class CowboyAction : MonoBehaviour
         sources_[0] = holst_;
         sources_[1] = hand_;
         constraint_.SetSources(sources_);
+    }
+
+    public void Shoot()
+    {
+        if (inCombat_)
+        {
+            holster = new Timer(PutAway, 3f);
+            GetOut();
+            animator_.SetTrigger("attack");
+        }
     }
 }

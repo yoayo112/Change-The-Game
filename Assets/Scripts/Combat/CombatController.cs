@@ -83,22 +83,27 @@ public class CombatController : MonoBehaviour
         mainCharacter.GetComponent<PlayerAction>().Set_Combat(true); //TODO! set combat to false when combat ends
         players.Add(mainCharacter.GetComponent<Character>());
         mainCharacter.transform.position = partySpawns[0].transform.position;
+        Vector3 initialTarget = new Vector3(baddySpawns[0].transform.position.x, mainCharacter.transform.position.y, baddySpawns[0].transform.position.z);
+        mainCharacter.transform.LookAt(initialTarget, Vector3.up);
         int j = 1;
         foreach(GameObject member in party)
         {
             players.Add(member.GetComponent<Character>());
             member.transform.position = partySpawns[j].transform.position;
+            member.transform.LookAt(initialTarget, Vector3.up);
             member.GetComponent<PartyMovement>().Set_Combat(true); //TODO! set combat to false when combat ends
         }
 
         //ok now the neerdowells
         enemies = new List<Character>();
         List<string> enemyNames = GlobalService.Get_Main().Get_Enemies();
-        for(int i = 0; i < enemyNames.Count; i++)
+        initialTarget = new Vector3(partySpawns[0].transform.position.x, mainCharacter.transform.position.y, partySpawns[0].transform.position.z);
+        for (int i = 0; i < enemyNames.Count; i++)
         {
             GameObject baddy = Instantiate(Resources.Load<GameObject>(enemyNames[i]));
             enemies.Add(baddy.GetComponent<Character>());
             baddy.transform.position = baddySpawns[i].transform.position;
+            baddy.transform.LookAt(initialTarget, Vector3.up);
             baddy.GetComponent<BasicNPCMovement>().Set_Combat(true); // TODO: Set to false after combat ends
         }
 

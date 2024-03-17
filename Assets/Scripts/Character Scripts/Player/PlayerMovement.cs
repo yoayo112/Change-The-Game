@@ -43,6 +43,7 @@ public class PlayerMovement : MonoBehaviour
     public float walkSpeed;
     public float runSpeed;
     public float turnSmoothTime = 0.1f;
+    public GameObject combatTarget;
     //Unexposed
 
     public CharacterController controller_;
@@ -166,7 +167,7 @@ public class PlayerMovement : MonoBehaviour
                 controller_.Move(new Vector3(0f, -9.8f * Time.deltaTime, 0f));//this is just for gravity when stopped.
             }
         }
-        else // we still want gravity though!!!!
+        else // we still want gravity though!!!! also, Look at the target.
         {
             controller_.Move(new Vector3(0f, -9.8f * Time.deltaTime, 0f));//this is just for gravity when stopped.
         }
