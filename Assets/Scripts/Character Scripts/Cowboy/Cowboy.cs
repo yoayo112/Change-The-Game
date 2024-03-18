@@ -15,6 +15,11 @@ using UnityEngine.Rendering.Universal;
 
 public class Cowboy : Player
 {
+    //unexposed vars.
+    private Camera _main;
+    private Camera _overlay;
+    private GameObject _shooter;
+    private int[] _targets;
     //---------------------------------------------------------------
     //Permanent stats (if we want to balance the cowboy differently)
     //---------------------------------------------------------------
@@ -33,35 +38,40 @@ public class Cowboy : Player
     //----------------------------------------------------------------
     public void Attack()
     {
-        Debug.Log("Click");
         //ask player to target enemy (TODO)
-        int[] targets_;
-        targets_ = new int[]{ 0 };
+        _targets = new int[]{ 0 };
 
         //display minigame
-        StartCoroutine(Minigame(targets_));
+        StartCoroutine(Minigame_CountDown());
     }
 
-    public IEnumerator Minigame(int[] targets_)
+    //This whole thing is juist aseries of waits until the minigame has started and finieshed.
+    private IEnumerator Minigame_CountDown()
     {
         //display minigame
-        GameObject shooter = GameObject.Find("Cowboy Minigame");
-        Camera main = GameObject.Find("Main Camera").GetComponent<Camera>();
-        Camera overlay = shooter.GetComponentInChildren<Camera>();
-        main.GetUniversalAdditionalCameraData().cameraStack.Add(overlay);
-        shooter.GetComponentInChildren<MiniGameTimer>().Start_Countdown();
-
-        //wait for minigame
-        yield return new WaitWhile(() => shooter.GetComponent<GridShooterController>().Get_gameRunning());
+        _shooter = GameObject.Find("Cowboy Minigame");
+        _main = GameObject.Find("Main Camera").GetComponent<Camera>();
+        _overlay = _shooter.GetComponentInChildren<Camera>();
+        _main.GetUniversalAdditionalCameraData().cameraStack.Add(_overlay);
+        _shooter.GetComponentInChildren<MiniGameTimer>().Start_Countdown();
+        yield return new WaitWhile(() => !_shooter.GetComponentInChildren<GridShooterController>().Get_gameRunning());
+        StartCoroutine(Minigame());
+    }
+    private IEnumerator Minigame()
+    {
+        //hide the combat gui
+        Find_Canvas("CombatGUI").gameObject.SetActive(false);
+        //wait for minigame to finish
+        yield return new WaitWhile(() => _shooter.GetComponentInChildren<GridShooterController>().Get_gameRunning());
 
         //then get the effictiveness and broadcast the attack event.
-        float effectiveness_ = shooter.GetComponent<GridShooterController>().Get_Effectiveness();
-        Attack_Characters(CharacterType.enemy, targets_, effectiveness_);
-        main.GetUniversalAdditionalCameraData().cameraStack.Remove(overlay);
-        Find_Canvas("CombatGUI").gameObject.SetActive(false);
+        float effectiveness_ = _shooter.GetComponentInChildren<GridShooterController>().Get_Effectiveness();
+        Attack_Characters(CharacterType.enemy, _targets, effectiveness_);
+        _main.GetUniversalAdditionalCameraData().cameraStack.Remove(_overlay);
+        
 
         //and of course animate
-        gameObject.GetComponent<Animator>().SetTrigger("Attack");
+        gameObject.GetComponentInChildren<Animator>().SetTrigger("Attack");
     }
 
     //----------------------------------------------------------------

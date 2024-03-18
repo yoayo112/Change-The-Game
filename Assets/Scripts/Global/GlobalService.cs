@@ -15,7 +15,10 @@ using UnityEngine;
 
 public class GlobalService
 {
-    private static Dictionary<string, int> children = new Dictionary<string, int>() { { Get_Global().GetChild(0).gameObject.name, 0 }, { Get_Global().GetChild(1).gameObject.name, 1 } };
+    private static Dictionary<string, int> children = new Dictionary<string, int>() {
+        { Get_Global().GetChild(0).gameObject.name, 0 },
+        { Get_Global().GetChild(1).gameObject.name, 1 },
+        { Get_Global().GetChild(2).gameObject.name, 2 } };
     private static int numberOfChildren_ = 2;
     private static string playerObjectName_;
 
