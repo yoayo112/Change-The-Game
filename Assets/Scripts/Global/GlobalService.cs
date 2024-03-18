@@ -59,6 +59,7 @@ public class GlobalService
     //saves/stores an instance of a prefab in _GLOBAL_ that we use as the player!
     static public void Set_Player_Instance(GameObject o)
     {
+        Get_Main().Set_Player_Prefab(o);
         playerObjectName_ = o.name;
         Add_Global_Object(o);
     }
@@ -69,7 +70,7 @@ public class GlobalService
         return Get_Main().Get_Party();
     }
 
-    //returns true if the prefab is listen in the party AND the prefab is real in _Global_
+    //returns a list of all the members of the party that have prefab instances in _GLOBAL_
     static public List<GameObject> Get_Party_Instances()
     {
         List<GameObject> party = Get_Party();

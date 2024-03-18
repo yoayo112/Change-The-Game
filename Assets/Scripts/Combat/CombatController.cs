@@ -43,7 +43,8 @@ public class CombatController : MonoBehaviour
 
     private bool _playerVictory = false; // Only used for determining ending state of combat
 
-    public CombatStates currentState = CombatStates.beginCombat; //Keeps track of current combat state
+    public CombatStates currentState; //Keeps track of current combat state
+    private bool _startedFighting = false;
 
     private void Awake()
     {
@@ -134,18 +135,17 @@ public class CombatController : MonoBehaviour
         }
 
         Update_Turn_Queue();
-
+        StartCoroutine(Initial_Combat_Countdown());
     }
 
     // Update is called once per frame
     void Update()
     {
-
         //Checking State
         switch (currentState)
         {
             case CombatStates.beginCombat:
-                Start_Turn();
+                if (_startedFighting) { Start_Turn(); }
                 break;
 
             case CombatStates.startTurn:
@@ -305,5 +305,11 @@ public class CombatController : MonoBehaviour
             _turnQueue[i].Set_QueuePosition(i);
             Debug.Log("Turn Queue indexes: " + _turnQueue[i].Get_Name() + " is at position: " + _turnQueue[i].Get_QueuePosition());
         }
+    }
+
+    public IEnumerator Initial_Combat_Countdown()
+    {
+        yield return new WaitForSeconds(5);
+        _startedFighting = true;
     }
 }

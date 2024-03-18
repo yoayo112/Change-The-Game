@@ -1,3 +1,15 @@
+/*
+Project: Change the Game
+File: Character.cs
+Date Created: March 01, 2024
+Author(s): Elijah Theander, Sean Thornton, Sky Vercauteren
+Info:
+player Stats script that stores stats about players,
+handles whether or not a character is living, and processes
+outgoing and incoming damage with events. extends Character.cs
+
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +19,7 @@ public class Player : Character
     //Starting Values for when combat starts. We will revert to these at combat end.
     //Basically, only using these dictionaries to allow specific stats to be mutable 
     //while in combat, but not outside of combat.
-    private StatsStruct _permanentStats = new StatsStruct(
+    protected StatsStruct _permanentStats = new StatsStruct(
         50, //armor
         20,   //attack power
         20,   //heal power
@@ -25,6 +37,15 @@ public class Player : Character
     public void Set_PermanentMaxHealth(int val_) => _permanentStats.maxHealth = val_;
     public void Set_PermanentMaxEnergy(int val_) => _permanentStats.maxEnergy = val_;
     public void Set_PermanentSpeed(int val_) => _permanentStats.speed = val_;
+    public void Set_PermanentStats(int armor_, int ap_, int hp_, int maxHealth_, int maxEnergy_, int speed_)
+    {
+        Set_PermanentArmor(armor_);
+        Set_PermanentAttackPower(ap_);
+        Set_PermanentHealPower(hp_);
+        Set_PermanentMaxEnergy(maxEnergy_);
+        Set_PermanentMaxHealth(maxHealth_);
+        Set_PermanentSpeed(speed_);
+    }
     
     //------------------------------------------------------------------------------------
     // Stat Modification methods (temporary modifications to stats during combat.)
@@ -93,6 +114,16 @@ public class Player : Character
         Set_CharacterType(CharacterType.player);
     }
 
+    //---------------------------------------------------------------
+    //Overriden Execute_Turn Method to show player GUI
+    //---------------------------------------------------------------
+    public override IEnumerator Execute_Turn()
+    {
+        Find_Canvas("CombatGUI").gameObject.SetActive(true);
+        yield return new WaitWhile(() => Find_Canvas("CombatGUI").gameObject.activeInHierarchy);
+        //yield return null;
+    }
+
     //-----------------------------------------------------------------
     // Writing currentHealth and currentEnergy values back into
     // "permanent" stats
@@ -102,5 +133,23 @@ public class Player : Character
     {
         _permanentStats.currentHealth = Get_CurrentHealth();
         _permanentStats.currentEnergy = Get_CurrentEnergy();
+    }
+
+    //-----------------------------------------------------------------
+    //Helper functions
+    //-----------------------------------------------------------------
+    public Canvas Find_Canvas(string name)
+    {
+        Canvas[] all = gameObject.GetComponentsInChildren<Canvas>(true);
+        foreach (Canvas canvas in all)
+        {
+            if (canvas.gameObject.name == name) { return canvas; }
+        }
+        return null;
+    }
+
+    private IEnumerator In_GUI()
+    {
+        while (true) { if (!Find_Canvas("CombatGUI").gameObject.activeInHierarchy) { yield return null; } }
     }
 }

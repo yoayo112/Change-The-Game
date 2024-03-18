@@ -6,6 +6,7 @@ Author(s): Sky Vercauteren
 Info:
 
 Defines the movement behavior of a given NPC in a players party.
+Includes Behavior that would be in PartyAction.cs too, since party members only respond to the player, their actions are limited.
 */
 using System;
 using System.Collections;
@@ -29,9 +30,8 @@ public class PartyMovement : MonoBehaviour
     //Hidden:
     //player
     private Transform player_;
+
     //this npc
-    private float walkSpeed_;
-    private float runSpeed_;
     private bool inParty_;
     public void set_inParty(bool b)
     {
@@ -43,6 +43,12 @@ public class PartyMovement : MonoBehaviour
     }
     private Animator animator_;
     private CharacterController controller_;
+    public RuntimeAnimatorController movementController;
+    public RuntimeAnimatorController combatController;
+
+    //movement
+    private float walkSpeed_;
+    private float runSpeed_;
     private float fallSpeed_;
     private bool falling_;
     private bool moving_;
@@ -52,6 +58,9 @@ public class PartyMovement : MonoBehaviour
     private float NPCSpeed_;
     public float Get_NPC_Speed() { return NPCSpeed_; }
     private Vector3 moveDir_;
+
+    //combat
+    private Canvas combatGUI_;
     private bool inCombat = false;
     public void Set_Combat(bool b)
     {
@@ -59,14 +68,17 @@ public class PartyMovement : MonoBehaviour
         if(b == true)
         {
             animator_.runtimeAnimatorController = combatController;
+            combatGUI_.renderMode = RenderMode.ScreenSpaceCamera;
+            Camera camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+            combatGUI_.worldCamera = camera;
+            combatGUI_.planeDistance = 1;
         }
         else
         {
             animator_.runtimeAnimatorController = movementController;
         }
     }
-    public RuntimeAnimatorController movementController;
-    public RuntimeAnimatorController combatController;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -80,6 +92,10 @@ public class PartyMovement : MonoBehaviour
         //copycat run and walk speeds
         runSpeed_ = player_.gameObject.GetComponent<PlayerMovement>().runSpeed -1.5f;
         walkSpeed_ = player_.gameObject.GetComponent<PlayerMovement>().walkSpeed -1f;
+
+        //combat
+        combatGUI_ = gameObject.GetComponent<Player>().Find_Canvas("CombatGUI");
+        combatGUI_.gameObject.SetActive(false);
     }
 
     // Update is called once per frame

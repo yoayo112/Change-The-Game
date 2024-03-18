@@ -15,7 +15,9 @@ using UnityEngine.SceneManagement;
 
 public class GlobalMain : MonoBehaviour
 {
-    //PLAYER INFORMATION
+    //PLAYER INFORMATION:
+    //this is just a reference to the prefab in memory!
+    //to get the actual instance in a scene, use GlobalService.Get_Player_Instance();
     private GameObject player_;
     public GameObject Get_Player_Prefab()
     {
@@ -24,24 +26,14 @@ public class GlobalMain : MonoBehaviour
     public void Set_Player_Prefab(GameObject p)
     {
         player_ = p;
-        //TODO:
-        //initialize prefab as player object
-        //remove NPC movement script and anything else.
-        //add playermovement.cs, free look camera, etc
-        
     }
 
     //PARTY INFORMATION
+    //This is also just a list of prefab references in memory. 
+    //use GlobalService.Get_Party_Instances() for actua in-scene objects.
     private List<GameObject> party_;
     public void Set_Party(List<GameObject> others)
     {
-        //set all characters as NPC's
-        foreach (GameObject character in others)
-        {
-            //initialize prefab as NPC in party
-            //assign NPC movement script.
-            //assign anything else specific to NPCs
-        }
         party_ = others;
     }
     public List<GameObject> Get_Party()

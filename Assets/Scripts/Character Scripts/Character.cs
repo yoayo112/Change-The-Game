@@ -2,7 +2,7 @@
 Project: Change the Game
 File: Character.cs
 Date Created: March 01, 2024
-Author(s): Elijah Theander, Sean Thornton, Sky Vercauteren
+Author(s): Elijah Theander, Sean Thornton
 Info:
 Character Stats script that stores stats about characters,
 handles whether or not a character is living, and processes
@@ -157,13 +157,20 @@ public class Character : MonoBehaviour, IComparable
         {
             if (Is_Alive())
             {
+                //modify stats
                 int actualDamage_ = (int) (damage_ * 100f / (_currentStats.armor + 100f));
                 _currentStats.currentHealth -= actualDamage_;
-                //animate here
                 Debug.Log("Character " + characterName + " just took " + actualDamage_ + " damage!");
                 if (!Is_Alive())
                 {
+                    //animate death
+                    gameObject.GetComponentInChildren<Animator>().SetTrigger("Death");
                     Debug.Log("Character " + characterName + " has perished...");
+                }
+                else
+                {
+                    //animate getting hurt (but still alive)
+                    transform.GetChild(0).GetComponent<Animator>().SetTrigger("Hurt");
                 }
             }
             else
@@ -243,9 +250,9 @@ public class Character : MonoBehaviour, IComparable
             Debug.Log("Character " + characterName + " is starting their turn!");
 
             if (Is_Alive())
-                Execute_Turn();
-
-            End_Turn();
+            {
+                StartCoroutine(Wait_For_Gameplay());
+            }
         }
     }
 
@@ -255,6 +262,11 @@ public class Character : MonoBehaviour, IComparable
         CombatEventManager.End_Turn();
     }
 
+    public IEnumerator Wait_For_Gameplay()
+    {
+        yield return StartCoroutine(Execute_Turn());
+        End_Turn();
+    }
     //----------------------------------------------------------------------------
     // Stubs for subclass methods. Override these when you extend the class
     //----------------------------------------------------------------------------
@@ -275,14 +287,17 @@ public class Character : MonoBehaviour, IComparable
         //Set_CurrentEnergy(_currentEnergy);
     }
 
-    public virtual void Execute_Turn()
+    public virtual IEnumerator Execute_Turn()
     {
+        Debug.Log("Base class random attack");
         //Hitting a random enemy target by default
         int target_ = UnityEngine.Random.Range(0, CombatController.enemies.Count);
 
         int[] targets_ = { target_ };
 
         Attack_Characters(CharacterType.enemy, targets_);
+
+        yield return null;
     }
 
 }

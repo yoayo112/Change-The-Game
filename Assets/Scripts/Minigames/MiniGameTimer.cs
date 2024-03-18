@@ -11,7 +11,13 @@ public class MiniGameTimer : MonoBehaviour
     private bool _timerRunning; // internal control
 
     private float _countdownTime;
-    private bool _countdownRunning;
+    private bool _countdownRunning = false;
+
+    //Just for now I am calling this from the combat GUI!!
+    public virtual void Start_Countdown()
+    {
+        _countdownRunning = true;
+    }
 
     void OnEnable()
     {
@@ -27,7 +33,6 @@ public class MiniGameTimer : MonoBehaviour
         _timerRunning = false;
 
         _countdownTime = 4f;
-        _countdownRunning = true;
         Update_Time(3);
     }
 

@@ -41,7 +41,7 @@ public class ClassName : Enemy                   //Filename, ClassName, and NAME
      *       Heal_Character(CharacterType type_, int target_, effeictness_) to heal a single target
      *       Take_Healing(float healing_) to heal self
     */
-    public override void Execute_Turn()
+    public override IEnumerator Execute_Turn()
     {
         /*
          * Example turn, attacking random player that is alive
@@ -60,6 +60,7 @@ public class ClassName : Enemy                   //Filename, ClassName, and NAME
 
         Attack_Character(CharcterType.player, target_, 0.0f);
         */
+        yield return null;
     }
 
     // Sets the stats ranges for the enemy when it is initialized

@@ -30,7 +30,7 @@ public class Squid : Enemy
     private const int SPEED_MIN = 50;
     private const int SPEED_MAX = 150;
 
-    public override void Execute_Turn()
+    public override IEnumerator Execute_Turn()
     {
         int playerCount_ = CombatController.players.Count;
         int randomTarget_ = UnityEngine.Random.Range(0, playerCount_);
@@ -44,6 +44,8 @@ public class Squid : Enemy
         }
 
         Attack_Character(CharacterType.player, target_, 0.0f);
+
+        yield return null;
     }
 
     public override void Set_Ranges()

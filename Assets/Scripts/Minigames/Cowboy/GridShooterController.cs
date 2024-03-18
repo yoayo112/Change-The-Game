@@ -21,7 +21,9 @@ public class GridShooterController : MonoBehaviour
     private int _hitTargets; //How many targets player has hit
     private int _missedTargets; //How many targets missed to old age
     private float _minigameEffectiveness;
+    public float Get_Effectiveness() => _minigameEffectiveness;
     private bool _gameRunning = false;
+    public bool Get_gameRunning() => _gameRunning;
 
     public InkSplatter inkSplatter;
 

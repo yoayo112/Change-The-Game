@@ -19,13 +19,14 @@ public class StartMenu : MonoBehaviour
     //Start Menu
     //-------------
     private GlobalMain main_;
+    private GameObject player_;
 
     void Awake()
     {
         //this is literally just so the cowboy is interactable in the start menu.      
         main_ = GlobalService.Get_Main();            // = GameObject.Find("_GLOBAL_").GetComponent<Transform>().GetChild(0).GetComponent<GlobalMain>();
-        GameObject player_ = Instantiate(Resources.Load<GameObject>("COWBOY_PREFAB"));
-        GlobalService.Set_Player_Instance(player_);
+        //TODO: Select from list - cowboy is just default.
+        Select_Player(Resources.Load<GameObject>("COWBOY_PREFAB"));
     }
 
     public void Play()
@@ -41,5 +42,28 @@ public class StartMenu : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
+    }
+
+    //Initializes a selected character as "Player"
+    public void Select_Player(GameObject o)
+    {
+        if (player_) { Destroy(player_); }
+        player_ = Instantiate(o);
+        GlobalService.Set_Player_Instance(player_);
+        //TODO:
+        //Add playerMovement.cs
+        // -- init all vars
+        //remove partyMovement.cs
+        //add playerAction
+        // -- init all vars
+        //tag object as Player
+
+        //TODO: for each other *potential* party member.
+        //Add partyMovement.cs
+        // -- init all vars
+        //remove playerMovement.cs
+        //add partyAction (TODO: make partyAction.cs for dialog and stuff).
+        //-- init all vars
+        //tag object as NPC
     }
 }

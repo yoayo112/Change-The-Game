@@ -28,6 +28,9 @@ public class PlayerAction : MonoBehaviour
     }
     private TMP_Text dialogText_;
     private bool talking_;
+
+    private Canvas combatGUI_;
+
     private bool inCombat_ = false;
     public void Set_Combat(bool t)
     {
@@ -36,6 +39,11 @@ public class PlayerAction : MonoBehaviour
         {
             gameObject.GetComponent<PlayerMovement>().Set_Combat(true);
             animator_.runtimeAnimatorController = combatController;
+            //initialize combat GUI
+            combatGUI_.renderMode = RenderMode.ScreenSpaceCamera;
+            Camera camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+            combatGUI_.worldCamera = camera;
+            combatGUI_.planeDistance = 1;
         }
         else
         {
@@ -61,16 +69,21 @@ public class PlayerAction : MonoBehaviour
         animator_.runtimeAnimatorController = movementController;
         body_ = player_.GetChild(0).GetComponent<Transform>();
 
-        
+
 
         //dialog 
-        speechBubble_ = player_.gameObject.GetComponentInChildren<Canvas>(true);
+        speechBubble_ = player_.GetComponent<Player>().Find_Canvas("DialogBox");
         speechBubble_.renderMode = RenderMode.ScreenSpaceCamera;
-        speechBubble_.planeDistance = 3f;
-        speechBubble_.worldCamera = GlobalService.Get_Camera().GetComponentInChildren<Camera>(true);
+        Camera camera = GlobalService.Get_Camera().GetComponentInChildren<Camera>(true);
+        speechBubble_.worldCamera = camera;
+        speechBubble_.planeDistance = Vector3.Distance(camera.gameObject.GetComponent<Transform>().position, player_.position) / 2;
         dialogText_ = gameObject.GetComponentInChildren<TextMeshProUGUI>();
         speechBubble_.gameObject.SetActive(false);
-        
+
+        //combat
+        combatGUI_ = player_.GetComponent<Player>().Find_Canvas("CombatGUI");
+        combatGUI_.gameObject.SetActive(false);
+
     }
 
     // Update is called once per frame
