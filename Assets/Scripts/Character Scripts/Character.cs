@@ -28,7 +28,8 @@ public class Character : MonoBehaviour, IComparable
     private StatsStruct _currentStats = new StatsStruct(); //StatsStruct is defined in Scripts/Global/Stats_Struct
     private int _position = 0; // the index of position slot I am occupying in the Control Script
     private int _queuePosition = 0; // What index do I have in the Control Script's turn queue?
-    private List<int> _targets;
+
+    protected bool _executingTurn = false;
 
 
     private void OnEnable() //Subscrizzle.
@@ -94,7 +95,6 @@ public class Character : MonoBehaviour, IComparable
     public int Get_Position() => _position;
     public bool Is_Alive() => _currentStats.currentHealth > 0;
     public CharacterType Get_CharacterType() => _myType;
-    public List<int> Get_Targets() => _targets;
 
 
     // Mutators
@@ -112,7 +112,6 @@ public class Character : MonoBehaviour, IComparable
     public void Set_Speed(int speed_) => _currentStats.speed = speed_;
 
     public void Set_CharacterType(CharacterType type_) => _myType = type_;
-    public void Set_Targets(List<int> targets_) => _targets = targets_;
 
     public void Set_StatsStruct(StatsStruct value_) => _currentStats = value_;
 
@@ -251,6 +250,8 @@ public class Character : MonoBehaviour, IComparable
 
             if (Is_Alive())
             {
+                _executingTurn = true;
+                Execute_Turn();
                 StartCoroutine(Wait_For_Gameplay());
             }
         }
@@ -264,9 +265,10 @@ public class Character : MonoBehaviour, IComparable
 
     public IEnumerator Wait_For_Gameplay()
     {
-        yield return StartCoroutine(Execute_Turn());
+        yield return new WaitWhile(()=> _executingTurn);
         End_Turn();
     }
+
     //----------------------------------------------------------------------------
     // Stubs for subclass methods. Override these when you extend the class
     //----------------------------------------------------------------------------
@@ -287,17 +289,34 @@ public class Character : MonoBehaviour, IComparable
         //Set_CurrentEnergy(_currentEnergy);
     }
 
-    public virtual IEnumerator Execute_Turn()
+    public virtual void Execute_Turn()
     {
-        Debug.Log("Base class random attack");
         //Hitting a random enemy target by default
         int target_ = UnityEngine.Random.Range(0, CombatController.enemies.Count);
 
         int[] targets_ = { target_ };
 
         Attack_Characters(CharacterType.enemy, targets_);
-
-        yield return null;
     }
 
+    //---------------------------------------------------------------
+    //Animation
+    //---------------------------------------------------------------
+    
+    //animates an attack and waits until it's finished before returning.
+    public IEnumerator Animate_Attack(string stateName)
+    {
+        Animator animator = gameObject.GetComponentInChildren<Animator>();
+        animator.SetTrigger("Attack");
+        //enter attack anim
+        while (!animator.GetCurrentAnimatorStateInfo(0).IsName(stateName))
+        {
+            yield return null;
+        }
+        //wait until it's done animating
+        while ((animator.GetCurrentAnimatorStateInfo(0).normalizedTime) < 1f)
+        {
+            yield return null;
+        }
+    }
 }

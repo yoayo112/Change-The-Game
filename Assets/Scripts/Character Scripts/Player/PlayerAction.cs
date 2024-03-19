@@ -43,7 +43,7 @@ public class PlayerAction : MonoBehaviour
             combatGUI_.renderMode = RenderMode.ScreenSpaceCamera;
             Camera camera = GameObject.Find("Main Camera").GetComponent<Camera>();
             combatGUI_.worldCamera = camera;
-            combatGUI_.planeDistance = 1;
+            combatGUI_.planeDistance = 3;
         }
         else
         {

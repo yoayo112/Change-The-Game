@@ -262,12 +262,13 @@ MonoBehaviour:
   portal: {fileID: 8821411349970345784}
   goTo: 
   transitionAnimation: fade-out
-  mainEnemy: 
-  enemy2: 
-  enemy3: 
-  enemy4: 
-  enemy5: 
-  enemy6: 
+  enemies:
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
 --- !u!1001 &597512103708934734
 PrefabInstance:
   m_ObjectHideFlags: 0

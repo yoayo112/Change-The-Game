@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6862799329188158104}
   - component: {fileID: 7283045246785767900}
   - component: {fileID: 2463641354611792454}
-  - component: {fileID: 6150611373598433148}
+  - component: {fileID: 8501944433648360003}
   m_Layer: 0
   m_Name: PRIESTESS_PREFAB
   m_TagString: Untagged
@@ -80,7 +80,7 @@ MonoBehaviour:
   walkSound: {fileID: 0}
   movementController: {fileID: 9100000, guid: 090ef487f0cb74c4cb137369014ca875, type: 2}
   combatController: {fileID: 9100000, guid: 19648e91de74e3141ae4366fbcf3eab9, type: 2}
---- !u!114 &6150611373598433148
+--- !u!114 &8501944433648360003
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -89,10 +89,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8412871217781738253}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c8a4bb1bbbfb8c4db06eb6273d4cd96, type: 3}
+  m_Script: {fileID: 11500000, guid: 410cc0867e5faa84abe2b0ee8fd8254c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: Place Holder
+  characterName: Priestess
 --- !u!1001 &65735638979068241
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -356,6 +356,34 @@ PrefabInstance:
     - target: {fileID: 6932747534311069259, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_Colors.m_HighlightedColor.r
       value: 0.8490566
+      objectReference: {fileID: 0}
+    - target: {fileID: 6932747534311069259, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6932747534311069259, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6932747534311069259, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8501944433648360003}
+    - target: {fileID: 6932747534311069259, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6932747534311069259, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Attack
+      objectReference: {fileID: 0}
+    - target: {fileID: 6932747534311069259, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Priestess, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6932747534311069259, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7213194322612758678, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_Colors.m_NormalColor.b

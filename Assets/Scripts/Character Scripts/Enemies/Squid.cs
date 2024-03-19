@@ -23,14 +23,14 @@ public class Squid : Enemy
     private const int ATTACK_POWER_MAX = 15;
     private const int HEAL_POWER_MIN = 0;
     private const int HEAL_POWER_MAX = 0;
-    private const int HEALTH_MIN = 50;
-    private const int HEALTH_MAX = 70;
+    private const int HEALTH_MIN = 100;
+    private const int HEALTH_MAX = 200;
     private const int ENERGY_MIN = 0;
     private const int ENERGY_MAX = 0;
     private const int SPEED_MIN = 50;
     private const int SPEED_MAX = 150;
 
-    public override IEnumerator Execute_Turn()
+    public override void Execute_Turn()
     {
         int playerCount_ = CombatController.players.Count;
         int randomTarget_ = UnityEngine.Random.Range(0, playerCount_);
@@ -43,9 +43,12 @@ public class Squid : Enemy
                 break;
         }
 
+        //animate attacking then broadcast damage
+        StartCoroutine(Animate_Attack("Attack"));
         Attack_Character(CharacterType.player, target_, 0.0f);
 
-        yield return null;
+        //tell character.cs to end turn
+        _executingTurn = false;
     }
 
     public override void Set_Ranges()

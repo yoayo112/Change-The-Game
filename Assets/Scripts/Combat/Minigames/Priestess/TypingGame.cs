@@ -2,7 +2,7 @@
 Project: Change the Game
 File: TypingGame.cs
 Date Created: Feburary 26, 2024
-Author(s): Sean Thornton
+Author(s): Sean Thornton, Sky Vercauteren
 Info:
 
 Script that controls the Priestess' typing minigame.
@@ -49,6 +49,8 @@ public class TypingGame : MonoBehaviour
     //-------------------------------------------------------------------------------------
     //  Variables
     //-------------------------------------------------------------------------------------
+    private bool _isRunning = false;
+    public bool Get_isRunning() => _isRunning;
     private string _typedLine = string.Empty; //Represents the player's actual typed line, removing errors they have backspaced. 
     private int _typedCount = 0;        //Running count of characters in _typedLine.
     private int _totalTypedCount = 0;
@@ -56,6 +58,9 @@ public class TypingGame : MonoBehaviour
 
     private int _mistakeCount = 0;            //Running count of player mistakes. 
     private bool _isLocked = false;           //Will not accept additional mistake inputs while true.
+
+    private float _effectiveness;
+    public float Get_effectiveness() => _effectiveness;
 
     private string[] _availableLines = { "Healy Dan, grant divine healing to my wounded body asdf asdf asdf asdf asdf asdf asd fasdf asdf asdf asdf asdf asd",
                                          "Healy Dan, grant divine healing for my bloodied brethren",
@@ -80,19 +85,57 @@ public class TypingGame : MonoBehaviour
     //-------------------------------------------------------------------------------------
     //  Unity Methods
     //-------------------------------------------------------------------------------------
+    void OnEnable()
+    {
+        TypingGameEvents.onStart += Start_Minigame;
+        TypingGameEvents.onUpdateTimer += Update_Timer;
+        TypingGameEvents.onTimeOver += Time_Over;
+    }
+    void OnDisable()
+    {
+        TypingGameEvents.onStart -= Start_Minigame;
+        TypingGameEvents.onUpdateTimer -= Update_Timer;
+        TypingGameEvents.onTimeOver -= Time_Over;
+    }
 
     private void Update()
     {
         Check_Input();
     }
 
-    private void Start()
+    public void Start_Minigame()
     {
+        if (!_isRunning)
+        {
+            _currentBranch = new TextTree(_availableLines);
+            Update_Available_Lines();
+            Update_Typed_Line();
+            Update_Mistake_Counter();
+            _effectiveness = 0f;
+            _isRunning = true;
+        }
+    }
 
-        _currentBranch = new TextTree(_availableLines);
-        Update_Available_Lines();
-        Update_Typed_Line();
-        Update_Mistake_Counter();
+    public void Update_Timer(int seconds_)
+    {
+        //lol I am not gonna fuck with this since you made this game :p user experience is all you!
+        
+        //but if you wanted to implement some sort of timer that is displayed to the user,
+        // this method is constantly being updated with the seconds left in the game
+        // you can do stuff with seconds_ here if you want.
+
+        //Also, Elijah built a 3 (or 5?) second countdown from the initial display of the game to the game actually starting. 
+        //This is updated by both timers, So you can use these seconds as "countdown until start" AND "countdown until end".
+        //I believe lol. 
+    }
+
+    public void Time_Over()
+    {
+        // this is the end state of the game. for now:
+        _effectiveness = 0f; //TODO: however you want to calculate effectiveness.
+        _isRunning = false; //the condition being checked by the overworld to see if it's done.
+        //Also, board needs to be reset in case we want to play it again next turn
+        //TODO reset();
     }
 
     //-------------------------------------------------------------------------------------

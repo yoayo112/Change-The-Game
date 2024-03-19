@@ -28,6 +28,10 @@ public class Player : Character
         100  //speed
     );
 
+    //temp storage for each turn.
+    protected int[] _targets;
+    protected float _effectiveness;
+
     //------------------------------------------------------------------------------------
     // Methods for updating starting stats(permanent stats, update on level up or such.)
     //------------------------------------------------------------------------------------
@@ -117,11 +121,9 @@ public class Player : Character
     //---------------------------------------------------------------
     //Overriden Execute_Turn Method to show player GUI
     //---------------------------------------------------------------
-    public override IEnumerator Execute_Turn()
+    public override void Execute_Turn()
     {
         Find_Canvas("CombatGUI").gameObject.SetActive(true);
-        yield return new WaitWhile(() => Find_Canvas("CombatGUI").gameObject.activeInHierarchy);
-        //yield return null;
     }
 
     //-----------------------------------------------------------------
@@ -146,10 +148,5 @@ public class Player : Character
             if (canvas.gameObject.name == name) { return canvas; }
         }
         return null;
-    }
-
-    private IEnumerator In_GUI()
-    {
-        while (true) { if (!Find_Canvas("CombatGUI").gameObject.activeInHierarchy) { yield return null; } }
     }
 }
