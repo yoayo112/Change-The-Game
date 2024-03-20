@@ -68,7 +68,7 @@ public class CowboyAction : MonoBehaviour
         }  
     }
 
-    private void PutAway()
+    public void PutAway()
     {
         ConstraintSource holst_ = sources_[0];
         ConstraintSource hand_ = sources_[1];
@@ -79,7 +79,7 @@ public class CowboyAction : MonoBehaviour
         constraint_.SetSources(sources_);
     }
 
-    private void GetOut()
+    public void GetOut()
     {
         ConstraintSource holst_ = sources_[0];
         ConstraintSource hand_ = sources_[1];
@@ -88,15 +88,5 @@ public class CowboyAction : MonoBehaviour
         sources_[0] = holst_;
         sources_[1] = hand_;
         constraint_.SetSources(sources_);
-    }
-
-    public void Shoot()
-    {
-        if (inCombat_)
-        {
-            holster = new Timer(PutAway, 3f);
-            GetOut();
-            animator_.SetTrigger("attack");
-        }
     }
 }

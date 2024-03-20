@@ -220,16 +220,19 @@ public class TypingGame : MonoBehaviour
     private void Check_Input()
     //Pulls the player input if it is a single key press and calls Enter_Letter. Calls Back_Space if backspace is pressed
     {
-        if (Input.anyKeyDown)
+        if(_isRunning)
         {
-            string keysPressed_ = Input.inputString;
+            if (Input.anyKeyDown)
+            {
+                string keysPressed_ = Input.inputString;
 
-            if (keysPressed_ == "\b")
-                Back_Space();
-            else if (keysPressed_ == "q")
-                inkSplatter.Splat(10);
-            else if (keysPressed_.Length == 1)
-                Attempt_Letter(keysPressed_);
+                if (keysPressed_ == "\b")
+                    Back_Space();
+                else if (keysPressed_ == "q")
+                    inkSplatter.Splat(10);
+                else if (keysPressed_.Length == 1)
+                    Attempt_Letter(keysPressed_);
+            }
         }
     }
 
@@ -272,7 +275,8 @@ public class TypingGame : MonoBehaviour
         _mistakeCount++;
         cameraShake.Shake();
         Update_Mistake_Counter();
-        audioSource.PlayOneShot(audioClipArray[0], volume);
+        //audioSource.PlayOneShot(audioClipArray[0], volume); //This clip is currently The grunt sound from Elijah's shooting game :,D 
+        //TODO: Audio Management.
         StartCoroutine(Lock_Mistake());
 
         //inkSplatter.Splat(10);

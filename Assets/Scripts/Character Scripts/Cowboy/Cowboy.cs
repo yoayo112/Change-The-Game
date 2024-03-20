@@ -62,10 +62,12 @@ public class Cowboy : Player
         yield return new WaitWhile(() => _shooter.GetComponentInChildren<GridShooterController>().Get_gameRunning());
 
         //get effectiveness and animate
-        _effectiveness = _shooter.GetComponentInChildren<GridShooterController>().Get_Effectiveness();
+        float _effectiveness = _shooter.GetComponentInChildren<GridShooterController>().Get_Effectiveness();
         _main.GetUniversalAdditionalCameraData().cameraStack.Remove(_overlay);
-        yield return Animate_Attack("combat_attack");
+        transform.parent.GetComponentInChildren<CowboyAction>().GetOut();
 
+        yield return Animate_Attack("combat_attack");
+        transform.parent.GetComponentInChildren<CowboyAction>().PutAway();
         //send the event
         Attack_Characters(CharacterType.enemy, _targets, _effectiveness);
         

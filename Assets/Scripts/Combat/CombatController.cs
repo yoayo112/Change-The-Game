@@ -171,15 +171,22 @@ public class CombatController : MonoBehaviour
         currentState = CombatStates.waiting;
         turnNumber++;
 
-        Debug.Log(
+        print(
                       "-----------------------------------------------------\n"
-                    + "Turn Number: " + turnNumber + "\n"
-                    + "Current Queue Position: " + _currentTurnPos + "\n"
-                    + "Current character: " + _turnQueue[_currentTurnPos].Get_Name() + "\n"
+                    + "Turn Number: " + turnNumber + " \n"
+                    + "Current Queue Position: " + _currentTurnPos + " \n"
+                    + "Current character: " + _turnQueue[_currentTurnPos].Get_Name() + " \n"
                     + "-----------------------------------------------------"
                 );
-
-        CombatEventManager.Start_Turn(_currentTurnPos);
+        if (_turnQueue[_currentTurnPos].Is_Alive())
+        {
+            CombatEventManager.Start_Turn(_currentTurnPos);
+        }
+        else
+        {
+            currentState = CombatStates.endTurn;
+            Debug.Log("Character is dead - skipping.");
+        }
     }
 
     public void End_Turn()

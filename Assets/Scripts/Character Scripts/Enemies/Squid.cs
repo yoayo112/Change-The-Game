@@ -2,7 +2,7 @@
 Project: Change the Game
 File: Squid.cs
 Date Created: March 03, 2024
-Author(s): Sean Thornton
+Author(s): Sean Thornton, sky Vercauteren
 Info:
 
 Stats and Combat Controller for Squid enemy
@@ -43,8 +43,17 @@ public class Squid : Enemy
                 break;
         }
 
-        //animate attacking then broadcast damage
-        StartCoroutine(Animate_Attack("Attack"));
+        //animate attacking then broadcast damage and end turn
+        StartCoroutine(Attack(target_));
+    }
+    
+    //waits until animation is finished before broadcasting damage and ending turn
+    private IEnumerator Attack(int target_)
+    {
+        //wait while animating
+        yield return Animate_Attack("Attack");
+
+        //broadcast damage
         Attack_Character(CharacterType.player, target_, 0.0f);
 
         //tell character.cs to end turn

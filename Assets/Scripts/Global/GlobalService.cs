@@ -12,6 +12,7 @@ All methods are static. No constructor, not to be instantiated.
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class GlobalService
 {
@@ -37,6 +38,14 @@ public class GlobalService
         }
         else return null;
         
+    }
+
+    //returns names of all game objects in _GLOBAL_, each can be accessed with GlobalService.Get_Child(name);
+    static public string[] Get_All_Children()
+    {
+        Sort_Children();
+        string[] names = children.Keys.ToArray();
+        return names;
     }
 
     //returns the smaller but arguably more important enchilada.

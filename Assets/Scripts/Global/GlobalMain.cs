@@ -40,11 +40,14 @@ public class GlobalMain : MonoBehaviour
     {
         return party_;
     }
-    public void Party_Push(GameObject npc)
+    public void Party_Push(GameObject npc, string name)
     {
         //some logic here to make sure the npc is a valid party member and has the correct components.
         //if components ? do nothing : add npc movement script etc.
+        npc.name = name;
         party_.Add(npc);
+        npc.GetComponent<PartyMovement>().set_inParty(true);
+        GlobalService.Add_Global_Object(npc);
     }
     public bool Is_In_Party(GameObject npc)
     {

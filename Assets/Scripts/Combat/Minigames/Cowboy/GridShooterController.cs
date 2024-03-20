@@ -170,6 +170,7 @@ public class GridShooterController : MonoBehaviour
         _gameRunning = false;
         _targets.Kill_All();
         _minigameEffectiveness = (_hitTargets != 0)? ((float)_hitTargets/(float)_totalTargets): 0f;
+        Debug.Log(_minigameEffectiveness);
 
         Reset_State();
     }

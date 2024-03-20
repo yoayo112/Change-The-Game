@@ -160,16 +160,18 @@ public class Character : MonoBehaviour, IComparable
                 int actualDamage_ = (int) (damage_ * 100f / (_currentStats.armor + 100f));
                 _currentStats.currentHealth -= actualDamage_;
                 Debug.Log("Character " + characterName + " just took " + actualDamage_ + " damage!");
+                Animator _animator = gameObject.GetComponentInChildren<Animator>();
                 if (!Is_Alive())
                 {
                     //animate death
-                    gameObject.GetComponentInChildren<Animator>().SetTrigger("Death");
+                    _animator.SetTrigger("Death");
                     Debug.Log("Character " + characterName + " has perished...");
                 }
                 else
                 {
                     //animate getting hurt (but still alive)
-                    transform.GetChild(0).GetComponent<Animator>().SetTrigger("Hurt");
+                    Debug.Log(characterName + " Hurt");
+                    _animator.SetTrigger("Hurt");
                 }
             }
             else
@@ -266,6 +268,7 @@ public class Character : MonoBehaviour, IComparable
     public IEnumerator Wait_For_Gameplay()
     {
         yield return new WaitWhile(()=> _executingTurn);
+        _executingTurn = false;
         End_Turn();
     }
 
