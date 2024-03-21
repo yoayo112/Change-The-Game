@@ -36,6 +36,8 @@ public class CombatController : MonoBehaviour
     public GameObject[] partySpawns;
     public GameObject[] baddySpawns;
 
+    public Canvas endScreen;
+
     private static List<Character> _turnQueue = new List<Character>(); // Total list managing turn order
 
     public static int turnNumber { get; private set; } // Current turn in this combat scenario
@@ -273,6 +275,7 @@ public class CombatController : MonoBehaviour
         }
         Debug.Log("Combat Over! " + victoryMessage_);
         //Handle end state here, command to transition scene, post combat screen start, etc.
+        transform.parent.GetComponentInChildren<Animator>().SetTrigger("over");
     }
 
     //Make a big string of who's dead on both sides.
@@ -316,7 +319,7 @@ public class CombatController : MonoBehaviour
 
     public IEnumerator Initial_Combat_Countdown()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(4);
         _startedFighting = true;
     }
 }
