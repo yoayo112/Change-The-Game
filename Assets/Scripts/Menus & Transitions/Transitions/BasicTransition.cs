@@ -17,7 +17,7 @@ public class BasicTransition : SceneTransition
 {
     //exposed
 
-    [Header("The Spawn Point within that scene to start from (All Scenes Should have 'Main Spawn' as there is one inside this prefab)")]
+    [Header("The Spawn Point within that scene to start from (Default if left blank is MainSpawn)")]
     public string spawnName; // the name of the spawn within that scene.
     static string newSpawn = "";
 

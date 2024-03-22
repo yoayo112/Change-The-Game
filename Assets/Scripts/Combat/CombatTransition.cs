@@ -12,6 +12,8 @@ public class CombatTransition : SceneTransition
     [Header("List the name of the prefabs you want to fight")]
     public string[] enemies;
 
+    public bool enteringCombat;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,10 +30,18 @@ public class CombatTransition : SceneTransition
         //conditionlogic for scene transitions.
         if (portal.GetComponent<Collider>().bounds.Contains(body_.position))
         {
+            if(enteringCombat)
+            {
+                //pass in the enemies
+                GlobalService.Get_Main().Set_Enemies(enemies.ToList());
+            }
             StartCoroutine(fadeOut(goTo));
-            //pass in the enemies
-            GlobalService.Get_Main().Set_Enemies(enemies.ToList());
         }
 
+    }
+
+    public void GTFO()
+    {
+        transform.GetComponentInChildren<BoxCollider>().enabled = true;
     }
 }
