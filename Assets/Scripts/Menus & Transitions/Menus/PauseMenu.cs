@@ -23,7 +23,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
-{
+{ 
+
     private Rect pauseRect = new Rect(10, 10, 24, 28);
 
     private Rect menuRect = new Rect((Screen.width/6f)*2, Screen.height/6f, (Screen.width / 6)*2, (Screen.height / 6) * 4);

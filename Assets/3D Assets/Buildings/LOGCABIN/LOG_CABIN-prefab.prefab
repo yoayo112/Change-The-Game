@@ -2227,13 +2227,13 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c15f417afe2bce54d97a4de8a7f5fceb, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1727439227978869539}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c15f417afe2bce54d97a4de8a7f5fceb, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1743797481805119547}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c15f417afe2bce54d97a4de8a7f5fceb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5248872310740766660}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c15f417afe2bce54d97a4de8a7f5fceb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3140725235700726242}
   m_SourcePrefab: {fileID: 100100000, guid: c15f417afe2bce54d97a4de8a7f5fceb, type: 3}
 --- !u!4 &4955312554865040856 stripped
 Transform:
@@ -2245,20 +2245,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c15f417afe2bce54d97a4de8a7f5fceb, type: 3}
   m_PrefabInstance: {fileID: 4849945785178978867}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1727439227978869539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5732834038909224802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f1b01a503627e244bab501626728806, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  opensound: {fileID: 8300000, guid: 030acac607dd826429c0b4a8e4b8d26b, type: 3}
-  closesound: {fileID: 8300000, guid: 25e07bc9238b9e6449f99f3870017e74, type: 3}
 --- !u!64 &1743797481805119547
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2377,3 +2363,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3140725235700726242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732834038909224802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f1b01a503627e244bab501626728806, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  opensound: {fileID: 8300000, guid: 030acac607dd826429c0b4a8e4b8d26b, type: 3}
+  closesound: {fileID: 8300000, guid: 25e07bc9238b9e6449f99f3870017e74, type: 3}

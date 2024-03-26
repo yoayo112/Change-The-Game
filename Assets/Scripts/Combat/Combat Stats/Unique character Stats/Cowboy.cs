@@ -40,7 +40,7 @@ public class Cowboy : Player
     public void Attack()
     {
         //ask player to target enemy (TODO)
-        base._targets = new int[] { 0,1 };
+        base._targets = new int[] { Random.Range(0, 2) };
 
         StartCoroutine(Minigame());
     }
@@ -53,12 +53,12 @@ public class Cowboy : Player
         _overlay = _shooter.GetComponentInChildren<Camera>();
         _main.GetUniversalAdditionalCameraData().cameraStack.Add(_overlay);
         _shooter.GetComponentInChildren<MiniGameTimer>().Start_Countdown();
-        Find_Canvas("CombatGUI").gameObject.SetActive(false);
+        GlobalService.Find_Canvas_In_Children(gameObject, "CombatGUI").gameObject.SetActive(false);
 
-        //waiting for shooter to start
+        //waiting for shooter MG to start
         yield return new WaitWhile(() => !_shooter.GetComponentInChildren<GridShooterController>().Get_gameRunning());
 
-        //waiting for shooter to finish
+        //waiting for shooter MG to finish
         yield return new WaitWhile(() => _shooter.GetComponentInChildren<GridShooterController>().Get_gameRunning());
 
         //get effectiveness and animate
@@ -66,7 +66,9 @@ public class Cowboy : Player
         _main.GetUniversalAdditionalCameraData().cameraStack.Remove(_overlay);
         transform.parent.GetComponentInChildren<CowboyAction>().GetOut();
 
-        yield return Animate_Attack("combat_attack");
+        Animator animator = gameObject.GetComponentInChildren<Animator>();
+        yield return GlobalService.AnimWait(animator, "Attack", "combat_attack");
+
         transform.parent.GetComponentInChildren<CowboyAction>().PutAway();
         //send the event
         Attack_Characters(CharacterType.enemy, _targets, _effectiveness);

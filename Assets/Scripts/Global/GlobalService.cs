@@ -116,6 +116,7 @@ public class GlobalService
         }
     }
 
+    //names and orders all the Globally Saved GameObjects.
     private static void Sort_Children()
     {
         int count_ = Get_Global().childCount;
@@ -125,4 +126,41 @@ public class GlobalService
         }
     }
 
+    //---------------------------------------------------------
+    //Static Globally Available Helpers!
+    //---------------------------------------------------------
+
+    //given a GO and a name, returns canvas matching the name
+    public static Canvas Find_Canvas_In_Children(GameObject o, string name)
+    {
+        Canvas[] all = o.GetComponentsInChildren<Canvas>(true);
+        foreach (Canvas canvas in all)
+        {
+            if (canvas.gameObject.name == name) { return canvas; }
+        }
+        return null;
+    }
+
+    //Triggers an animation, then WAITS for the animation to finish before returning!
+    public static IEnumerator AnimWait(Animator animator, string trigger, string stateName)
+    {
+        //give an empty string to skip the animation triggering and do it manually.
+        if(trigger != "")
+        {
+            animator.SetTrigger(trigger);
+        }
+
+        //wait for it to start
+        while (!animator.GetCurrentAnimatorStateInfo(0).IsName(stateName))
+        {
+            yield return null;
+        }
+        //wait until it's done animating
+        while ((animator.GetCurrentAnimatorStateInfo(0).normalizedTime) < 1f)
+        {
+            yield return null;
+        }
+
+        yield return null;
+    }
 }

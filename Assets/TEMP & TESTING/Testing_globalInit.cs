@@ -17,6 +17,10 @@ public class Testing_globalInit : MonoBehaviour
 
         _player.GetComponentInChildren<AudioSource>().Stop();
         Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
+
+        Debug.Log("Set");
+        _player.GetComponent<PlayerAction>().enabled = true;
+        _priestess.GetComponent<PartyMovement>().enabled = true;
     }
 
     // Start is called before the first frame update

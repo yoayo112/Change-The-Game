@@ -81,7 +81,7 @@ public class PartyMovement : MonoBehaviour
     
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
         controller_ = gameObject.GetComponent<CharacterController>();
         player_ = GlobalService.Get_Player_Instance().GetComponent<Transform>();
@@ -94,7 +94,7 @@ public class PartyMovement : MonoBehaviour
         walkSpeed_ = player_.gameObject.GetComponent<PlayerMovement>().walkSpeed -1f;
 
         //combat
-        combatGUI_ = gameObject.GetComponent<Player>().Find_Canvas("CombatGUI");
+        combatGUI_ = GlobalService.Find_Canvas_In_Children(gameObject, "CombatGUI");
         combatGUI_.gameObject.SetActive(false);
     }
 

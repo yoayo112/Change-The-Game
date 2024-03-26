@@ -26,10 +26,6 @@ public class CowboyAction : MonoBehaviour
     }
     private Transform body_;
 
-    //exposed vars
-    public  RuntimeAnimatorController combatController;
-    public RuntimeAnimatorController movementController;
-
 
     // Start is called before the first frame update
     void Start()

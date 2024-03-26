@@ -29,12 +29,8 @@ public class CombatController : MonoBehaviour
 
     public static CombatController instance { get; private set; } //Singleton
 
-    public static List<Character> enemies { get; private set; } //List holding the scripts of the enemies
-    public static List<Character> players { get; private set; } //List holding the scripts of the players
-
-    //Spawn Positions
-    public GameObject[] partySpawns;
-    public GameObject[] baddySpawns;
+    public static List<Character> enemies { get; set; } //List holding the scripts of the enemies
+    public static List<Character> players { get; set; } //List holding the scripts of the players
 
     private static List<Character> _turnQueue = new List<Character>(); // Total list managing turn order
 
@@ -46,8 +42,8 @@ public class CombatController : MonoBehaviour
     public CombatStates currentState; //Keeps track of current combat state
     private bool _startedFighting = false;
 
-    [Header("Show this when combat is over")]
-    public Canvas endScreen;
+    [Header("Use this to handle combat starting and ending")]
+    public GameObject terminal;
 
     private void Awake()
     {
@@ -71,46 +67,8 @@ public class CombatController : MonoBehaviour
         CombatEventManager.onEndTurn -= End_Turn_State;
     }
 
-    void Start()
+    public void Start_Combat()
     {
-        //disable the overworld camera
-        GlobalService.Get_Camera().SetActive(false); //TODO change this back when combat ends!
-
-        //Find all Player and enemy character controls, put them in a list, and sort.
-
-        //Partry members first
-        GameObject mainCharacter = GlobalService.Get_Player_Instance();
-        List<GameObject> party = GlobalService.Get_Party_Instances();
-        players = new List<Character>();
-
-        //Also lets spawn, initialize and reposition the prefabs while were at it!
-        mainCharacter.GetComponent<PlayerAction>().Set_Combat(true); //TODO! set combat to false when combat ends
-        players.Add(mainCharacter.GetComponent<Character>());
-        mainCharacter.transform.position = partySpawns[0].transform.position;
-        Vector3 initialTarget = new Vector3(baddySpawns[0].transform.position.x, mainCharacter.transform.position.y, baddySpawns[0].transform.position.z);
-        mainCharacter.transform.LookAt(initialTarget, Vector3.up);
-        int j = 1;
-        foreach(GameObject member in party)
-        {
-            players.Add(member.GetComponent<Character>());
-            member.transform.position = partySpawns[j].transform.position;
-            member.transform.LookAt(initialTarget, Vector3.up);
-            member.GetComponent<PartyMovement>().Set_Combat(true); //TODO! set combat to false when combat ends
-        }
-
-        //ok now the neerdowells
-        enemies = new List<Character>();
-        List<string> enemyNames = GlobalService.Get_Main().Get_Enemies();
-        initialTarget = new Vector3(partySpawns[0].transform.position.x, mainCharacter.transform.position.y, partySpawns[0].transform.position.z);
-        for (int i = 0; i < enemyNames.Count; i++)
-        {
-            GameObject baddy = Instantiate(Resources.Load<GameObject>(enemyNames[i]));
-            enemies.Add(baddy.GetComponent<Character>());
-            baddy.transform.position = baddySpawns[i].transform.position;
-            baddy.transform.LookAt(initialTarget, Vector3.up);
-            baddy.GetComponent<BasicNPCMovement>().Set_Combat(true); // TODO: Set to false after combat ends
-        }
-
         //Character[] allCharacters = GameObject.FindObjectsByType<Character>(FindObjectsSortMode.None);
         _turnQueue = new List<Character>(players.Union(enemies));
         turnNumber = 0;
@@ -119,19 +77,17 @@ public class CombatController : MonoBehaviour
         int enemyCount_ = 0;
 
 
-        //Break turnQueue into character and enemy lists
+        //sort and populate turn Queue
         foreach (Character character in _turnQueue)
         {
             if (character.Get_CharacterType() == CharacterType.player)
             {
-                players.Add(character);
                 character.Set_Position(playerCount_);
                 playerCount_++;
 
             }
             if (character.Get_CharacterType() == CharacterType.enemy)
             {
-                enemies.Add(character);
                 character.Set_Position(enemyCount_);
                 enemyCount_++;
             }
@@ -276,7 +232,7 @@ public class CombatController : MonoBehaviour
         }
         Debug.Log("Combat Over! " + victoryMessage_);
         //Handle end state here, command to transition scene, post combat screen start, etc.
-        endScreen.GetComponentInChildren<Animator>().SetTrigger("over");
+        terminal.GetComponentInChildren<CombatTerminal>().End_Combat();
     }
 
     //Make a big string of who's dead on both sides.
@@ -320,7 +276,7 @@ public class CombatController : MonoBehaviour
 
     public IEnumerator Initial_Combat_Countdown()
     {
-        yield return new WaitForSeconds(4);
+        yield return terminal.GetComponentInChildren<CombatTerminal>().countdown();
         _startedFighting = true;
     }
 }

@@ -50,8 +50,8 @@ public class Squid : Enemy
     //waits until animation is finished before broadcasting damage and ending turn
     private IEnumerator Attack(int target_)
     {
-        //wait while animating
-        yield return Animate_Attack("Attack");
+        Animator animator = gameObject.GetComponentInChildren<Animator>();
+        yield return GlobalService.AnimWait(animator, "Attack", "Attack");
 
         //broadcast damage
         Attack_Character(CharacterType.player, target_, 0.0f);

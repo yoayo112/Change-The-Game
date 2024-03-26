@@ -15,16 +15,21 @@ using TMPro;
 
 public class PlayerAction : MonoBehaviour
 {
+    //exposed vars
+    public RuntimeAnimatorController movementController;
+    public RuntimeAnimatorController combatController;
+    public float interactionDistance;
+
     //internal vars
     private Animator animator_;
     private Transform player_;
-    private Transform body_;
+    public Transform body_ { get; private set; }
     
 
     private Canvas speechBubble_;
     public bool isDialogActive()
     {
-        return speechBubble_.gameObject.active;
+        return speechBubble_.gameObject.activeInHierarchy;
     }
     private TMP_Text dialogText_;
     private bool talking_;
@@ -47,32 +52,21 @@ public class PlayerAction : MonoBehaviour
         }
         else
         {
-            gameObject.GetComponent<BasicNPCMovement>().Set_Combat(false);
+            gameObject.GetComponent<PlayerMovement>().Set_Combat(false);
             animator_.runtimeAnimatorController = movementController;
         }
     }
 
-
-    //exposed vars
-    public RuntimeAnimatorController movementController;
-    public RuntimeAnimatorController combatController;
-    public float interactionDistance;
-    
-
-
-    // Start is called before the first frame update
     void Start()
     {
         //player prefab
         player_ = GlobalService.Get_Player_Instance().GetComponent<Transform>();
-        animator_ = player_.GetChild(0).GetComponent<Animator>();
+        animator_ = player_.GetComponentInChildren<Animator>();
         animator_.runtimeAnimatorController = movementController;
         body_ = player_.GetChild(0).GetComponent<Transform>();
 
-
-
         //dialog 
-        speechBubble_ = player_.GetComponent<Player>().Find_Canvas("DialogBox");
+        speechBubble_ = GlobalService.Find_Canvas_In_Children(player_.gameObject, "DialogBox");
         speechBubble_.renderMode = RenderMode.ScreenSpaceCamera;
         Camera camera = GlobalService.Get_Camera().GetComponentInChildren<Camera>(true);
         speechBubble_.worldCamera = camera;
@@ -81,9 +75,8 @@ public class PlayerAction : MonoBehaviour
         speechBubble_.gameObject.SetActive(false);
 
         //combat
-        combatGUI_ = player_.GetComponent<Player>().Find_Canvas("CombatGUI");
+        combatGUI_ = GlobalService.Find_Canvas_In_Children(player_.gameObject, "CombatGUI");
         combatGUI_.gameObject.SetActive(false);
-
     }
 
     // Update is called once per frame

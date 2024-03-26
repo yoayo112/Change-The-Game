@@ -21,30 +21,6 @@ public class BasicTransition : SceneTransition
     public string spawnName; // the name of the spawn within that scene.
     static string newSpawn = "";
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-        player_ = GlobalService.Get_Player_Instance();
-        body_ = player_.GetComponent<Transform>().GetChild(0).GetComponent<Transform>();
-
-        //set fade transition render camera to main camera
-        transform.GetChild(0).GetComponent<Canvas>().worldCamera = GlobalService.Get_Camera().GetComponent<Camera>();
-
-        //also we need the fade animator
-        animator_ = transform.GetChild(0).GetComponent<Animator>();
-
-        //move player (and party) to correct spawn location.
-        List<GameObject> party = GlobalService.Get_Party_Instances();
-        if (newSpawn != "")
-        {
-            Spawn_Party(newSpawn, party);
-        }
-        else
-        {
-            Spawn_Party("MainSpawn", party);
-        }
-    }
 
     // Update is called once per frame
     void Update()
@@ -53,6 +29,19 @@ public class BasicTransition : SceneTransition
         if (portal.GetComponent<Collider>().bounds.Contains(body_.position))
         {
             StartCoroutine(fadeOut(goTo));
+        }
+    }
+
+    protected override void Spawn()
+    {
+        //move player (and party) to correct spawn location.
+        if (newSpawn != "")
+        {
+            Spawn_Party(newSpawn, party_);
+        }
+        else
+        {
+            Spawn_Party("MainSpawn", party_);
         }
     }
 

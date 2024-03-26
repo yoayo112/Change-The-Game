@@ -123,7 +123,7 @@ public class Player : Character
     //---------------------------------------------------------------
     public override void Execute_Turn()
     {
-        Find_Canvas("CombatGUI").gameObject.SetActive(true);
+        GlobalService.Find_Canvas_In_Children(gameObject, "CombatGUI").gameObject.SetActive(true);
     }
 
     //-----------------------------------------------------------------
@@ -135,18 +135,5 @@ public class Player : Character
     {
         _permanentStats.currentHealth = Get_CurrentHealth();
         _permanentStats.currentEnergy = Get_CurrentEnergy();
-    }
-
-    //-----------------------------------------------------------------
-    //Helper functions
-    //-----------------------------------------------------------------
-    public Canvas Find_Canvas(string name)
-    {
-        Canvas[] all = gameObject.GetComponentsInChildren<Canvas>(true);
-        foreach (Canvas canvas in all)
-        {
-            if (canvas.gameObject.name == name) { return canvas; }
-        }
-        return null;
     }
 }

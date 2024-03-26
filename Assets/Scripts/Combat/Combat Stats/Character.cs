@@ -301,25 +301,4 @@ public class Character : MonoBehaviour, IComparable
 
         Attack_Characters(CharacterType.enemy, targets_);
     }
-
-    //---------------------------------------------------------------
-    //Animation
-    //---------------------------------------------------------------
-    
-    //animates an attack and waits until it's finished before returning.
-    public IEnumerator Animate_Attack(string stateName)
-    {
-        Animator animator = gameObject.GetComponentInChildren<Animator>();
-        animator.SetTrigger("Attack");
-        //enter attack anim
-        while (!animator.GetCurrentAnimatorStateInfo(0).IsName(stateName))
-        {
-            yield return null;
-        }
-        //wait until it's done animating
-        while ((animator.GetCurrentAnimatorStateInfo(0).normalizedTime) < 1f)
-        {
-            yield return null;
-        }
-    }
 }

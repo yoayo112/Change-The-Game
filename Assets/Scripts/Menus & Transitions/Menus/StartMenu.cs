@@ -26,7 +26,7 @@ public class StartMenu : MonoBehaviour
         //this is literally just so the cowboy is interactable in the start menu.      
         main_ = GlobalService.Get_Main();            // = GameObject.Find("_GLOBAL_").GetComponent<Transform>().GetChild(0).GetComponent<GlobalMain>();
         //TODO: Select from list - cowboy is just default.
-        Select_Player(Resources.Load<GameObject>("COWBOY_PREFAB"));
+        StartCoroutine(Select_Player(Resources.Load<GameObject>("COWBOY_PREFAB")));
     }
 
     public void Play()
@@ -45,11 +45,16 @@ public class StartMenu : MonoBehaviour
     }
 
     //Initializes a selected character as "Player"
-    public void Select_Player(GameObject o)
+    public IEnumerator Select_Player(GameObject o)
     {
         if (player_) { Destroy(player_); }
         player_ = Instantiate(o);
         GlobalService.Set_Player_Instance(player_);
+        yield return new WaitWhile(() => player_.GetComponentInChildren<PlayerAction>().body_ == null);
+
+        
+
+        yield return null;
         //TODO:
         //Add playerMovement.cs
         // -- init all vars

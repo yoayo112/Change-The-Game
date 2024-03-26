@@ -33,7 +33,9 @@ public class SceneTransition : MonoBehaviour
     //unexposed
     protected Animator animator_;
     protected GameObject player_;
+    protected List<GameObject> party_;
     protected Transform body_;
+    protected Canvas canvas_;
 
     //Invoked by the fade out to broadcast the scene is ending
     public delegate void End();
@@ -50,14 +52,18 @@ public class SceneTransition : MonoBehaviour
 
         player_ = GlobalService.Get_Player_Instance();
         body_ = player_.GetComponent<Transform>().GetChild(0).GetComponent<Transform>();
+        party_ = GlobalService.Get_Party_Instances();
 
         //set fade transition render camera to main camera
-        transform.GetChild(0).GetComponent<Canvas>().worldCamera = GlobalService.Get_Camera().GetComponent<Camera>();
+        canvas_ = transform.GetComponentInChildren<Canvas>();
+        canvas_.worldCamera = GlobalService.Get_Camera().GetComponent<Camera>();
+        canvas_.planeDistance = 1;
 
         //also we need the fade animator
-        animator_ = transform.GetChild(0).GetComponent<Animator>();
+        animator_ = transform.GetComponentInChildren<Animator>();
 
-        //NO DEFAULT SAPAWN BEHAVIOR: IMPLEMENT THAT IN EXTENDED CLASS 
+        //NO DEFAULT SAPAWN BEHAVIOR: IMPLEMENT THAT IN EXTENDED CLASS
+        Spawn();
     }
 
     // Update is called once per frame
@@ -68,6 +74,12 @@ public class SceneTransition : MonoBehaviour
         {
             StartCoroutine(fadeOut(goTo));
         }
+    }
+
+    //override this for spawn behavior!
+    protected virtual void Spawn()
+    {
+
     }
 
     protected virtual IEnumerator fadeOut(string name)

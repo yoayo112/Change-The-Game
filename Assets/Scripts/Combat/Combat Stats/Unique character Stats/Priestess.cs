@@ -39,7 +39,7 @@ public class Priestess : Player
     public void Attack()
     {
         //ask player to target enemy (TODO)
-        base._targets = new int[] { 0,1 };
+        base._targets = new int[] { Random.Range(0, 2) };
 
         //display minigame
         StartCoroutine(Minigame());
@@ -53,7 +53,7 @@ public class Priestess : Player
         _main = GameObject.Find("Main Camera").GetComponent<Camera>();
         _overlay = _typer.GetComponentInChildren<Camera>();
         _main.GetUniversalAdditionalCameraData().cameraStack.Add(_overlay);
-        Find_Canvas("CombatGUI").gameObject.SetActive(false);
+        GlobalService.Find_Canvas_In_Children(gameObject, "CombatGUI").gameObject.SetActive(false);
 
         //broadcast start
         _typer.GetComponentInChildren<MiniGameTimer>().Start_Countdown();
@@ -67,7 +67,9 @@ public class Priestess : Player
         //then get the effictiveness and animate
         _effectiveness = _typer.GetComponentInChildren<TypingGame>().Get_effectiveness();
         _main.GetUniversalAdditionalCameraData().cameraStack.Remove(_overlay);
-        yield return Animate_Attack("BAKED Combat-Attack");
+
+        Animator animator = gameObject.GetComponentInChildren<Animator>();
+        yield return GlobalService.AnimWait(animator, "Attack", "BAKED Combat - Attack");
 
         //Broadcast the event
         Attack_Characters(CharacterType.enemy, _targets, _effectiveness);
