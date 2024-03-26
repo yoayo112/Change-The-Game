@@ -104,7 +104,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2529163360840544427}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.1274824, y: 0.87223333, z: -0.3455929, w: 0.32174972}
+  m_LocalRotation: {x: 0.12748238, y: 0.87223333, z: -0.34559286, w: 0.32174972}
   m_LocalPosition: {x: 0, y: 0.0000010738373, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -264,8 +264,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d9b2dd195ac434e8e10509ce7fdb78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  combatController: {fileID: 9100000, guid: e93f5eb219286c14d8ffea8d85363bf5, type: 2}
-  movementController: {fileID: 9100000, guid: 169af269ea53cb34a9df44216ee01159, type: 2}
 --- !u!114 &4965579751641573199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -459,7 +457,7 @@ Transform:
   m_GameObject: {fileID: 3368521614923092182}
   serializedVersion: 2
   m_LocalRotation: {x: 0.10512753, y: 0.8938711, z: -0.28499094, w: 0.32973143}
-  m_LocalPosition: {x: 0, y: 0.0000026845933, z: 0}
+  m_LocalPosition: {x: 0, y: 0.000001610756, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1778,7 +1776,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6932747534311069259, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Attack
+      value: Minigame_Button
       objectReference: {fileID: 0}
     - target: {fileID: 6932747534311069259, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName

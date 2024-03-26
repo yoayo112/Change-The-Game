@@ -13,6 +13,8 @@ outgoing and incoming damage with events. extends Character.cs
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
+
 
 public class Player : Character
 {
@@ -31,6 +33,14 @@ public class Player : Character
     //temp storage for each turn.
     protected int[] _targets;
     protected float _effectiveness;
+
+    //minigame vars
+    private Camera _main;
+    private Camera _overlay;
+    protected string _title;
+    protected string _trigger;
+    protected string _actionState;
+    private GameObject _minigame;
 
     //------------------------------------------------------------------------------------
     // Methods for updating starting stats(permanent stats, update on level up or such.)
@@ -124,6 +134,69 @@ public class Player : Character
     public override void Execute_Turn()
     {
         GlobalService.Find_Canvas_In_Children(gameObject, "CombatGUI").gameObject.SetActive(true);
+    }
+
+    //----------------------------------------------------------------
+    //Minigame and Targetting System
+    //----------------------------------------------------------------
+
+    //Called on button click. Wrapper for minigame coroutine.
+    //PLZ OVERRIDE ME: for game title, animation state, and trigger for each character!!
+    //This won't work with these empty strings!
+    public virtual void Minigame_Button()
+    {
+        _title = "";
+        _trigger = "";
+        _actionState = "";
+        StartCoroutine(Select_Target());
+    }
+
+    //use me to find who I am targetting.
+    public virtual IEnumerator Select_Target()
+    {
+        _targets = new int[] { Random.Range(0, 2) };
+
+        yield return new WaitWhile(() => _targets.Length < 1);
+        StartCoroutine(Run_Minigame());
+    }
+
+
+    //Use me to trigger and run gameplay, 
+    //or override me for a specific/unique minigame.
+    public virtual IEnumerator Run_Minigame()
+    {
+        //display minigame
+        _minigame = GameObject.Find(_title);
+        _main = GameObject.Find("Main Camera").GetComponent<Camera>();
+        _overlay = _minigame.GetComponentInChildren<Camera>();
+        _main.GetUniversalAdditionalCameraData().cameraStack.Add(_overlay);
+        GlobalService.Find_Canvas_In_Children(gameObject, "CombatGUI").gameObject.SetActive(false);
+
+        //broadcast start
+        _minigame.GetComponentInChildren<MiniGameTimer>().Start_Countdown();
+
+        //wait for gameplay to start
+        yield return new WaitWhile(() => !_minigame.GetComponentInChildren<TypingGame>().Get_isRunning());
+
+        //wait for minigame to finish
+        yield return new WaitWhile(() => _minigame.GetComponentInChildren<TypingGame>().Get_isRunning());
+
+        //then get the effictiveness
+        _effectiveness = _minigame.GetComponentInChildren<TypingGame>().Get_effectiveness();
+        _main.GetUniversalAdditionalCameraData().cameraStack.Remove(_overlay);
+
+        //animate and wait for animation to finish
+        Animator animator = gameObject.GetComponentInChildren<Animator>();
+        yield return GlobalService.AnimWait(animator, _trigger, _actionState); //TODO: how to better sync attack anim with hurt anim??
+
+        //Broadcast the event
+        //TODO: can we make the character action methods into delegates?
+        // -> This way, a function could be passed as an arg on button click and called here,
+        //    I.e. minigames could trigger and broadcast other actions, not just attack.
+        Attack_Characters(CharacterType.enemy, _targets, _effectiveness); 
+
+        //End the turn
+        _executingTurn = false;
     }
 
     //-----------------------------------------------------------------
