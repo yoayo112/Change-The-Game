@@ -26,9 +26,10 @@ Material:
     m_Ints: []
     m_Floats:
     - _Distance: 8.75
+    - _Wobble_Scale: 10
     m_Colors:
-    - _Deep: {r: 0.6039216, g: 0.3423563, b: 0, a: 0.3764706}
-    - _Shallow: {r: 0.304, g: 0.04167869, b: 0.022192003, a: 0.6156863}
+    - _Deep: {r: 0.674, g: 0.4272679, b: 0.19858934, a: 0.65882355}
+    - _Shallow: {r: 0.304, g: 0.04167869, b: 0.022192003, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &2667350780274288306
 MonoBehaviour:

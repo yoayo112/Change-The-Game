@@ -15,7 +15,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class TypingGame : MonoBehaviour
+public class TypingGame : MinigameBase
 {
     public const int NUM_AVAILABLE_LINES = 3;
     public const int MAX_GREEN_CHAR = 20;
@@ -38,19 +38,10 @@ public class TypingGame : MonoBehaviour
     [Header("Game Settings")]
     public float lockoutTime = 0.5f;
 
-    //-------------------------------------------------------------------------------------
-    //  Audio handling
-    //-------------------------------------------------------------------------------------
-    [Header("Audio Members and Settings")]
-    public AudioSource audioSource;
-    public AudioClip[] audioClipArray;
-    public float volume = 0.5f;
 
     //-------------------------------------------------------------------------------------
     //  Variables
     //-------------------------------------------------------------------------------------
-    private bool _isRunning = false;
-    public bool Get_isRunning() => _isRunning;
     private string _typedLine = string.Empty; //Represents the player's actual typed line, removing errors they have backspaced. 
     private int _typedCount = 0;        //Running count of characters in _typedLine.
     private int _totalTypedCount = 0;
@@ -59,8 +50,6 @@ public class TypingGame : MonoBehaviour
     private int _mistakeCount = 0;            //Running count of player mistakes. 
     private bool _isLocked = false;           //Will not accept additional mistake inputs while true.
 
-    private float _effectiveness;
-    public float Get_effectiveness() => _effectiveness;
 
     private string[] _availableLines = { "Healy Dan, grant divine healing to my wounded body asdf asdf asdf asdf asdf asdf asd fasdf asdf asdf asdf asdf asd",
                                          "Healy Dan, grant divine healing for my bloodied brethren",

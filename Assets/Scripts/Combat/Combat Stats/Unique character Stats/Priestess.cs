@@ -36,7 +36,8 @@ public class Priestess : Player
         _title = "Priestess Minigame";
         _trigger = "Attack";
         _actionState = "BAKED Combat - Attack";
-        StartCoroutine(Select_Target());
+        _targetType = CharacterType.enemy; //TODO: Add versatility in who priestess can target
+        StartCoroutine(Begin_Targeting(1));
     }
 
     //----------------------------------------------------------------

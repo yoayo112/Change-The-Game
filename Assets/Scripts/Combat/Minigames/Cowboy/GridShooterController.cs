@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class GridShooterController : MonoBehaviour
+public class GridShooterController : MinigameBase
 {
     //-----------------------------------------------------------------------------------
     //  General Game class members
@@ -20,10 +20,6 @@ public class GridShooterController : MonoBehaviour
     private int _totalTargets;
     private int _hitTargets; //How many targets player has hit
     private int _missedTargets; //How many targets missed to old age
-    private float _minigameEffectiveness;
-    public float Get_Effectiveness() => _minigameEffectiveness;
-    private bool _gameRunning = false;
-    public bool Get_gameRunning() => _gameRunning;
 
     public InkSplatter inkSplatter;
 
@@ -65,14 +61,6 @@ public class GridShooterController : MonoBehaviour
     private float _reloadProgress = 0f; 
     private bool _isReloading = false; // Reload coroutine running?
 
-    //-------------------------------------------------------------------------------------
-    //  Audio handling
-    //-------------------------------------------------------------------------------------
-    [Header("Audio Members and Settings")]
-    public AudioSource audioSource;
-    public AudioClip[] audioClipArray;
-    public float volume = 0.5f;
-
 
     void OnEnable()
     {
@@ -100,18 +88,18 @@ public class GridShooterController : MonoBehaviour
         _missedTargets = 0;
         _hitTargets = 0;
         _totalTargets = 0;
-        _minigameEffectiveness = 0f;
+        _effectiveness = 0f;
 
         _currentAmmo = maxAmmo;
         Set_Ammo_Display();
 
         Time.timeScale = 1.0f;
-        _gameRunning = false;
+        _isRunning = false;
     }
 
     void Update() //Called once per frame.
     {
-        if(_gameRunning)
+        if(_isRunning)
         {
             if(!_isSpawning)
             {
@@ -167,10 +155,10 @@ public class GridShooterController : MonoBehaviour
         StopAllCoroutines();
         _isSpawning = false;
         _isReloading = false;
-        _gameRunning = false;
+        _isRunning = false;
         _targets.Kill_All();
-        _minigameEffectiveness = (_hitTargets != 0)? ((float)_hitTargets/(float)_totalTargets): 0f;
-        Debug.Log(_minigameEffectiveness);
+        _effectiveness = (_hitTargets != 0)? ((float)_hitTargets/(float)_totalTargets): 0f;
+        Debug.Log(_effectiveness);
 
         Reset_State();
     }
@@ -180,12 +168,12 @@ public class GridShooterController : MonoBehaviour
     }
     public void Start_Minigame()
     {
-        if(!_gameRunning)
+        if(!_isRunning)
         {
             _hitTargets = 0;
             Set_Hits_Text();
-            _minigameEffectiveness = 0f;
-            _gameRunning = true;
+            _effectiveness = 0f;
+            _isRunning = true;
         }
     }
     //--------------------------------------------------------------------------------------------

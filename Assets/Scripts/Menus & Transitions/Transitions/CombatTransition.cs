@@ -104,7 +104,7 @@ public class CombatTransition : SceneTransition
             //otherwise we must be int the collider *exiting* combat
             else
             {
-                
+                //do cleanup stuff?
             }
 
             //either way do the thing/
