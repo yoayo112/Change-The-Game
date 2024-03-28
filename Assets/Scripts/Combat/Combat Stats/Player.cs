@@ -42,6 +42,8 @@ public class Player : Character
     private Camera _overlay;
     protected string _title;
     private GameObject _minigame;
+    private string _mgPrefab;
+    private MinigameBase _mgScript;
 
     //Animation Vars
     protected string _trigger;
@@ -171,17 +173,25 @@ public class Player : Character
         _trigger = "";
         _actionState = "";
         _targetType = CharacterType.enemy;
-        StartCoroutine(Begin_Targeting(1)); //I guess typing game is deafault lmao
+        StartCoroutine(Begin_Targeting(1));
     }
 
     //wait until all targets are selected then run the minigame
     public virtual IEnumerator Begin_Targeting(int numberOfTargets_)
     {
-        GlobalService.Find_Canvas_In_Children(gameObject, "CombatGUI").gameObject.SetActive(false);
+        //find game / init variables
+        _minigame = GameObject.Find(_title);
+        _mgScript = _minigame.GetComponentInChildren<MinigameBase>();
+        _mgPrefab = _mgScript.gameObject.name;
         _targets = new List<int>(0);
         string targetTag = _targetType == CharacterType.enemy ? "Enemy" : "Party";
 
-        for(int i=0; i< numberOfTargets_; i++)
+        //hide combat gui.
+        GlobalService.Find_Canvas_In_Children(gameObject, "CombatGUI").gameObject.SetActive(false);
+        //show targeting gui
+        _mgScript.targeting_GUI.gameObject.SetActive(true);
+
+        for (int i=0; i< numberOfTargets_; i++)
         {
             _click = false;
             yield return Select_Target(targetTag);
@@ -215,6 +225,9 @@ public class Player : Character
                 if(hit.collider.gameObject.CompareTag(tag))
                 {
                     Debug.Log("It was an acceptable target");
+                    //hide targeting gui
+                    _mgScript.targeting_GUI.gameObject.SetActive(false);
+                    //target selected object
                     selectedObject = hit.collider.gameObject;
                     selectedIndex = selectedObject.GetComponentInChildren<Character>().Get_Position();
                     selected = true;
@@ -250,14 +263,12 @@ public class Player : Character
     public virtual IEnumerator Run_Minigame()
     {
         //display minigame
-        _minigame = GameObject.Find(_title);
         _main = GameObject.Find("Main Camera").GetComponent<Camera>();
         _overlay = _minigame.GetComponentInChildren<Camera>();
         _main.GetUniversalAdditionalCameraData().cameraStack.Add(_overlay);
 
         //fade in
-        string mg_canvasName = _minigame.GetComponentInChildren<MinigameBase>().gameObject.name;
-        Animator mg_animator = GlobalService.Find_Canvas_In_Children(_minigame, mg_canvasName).gameObject.GetComponent<Animator>();
+        Animator mg_animator = GlobalService.Find_Canvas_In_Children(_minigame, _mgPrefab).gameObject.GetComponent<Animator>();
         yield return GlobalService.AnimWait(mg_animator, "fade", "Fade In");
 
         //broadcast start
