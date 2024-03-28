@@ -26,6 +26,7 @@ public class MinigameBase : MonoBehaviour
     //------------------------------------------------------------------------------------
     protected float _effectiveness;
     public float Get_effectiveness() => _effectiveness;
+    public GameObject targeting_GUI;
 
     //-------------------------------------------------------------------------------------
     //  Audio handling
