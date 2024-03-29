@@ -58,7 +58,7 @@ public class TypingGame : MonoBehaviour
     private int _mistakeCount = 0;            //Running count of player mistakes. 
     private bool _isLocked = false;           //Will not accept additional mistake inputs while true.
 
-    private string[] _availableLines = { "Healy Dan, [random1;random2;random3;] grant [rand 1;rand 2;rand 3] divine healing to my wounded body asdf asdf asdf asdf asdf asdf asd fasdf asdf asdf asdf asdf asd",
+    private string[] _availableLines = { "Healy Dan, [random1;random2;random3] grant [rand 1;rand 2;rand 3] divine healing to my wounded body asdf asdf asdf asdf asdf asdf asd fasdf asdf asdf asdf asdf asd",
                                          "Healy Dan, grant divine healing for my bloodied brethren",
                                          "Healy Dan, bestow powerful and awesome divine healing to my mortally wounded vessel",
                                          "Healy Dan, bestow powerful and awesome divine healing for my bloodied brethren",
