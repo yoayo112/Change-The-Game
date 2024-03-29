@@ -89,8 +89,7 @@ public class TypingGame : MonoBehaviour
 
     private void Start()
     {
-
-        _currentBranch = new TextTree(_availableLines);
+        _currentBranch = TextTree.Build(_availableLines);
         Update_Available_Lines();
         Update_Typed_Line();
         Update_Mistake_Counter();

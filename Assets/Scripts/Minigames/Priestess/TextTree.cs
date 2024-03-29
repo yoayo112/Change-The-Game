@@ -46,11 +46,7 @@ public class TextTree
 
     public TextTree(string[] strings_)
     {
-        for (int i = 0; i < strings_.Length; i++) {
-            strings_[i] = strings_[i].ToLower();
-            Select_Random_Words(ref strings_[i]);
-        }
-            
+        
 
         Set_Root(null);
         Set_Text(Find_Common_String(strings_));  //The text for this branch of the tree is the common starting string among all input strings. The root text can be empty if there is no common string.
@@ -62,6 +58,16 @@ public class TextTree
         Build_Branches(strings_);
 
         Revive();
+    }
+
+    public static TextTree Build(string[] strings_)
+    {
+        for (int i = 0; i < strings_.Length; i++) {
+            strings_[i] = strings_[i].ToLower();
+            Select_Random_Words(ref strings_[i]);
+        }
+
+        return new TextTree(strings_);
     }
 
     /*public TextTree(string file_) : this(new string[0])
@@ -212,9 +218,9 @@ public class TextTree
         return stringA_[0] == stringB_[0];
     }
 
-    private void Select_Random_Words(ref string string_)
+    private static void Select_Random_Words(ref string string_)
     // Converts string with bracketed words to a string with a random word chosen for each set up brackets. Words are deliniated by semi colons.
-    // e.g. Select_Random_Words("These are [random;variable;chance] words [you;the player;anyone] can type.") may return "These are random words the player can type." 
+    // e.g. Select_Random_Words("These are [random;variable;chance] words [you;the player;anyone] can type.") may set the string to "These are random words the player can type." 
     {
         int start_;
         int end_;
@@ -234,7 +240,7 @@ public class TextTree
             words_ = string_.Substring(start_, length_).Split(';');
 
             word_ = words_[Random.Range(0,words_.Length)];
-            string_ = string_.Substring(0, start_ - 1) + word_ + string_.Substring(end_ + 1);
+            string_ = string_.Substring(0, start_) + word_ + string_.Substring(end_ + 1);
         }
     }
 
