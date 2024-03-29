@@ -1,4 +1,4 @@
-﻿/*
+/*
 Project: Change the Game
 File: TextTree.cs
 Date Created: March 01, 2024
@@ -46,8 +46,11 @@ public class TextTree
 
     public TextTree(string[] strings_)
     {
-        for (int i = 0; i < strings_.Length; i++)
+        for (int i = 0; i < strings_.Length; i++) {
             strings_[i] = strings_[i].ToLower();
+            Select_Random_Words(ref strings_[i]);
+        }
+            
 
         Set_Root(null);
         Set_Text(Find_Common_String(strings_));  //The text for this branch of the tree is the common starting string among all input strings. The root text can be empty if there is no common string.
@@ -209,19 +212,30 @@ public class TextTree
         return stringA_[0] == stringB_[0];
     }
 
+    private void Select_Random_Words(ref string string_)
+    // Converts string with bracketed words to a string with a random word chosen for each set up brackets. Words are deliniated by semi colons.
+    // e.g. Select_Random_Words("These are [random;variable;chance] words [you;the player;anyone] can type.") may return "These are random words the player can type." 
+    {
+        int start_;
+        int end_;
+        int length_;
+        string[] words_;
+        string word_;
+        while (string_.Contains('[') && string_.Contains(']'))
+        {
+            start_ = string_.IndexOf('[');
+            string_ = string_.Remove(start_, 1);
 
-    /*private List<string> Find_Common_Strings(string[] strings_, string string_)
-      {
-          List<string> output = new List<string>();
-          string commonString_;
+            end_ = string_.IndexOf(']');
+            string_ = string_.Remove(end_, 1);
+            end_--;     //End index is decremented to compensate removal of ']'
 
-          for (int i = 0; i < strings_.Length; i++)
-          {
-              commonString_ = Find_Common_String(strings_[i], string_);
-              if (commonString_.Length > 0 && commonString_ != string_)
-                  output.Add(commonString_);
-          }
+            length_ = end_ - start_ + 1;
+            words_ = string_.Substring(start_, length_).Split(';');
 
-          return output;
-      } */
+            word_ = words_[Random.Range(0,words_.Length)];
+            string_ = string_.Substring(0, start_ - 1) + word_ + string_.Substring(end_ + 1);
+        }
+    }
+
 }
