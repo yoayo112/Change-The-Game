@@ -9,13 +9,15 @@ Tree structure that represents the branching paths of possible lines to be typed
 
 The TextTree object contains other TextTrees as branches. Each tree in the structure carries a string representing the shared text of all of it's branches.
 Branching represents differences between the strings in the array that constructor uses as input.
-For example: TextTree({"you can type", "you can also", "you even can"}) will create a tree with the following structure:
+e.g.: TextTree({"you can type", "you can also", "you even can"}) will create a tree with the following structure:
 
  "you " ---- "can " ---- "type"
     |           └------ "also"   
     └------ "even can"
 
-
+To use randomly varied strings, put all possible strings in brackets '[]' delineated with semicolons ';'. The line will be converted to line with each set of bracketed strings changed to a random string within the brackets. 
+e.g.: if one of the line inputs is "This is a [sequence;line] with [random;variable;different] [words;strings;character arrays] that [you;the player;the people that play this game] can type."
+You may get following the string within the TextTree: "This is a line with variable words that the player can type."
 */
 
 using System.Collections;
@@ -28,28 +30,21 @@ using System.IO;
 
 public class TextTree
 {
-    public TextTree root;
-    public string text;
-    public List<TextTree> branches;
-    public bool alive;
-
-    public TextTree Get_Root() => root;
-    public string Get_Text() => text;
-    public List<TextTree> Get_Branches() => branches;
-    public bool Is_Alive() => alive;
+    public TextTree root { get; private set; } 
+    public string text { get; private set; } 
+    public List<TextTree> branches { get; private set; } 
+    public bool isAlive { get; private set; } 
 
     public void Set_Root(TextTree root_) => root = root_;
     public void Set_Text(string text_) => text = text_;
 
-    public void Kill() => alive = false;
-    public void Revive() => alive = true;
+    public void Kill() => isAlive = false;
+    public void Revive() => isAlive = true;
 
-    public TextTree(string[] strings_)
+    private TextTree(string[] strings_)
     {
-        
-
-        Set_Root(null);
-        Set_Text(Find_Common_String(strings_));  //The text for this branch of the tree is the common starting string among all input strings. The root text can be empty if there is no common string.
+        root = null;
+        text = Find_Common_String(strings_);  //The text for this branch of the tree is the common starting string among all input strings. The root text can be empty if there is no common string.
 
         branches = new List<TextTree>();
         for (int i = 0; i < strings_.Length; i++) //To build out the branches, we remove this common string from each input string
@@ -61,6 +56,7 @@ public class TextTree
     }
 
     public static TextTree Build(string[] strings_)
+    //This is how to build a TextTree outside of the class. Used to clean the input and select random words.
     {
         for (int i = 0; i < strings_.Length; i++) {
             strings_[i] = strings_[i].ToLower();
@@ -94,7 +90,7 @@ public class TextTree
         Build_Branches(lines_.ToArray());
     }*/
 
-    public void Build_Branches(string[] strings_)
+    private void Build_Branches(string[] strings_)
     // Adds branches to this tree based on given array of strings
     {
         if (strings_.Length == 0 || strings_[0].Length == 0)
@@ -106,7 +102,6 @@ public class TextTree
         List<string> group_ = new List<string>();
         for (int i = 0; i < strings_.Length; i++)
         {
-
             if (grouped_[i] || strings_[i].Length == 0)
             { //No branch is made if the string is already grouped or empty
                 continue;
@@ -118,10 +113,7 @@ public class TextTree
             //We compare the string only to strings further down the list as earlier strings have already been grouped
             for (int j = 1; i + j < strings_.Length; j++) 
             {
-                if (grouped_[i + j])        //Go to next string if already grouped.
-                    continue;
-
-                if (Has_Common_String(strings_[i], strings_[i + j]))
+                if (!grouped_[i + j] && Has_Common_String(strings_[i], strings_[i + j]))
                 {                                                                    //If the second string has not been grouped AND the strings share a starting string:
                     grouped_[i + j] = true;                                          //Mark new string as grouped
                     group_.Add(strings_[i + j]);                                     //Add the second string to the group   
@@ -138,23 +130,23 @@ public class TextTree
 
     public void Add_Branch(TextTree branch_)
     {
-        branch_.Set_Root(this);
+        branch_.root = this;
         branches.Add(branch_);
     }
 
     public void Remove_Branch(TextTree branch_)
     {
-        branch_.Set_Root(null);
+        branch_.root = null;
         branches.Remove(branch_);
     }
 
     public void Remove_Branch(string branchText_)
     {
-        foreach (TextTree branch in branches)
+        foreach (TextTree branch_ in branches)
         {
-            if (branch.Get_Text() == branchText_)
+            if (branch_.text == branchText_)
             {
-                Remove_Branch(branch);
+                Remove_Branch(branch_);
                 break;
             }
         }
@@ -162,8 +154,8 @@ public class TextTree
 
     public void Remove_All_Branches()
     {
-        foreach (TextTree branch in branches)
-            Remove_Branch(branch);
+        foreach (TextTree branch_ in branches)
+            Remove_Branch(branch_);
     }
 
     public string Get_Text_Upto_Branch()
@@ -236,6 +228,10 @@ public class TextTree
             string_ = string_.Remove(end_, 1);
             end_--;     //End index is decremented to compensate removal of ']'
 
+            if (start_ > end_) {
+                Debug.Log("Error: ] precedes [ in text tree input")
+                return;
+            }
             length_ = end_ - start_ + 1;
             words_ = string_.Substring(start_, length_).Split(';');
 
@@ -243,5 +239,4 @@ public class TextTree
             string_ = string_.Substring(0, start_) + word_ + string_.Substring(end_ + 1);
         }
     }
-
 }

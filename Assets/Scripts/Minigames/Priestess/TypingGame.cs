@@ -113,7 +113,6 @@ public class TypingGame : MonoBehaviour
         string dispNextLine_;
         string dispGreenLine_;
 
-        string branchText_;
         string lastLine_;
 
         Clear_Available_Lines();
@@ -130,19 +129,18 @@ public class TypingGame : MonoBehaviour
             dispNextLine_ = string.Empty;
             dispGreenLine_ = string.Empty;
 
-            branchText_ = branch_.text;
 
             dispNextLine_ = branch_.Get_Text_To_End();
 
             lastLine_ = branch_.Get_Text_Upto_Branch();
 
-            int maxRemove_ = Math.Max(0, branchText_.Length + dispNextLine_.Length + lastLine_.Length - AVAILABLE_LINES_WIDTH);  //Maximum characters to remove from the left.
+            int maxRemove_ = Math.Max(0, branch_.text.Length + dispNextLine_.Length + lastLine_.Length - AVAILABLE_LINES_WIDTH);  //Maximum characters to remove from the left.
                                                                                                                     //Total length of line - number of characters shown on available line.
-            if (branch_.alive)
+            if (branch_.isAlive)
                 dispGreenLine_ = lastLine_ + _typedLine;
 
             else
-                dispGreenLine_ = lastLine_ + branchText_;
+                dispGreenLine_ = lastLine_ + branch_.text;
 
             if (_totalTypedCount > MAX_GREEN_CHAR)   //Begin removing letters from the left when the length of the typed line is more than the max number of green characters displayed.
             {
@@ -150,10 +148,10 @@ public class TypingGame : MonoBehaviour
                 dispGreenLine_ = dispGreenLine_.Remove(0, remove_);
             }
 
-            if (branch_.alive)
+            if (branch_.isAlive)
             {
-                dispCurrentLetter_ = Space_To_Underscore(branchText_[_typedCount]);
-                dispRemainingLine_ = branchText_.Remove(0, _typedCount + 1);
+                dispCurrentLetter_ = Space_To_Underscore(branch_.text[_typedCount]);
+                dispRemainingLine_ = branch_.text.Remove(0, _typedCount + 1);
 
                 availableLineOutputs[i].text += "<color=green>" + dispGreenLine_ + "</color><color=yellow>" + dispCurrentLetter_ + "</color>" + dispRemainingLine_ + dispNextLine_ + "\n";
             }
@@ -294,7 +292,7 @@ public class TypingGame : MonoBehaviour
     {
         foreach (TextTree branch_ in _currentBranch.branches)
         {
-            if (branch_.Is_Alive() && branch_.text == _typedLine)
+            if (branch_.isAlive && branch_.text == _typedLine)
             {
                 _typedLine = string.Empty;
                 _typedCount = 0;
@@ -351,7 +349,7 @@ public class TypingGame : MonoBehaviour
     {
         foreach (TextTree branch_ in _currentBranch.branches)
         {
-            if (Is_Correct_Letter(letter_, branch_.text) && branch_.Is_Alive())
+            if (Is_Correct_Letter(letter_, branch_.text) && branch_.isAlive)
                 return true;
         }
 
