@@ -232,10 +232,11 @@ public class TextTree
                 Debug.Log("Error: ] precedes [ in text tree input")
                 return;
             }
+
             length_ = end_ - start_ + 1;
             words_ = string_.Substring(start_, length_).Split(';');
 
-            word_ = words_[Random.Range(0,words_.Length)];
+            word_ = words_[Random.Range(0, words_.Length)];
             string_ = string_.Substring(0, start_) + word_ + string_.Substring(end_ + 1);
         }
     }
