@@ -58,21 +58,6 @@ public class TypingGame : MonoBehaviour
     private int _mistakeCount = 0;            //Running count of player mistakes. 
     private bool _isLocked = false;           //Will not accept additional mistake inputs while true.
 
-    private string[] _availableLines = { "Healy Dan, [random1;random2;random3] grant [rand 1;rand 2;rand 3] divine healing to my wounded body asdf asdf asdf asdf asdf asdf asd fasdf asdf asdf asdf asdf asd",
-                                         "Healy Dan, grant divine healing for my bloodied brethren",
-                                         "Healy Dan, bestow powerful and awesome divine healing to my mortally wounded vessel",
-                                         "Healy Dan, bestow powerful and awesome divine healing for my bloodied brethren",
-                                         "Healy Dan, bestow powerful and awesome zealous might to your humble servant",
-                                         "Healy Dan, bestow powerful and awesome zealous might for this glorious holy army",
-                                         "Ghost Malone, strike down this heathen",
-                                         "Ghost Malone, striketh down with ultimate might on the unbeliever",
-                                         "Ghost Malone, strike down these forsaken infidels",
-                                         "Ghost Malone, strengthen my body to spill your enemies blood",
-                                         "Shady Haga, do some wicked ass cool shit that I can't think of",
-                                         "Shady Haga, do some wicked stupid dumb shit I dunno",
-                                         "Shady Haga, do some wicked ass cool shit i guess jesus",
-                                         "Shady Haga, do some fine things for me" };
-
     //private bool[] _isActiveAvailableLines; // = { true, true, true };      //The line at _availableLines[i] is actively being typed by the player if _isActiveAvailableLines[i] == true;
 
     private TextTree _currentBranch;

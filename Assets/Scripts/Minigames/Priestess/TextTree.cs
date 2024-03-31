@@ -60,7 +60,7 @@ public class TextTree
     //This is how to build a TextTree outside of the class. Used to clean the input and select random words.
     {
         for (int i = 0; i < strings_.Length; i++) {
-            strings_[i] = strings_[i].ToLower();
+            strings_[i].ToLower();
             Select_Random_Words(ref strings_[i]);
         }
 
@@ -84,7 +84,7 @@ public class TextTree
             }
             reader_.Close();
         }
-        catch(Exception e) //Having issues with Exception here.
+        catch(Exception e)
         {
             Debug.Log("Exception: " + e.Message);
         }
