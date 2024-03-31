@@ -74,7 +74,7 @@ public class TypingGame : MonoBehaviour
 
     private void Start()
     {
-        _currentBranch = TextTree.Build(@"Assets\Scripts\Minigames\Priestess\Spells.txt");
+        _currentBranch = TextTree.Build(@"Assets\Scripts\Combat\Minigames\Priestess\Spells.txt");
         Update_Available_Lines();
         Update_Typed_Line();
         Update_Mistake_Counter();
