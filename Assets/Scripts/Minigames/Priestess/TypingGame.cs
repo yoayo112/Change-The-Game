@@ -89,7 +89,7 @@ public class TypingGame : MonoBehaviour
 
     private void Start()
     {
-        _currentBranch = TextTree.Build(_availableLines);
+        _currentBranch = TextTree.Build(@"Assets\Scripts\Minigames\Priestess\Spells.txt");
         Update_Available_Lines();
         Update_Typed_Line();
         Update_Mistake_Counter();
@@ -274,18 +274,6 @@ public class TypingGame : MonoBehaviour
                 return;
             }
         }
-    }
-
-    private void Move_Line_Left()
-    {
-        float px_ = 27.46f;
-
-        availableLineOutputs[0].transform.position -= new Vector3(px_, 0f, 0f);
-    }
-
-    private void Move_Line_Right()
-    {
-
     }
 
     private void Check_Complete()

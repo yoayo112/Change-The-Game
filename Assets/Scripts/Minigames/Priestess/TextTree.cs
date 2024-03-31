@@ -17,7 +17,7 @@ e.g.: TextTree({"you can type", "you can also", "you even can"}) will create a t
 
 To use randomly varied strings, put all possible strings in brackets '[]' delineated with semicolons ';'. The line will be converted to line with each set of bracketed strings changed to a random string within the brackets. 
 e.g.: if one of the line inputs is "This is a [sequence;line] with [random;variable;different] [words;strings;character arrays] that [you;the player;the people that play this game] can type."
-You may get following the string within the TextTree: "This is a line with variable words that the player can type."
+You may get the following string within the TextTree: "This is a line with variable words that the player can type."
 */
 
 using System.Collections;
@@ -26,6 +26,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.IO;
+using System;
 
 
 public class TextTree
@@ -66,8 +67,9 @@ public class TextTree
         return new TextTree(strings_);
     }
 
-    /*public TextTree(string file_) : this(new string[0])
+    public static TextTree Build(string file_)
     {
+        
         string line_;
         List<string> lines_ = new List<string>();
 
@@ -87,8 +89,8 @@ public class TextTree
             Debug.Log("Exception: " + e.Message);
         }
 
-        Build_Branches(lines_.ToArray());
-    }*/
+       return Build(lines_.ToArray());
+    }
 
     private void Build_Branches(string[] strings_)
     // Adds branches to this tree based on given array of strings
@@ -229,14 +231,14 @@ public class TextTree
             end_--;     //End index is decremented to compensate removal of ']'
 
             if (start_ > end_) {
-                Debug.Log("Error: ] precedes [ in text tree input")
+                Debug.Log("Error: ] precedes [ in text tree input");
                 return;
             }
 
             length_ = end_ - start_ + 1;
             words_ = string_.Substring(start_, length_).Split(';');
 
-            word_ = words_[Random.Range(0, words_.Length)];
+            word_ = words_[UnityEngine.Random.Range(0, words_.Length)];
             string_ = string_.Substring(0, start_) + word_ + string_.Substring(end_ + 1);
         }
     }
