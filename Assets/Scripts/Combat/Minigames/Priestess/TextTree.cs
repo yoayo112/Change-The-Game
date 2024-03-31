@@ -60,36 +60,61 @@ public class TextTree
     //This is how to build a TextTree outside of the class. Used to clean the input and select random words.
     {
         for (int i = 0; i < strings_.Length; i++) {
-            strings_[i].ToLower();
-            Select_Random_Words(ref strings_[i]);
+            strings_[i] = strings_[i].ToLower();
+            strings_[i] = Select_Random_Words(strings_[i]);
         }
 
         return new TextTree(strings_);
     }
 
     public static TextTree Build(string file_)
+    //This is how to build a TextTree outside of the class using a txt file.
     {
-        
-        string line_;
-        List<string> lines_ = new List<string>();
+        List<string> sharedLines_ = new List<string>();     //These are lines with random elements which will be shared between some spells
+        bool shared_ = true;                                //shared_ is true while the line reader is reading sharedLines_, false when reading spells
+
+        string line_;                                   //Line from file read by streamreader
+        List<string> spells_ = new List<string>();      //These are the spells from which the branches will be built
 
         try
         {
-            StreamReader reader_ = new StreamReader(file_);
-            line_ = reader_.ReadLine();
-            while (line_ != null)
-            {
-                lines_.Add(line_);
-                line_ = reader_.ReadLine();
+            StreamReader reader_ = new StreamReader(file_);     //Open file
+            line_ = reader_.ReadLine();                         //Read first line
+            while (line_ != null)                               //Loop as long as there are lines left to read
+            {   
+                if (shared_)
+                {
+                    if (line_ == "=====")   
+                        shared_ = false;        //===== deliniates the shared lines from the spells in the spells.txt file
+                    else
+                        sharedLines_.Add(line_);
+                }
+                else
+                    spells_.Add(line_);
+
+                line_ = reader_.ReadLine();     //Read next line
             }
-            reader_.Close();
+            reader_.Close();        //Close file
         }
         catch(Exception e)
         {
             Debug.Log("Exception: " + e.Message);
         }
 
-       return Build(lines_.ToArray());
+        string codeString_;     //The substring in spells which will be replaced by the corresponding shared line.
+
+        for (int i = 0; i < sharedLines_.Count; i++)
+        {
+            sharedLines_[i] = Select_Random_Words(sharedLines_[i]);     //Set any random words in the shared line
+            codeString_ = "*" + (i + 1) + "*";                          //Set code string. Index i is line i+1 in the file       
+
+            for (int j = 0; j < spells_.Count; j++)
+            {
+                spells_[j] = spells_[j].Replace(codeString_, sharedLines_[i]);  //For each spell, replace all instances of the codestring with the shared line.
+            }
+        }
+
+       return Build(spells_.ToArray());
     }
 
     private void Build_Branches(string[] strings_)
@@ -212,21 +237,23 @@ public class TextTree
         return stringA_[0] == stringB_[0];
     }
 
-    private static void Select_Random_Words(ref string string_)
-    // Converts string with bracketed words to a string with a random word chosen for each set up brackets. Words are deliniated by semi colons.
+    private static string Select_Random_Words(string string_)
+    // Converts string with bracketed words to a string with a random word chosen for each set of brackets. Words are deliniated by semi colons.
     // e.g. Select_Random_Words("These are [random;variable;chance] words [you;the player;anyone] can type.") may set the string to "These are random words the player can type." 
     {
         int start_ = 0;         //Index of first character of substring 
-        int end_ = -1;          //Index of last charcter of substring
+        int end_ = -1;          //Index of last character of substring
         int length_;            //Length of substring 
         string[] words_;        //Candidate strings to randomly select from
-        string word_;           //Randomly chosen string
+        string randWord_;       //Randomly chosen string
 
         int leftCount_;         //running count of [
         int rightCount_;        //running count of ]
-        while (string_.Contains('[') && string_.Contains(']'))          //Loop removes brackets with each iteration. If brackets are left in string after loop completes, then mismatched brackets are present
+        
+        while (string_.Contains('[') && string_.Contains(']'))          
+        //Loop removes brackets with each iteration. If brackets are left in string after loop completes, then mismatched brackets are present
         {
-            start_ = string_.IndexOf('[');
+            start_ = string_.IndexOf('[');              //Set start_ to the index of the first [
             string_ = string_.Remove(start_, 1);        //Remove starting [
             leftCount_ = 1;
             rightCount_ = 0;
@@ -246,31 +273,33 @@ public class TextTree
                 if (i == string_.Length - 1)        //Error if we get to the last iteration of loop without breaking meaning the brackets are mismatched.
                 {
                     Debug.Log("Error: Mismatched brackets" );
-                    return;
+                    return string_;
                 }
 
             }
 
             string_ = string_.Remove(end_, 1);      //Remove matched ]
-            end_--;     //End index is decremented to compensate removal of ']'
+            end_--;                                 //End index is decremented to compensate removal of ']'
 
             length_ = end_ - start_ + 1;
             words_ = Split(string_.Substring(start_, length_));     //Split substring between ;'s. Ignore ; if we are inside nested brackets.
 
-            word_ = words_[UnityEngine.Random.Range(0, words_.Length)];     //Randomly select a line in words_
-            string_ = string_.Substring(0, start_) + word_ + string_.Substring(end_ + 1);       //Add string to the rest of the line, with unchosen strings now removed.
+            randWord_ = words_[UnityEngine.Random.Range(0, words_.Length)];                         //Randomly select a string in words_
+            string_ = string_.Substring(0, start_) + randWord_ + string_.Substring(end_ + 1);       //Add the random string to the rest of the line, with unchosen strings now removed.
         }
+        
+        return string_;
     }
 
     private static string[] Split(string string_)
     //Splits string into array of substrings between ;'s. Ignores ; if inside nested bracket.
     {
-        int leftCount_ = 0;
-        int rightCount_ = 0;
-        int substringLength_ = 0;
-        int start_ = 0;
-        string subString_;
-        List<string> splitLines_ = new List<string>();
+        int leftCount_ = 0;          //Count of [
+        int rightCount_ = 0;         //Count of ]
+        int substringLength_ = 0;    
+        int start_ = 0;              //Starting index of substring within string_
+        string substring_;           //The substring resultant of the split
+        List<string> splitLines_ = new List<string>();      //Array of substrings to be returned
 
         for (int i = 0; i < string_.Length; i++)
         {
@@ -279,18 +308,23 @@ public class TextTree
             if (string_[i] == ']')
                 rightCount_++;
 
-            if (string_[i] == ';' && leftCount_ == rightCount_)
+            if (string_[i] == ';' && leftCount_ == rightCount_) 
+            //We split the substring off from the string if we get to ;. We ignore the ; if the brackets are unbalanced as this indicates we are in a nested bracket.    
             {
-                subString_ = string_.Substring(start_, substringLength_);
-                if (subString_.Length > 0)
-                    splitLines_.Add(subString_);
+                substring_ = string_.Substring(start_, substringLength_);   //Set substring
+                if (substring_.Length > 0)                                  //Add to return array if the line is non-empty
+                    splitLines_.Add(substring_);
 
-                start_ = i + 1;
+                start_ = i + 1;         //Set start index of next substring
                 substringLength_ = 0;
             }
             else
-                substringLength_++; 
+                substringLength_++;     //If no split this iteration, increment substring length
         }
+
+        substring_ = string_.Substring(start_, substringLength_);   //At end of loop, last substring is what is left over
+        if (substring_.Length > 0)
+            splitLines_.Add(substring_);
 
         return splitLines_.ToArray();
     }

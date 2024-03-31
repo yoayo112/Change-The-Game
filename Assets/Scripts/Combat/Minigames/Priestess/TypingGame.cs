@@ -78,6 +78,8 @@ public class TypingGame : MonoBehaviour
         Update_Available_Lines();
         Update_Typed_Line();
         Update_Mistake_Counter();
+
+
     }
 
     //-------------------------------------------------------------------------------------
