@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 using TMPro;
+using UnityEngine.UI;
 
 public class PlayerAction : MonoBehaviour
 {
@@ -48,7 +49,7 @@ public class PlayerAction : MonoBehaviour
             combatGUI_.renderMode = RenderMode.ScreenSpaceCamera;
             Camera camera = GameObject.Find("Main Camera").GetComponent<Camera>();
             combatGUI_.worldCamera = camera;
-            combatGUI_.planeDistance = 3;
+            combatGUI_.planeDistance = 2;
         }
         else
         {
@@ -72,10 +73,12 @@ public class PlayerAction : MonoBehaviour
         speechBubble_.worldCamera = camera;
         speechBubble_.planeDistance = Vector3.Distance(camera.gameObject.GetComponent<Transform>().position, player_.position) / 2;
         dialogText_ = gameObject.GetComponentInChildren<TextMeshProUGUI>();
+        speechBubble_.GetComponent<GraphicRaycaster>().enabled = false;
         speechBubble_.gameObject.SetActive(false);
 
         //combat
         combatGUI_ = GlobalService.Find_Canvas_In_Children(player_.gameObject, "CombatGUI");
+        combatGUI_.GetComponent<GraphicRaycaster>().enabled = false;
         combatGUI_.gameObject.SetActive(false);
     }
 
@@ -119,6 +122,7 @@ public class PlayerAction : MonoBehaviour
             dialogText_.text = text;
         }
         else { talking_ = false; }
+        speechBubble_.GetComponent<GraphicRaycaster>().enabled = talking_;
         speechBubble_.gameObject.SetActive(talking_);
         //speechBubble_.enabled = talking_;
     }

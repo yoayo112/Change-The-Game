@@ -23,6 +23,7 @@ public class CombatTerminal : MonoBehaviour
         //wait for fade in.
         yield return GlobalService.AnimWait(_fade, "", "Fade from black");
         GlobalService.Find_Canvas_In_Children(gameObject, "transition").gameObject.SetActive(false);
+
         //start counting
         Animator counter = startCombat.GetComponentInChildren<Animator>();
         int i = 3;
@@ -33,6 +34,7 @@ public class CombatTerminal : MonoBehaviour
             i--;
         }
         startCombat.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "";
+        startCombat.gameObject.GetComponentInChildren<GraphicRaycaster>().enabled = false;
         startCombat.gameObject.SetActive(false);
         yield return null;
     }
@@ -40,6 +42,7 @@ public class CombatTerminal : MonoBehaviour
     public void End_Combat()
     {
         stopCombat.SetActive(true);
+        stopCombat.GetComponentInChildren<GraphicRaycaster>().enabled = true;
         stopCombat.GetComponentInChildren<Animator>().SetTrigger("over");
     }
 

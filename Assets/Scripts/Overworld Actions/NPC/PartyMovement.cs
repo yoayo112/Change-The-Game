@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using UnityEditor;
+using UnityEngine.UI;
 
 
 public class PartyMovement : MonoBehaviour
@@ -71,7 +72,7 @@ public class PartyMovement : MonoBehaviour
             combatGUI_.renderMode = RenderMode.ScreenSpaceCamera;
             Camera camera = GameObject.Find("Main Camera").GetComponent<Camera>();
             combatGUI_.worldCamera = camera;
-            combatGUI_.planeDistance = 3;
+            combatGUI_.planeDistance = 2;
         }
         else
         {
@@ -95,7 +96,7 @@ public class PartyMovement : MonoBehaviour
 
         //combat
         combatGUI_ = GlobalService.Find_Canvas_In_Children(gameObject, "CombatGUI");
-        combatGUI_.gameObject.SetActive(false);
+        combatGUI_.GetComponent<GraphicRaycaster>().enabled = false;
     }
 
     // Update is called once per frame

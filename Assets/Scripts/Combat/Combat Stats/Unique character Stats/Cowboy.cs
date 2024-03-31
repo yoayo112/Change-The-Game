@@ -31,7 +31,7 @@ public class Cowboy : Player
     //Overridden minigame trigger
     //----------------------------------------------------------------
     //Called on button click. Wrapper for minigame coroutine.
-    public virtual void Minigame_Button()
+    public override void Minigame_Button()
     {
         _title = "Cowboy Minigame";
         _trigger = "Attack";

@@ -14,6 +14,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 
 public class Player : Character
@@ -157,7 +158,9 @@ public class Player : Character
     //---------------------------------------------------------------
     public override void Execute_Turn()
     {
-        GlobalService.Find_Canvas_In_Children(gameObject, "CombatGUI").gameObject.SetActive(true);
+        Canvas gui = GlobalService.Find_Canvas_In_Children(gameObject, "CombatGUI");
+        gui.GetComponent<GraphicRaycaster>().enabled = true;
+        gui.gameObject.SetActive(true);
     }
 
     //----------------------------------------------------------------
@@ -172,7 +175,7 @@ public class Player : Character
         _title = "";
         _trigger = "";
         _actionState = "";
-        _targetType = CharacterType.enemy;
+        _targetType = CharacterType.enemy; //TODO: You should be able to target non enemies too?
         StartCoroutine(Begin_Targeting(1));
     }
 
@@ -187,7 +190,9 @@ public class Player : Character
         string targetTag = _targetType == CharacterType.enemy ? "Enemy" : "Party";
 
         //hide combat gui.
-        GlobalService.Find_Canvas_In_Children(gameObject, "CombatGUI").gameObject.SetActive(false);
+        Canvas gui = GlobalService.Find_Canvas_In_Children(gameObject, "CombatGUI");
+        gui.GetComponent<GraphicRaycaster>().enabled = false;
+        gui.gameObject.SetActive(false);
         //show targeting gui
         _mgScript.targeting_GUI.gameObject.SetActive(true);
 
