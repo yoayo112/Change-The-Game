@@ -78,6 +78,8 @@ public class TypingGame : MonoBehaviour
         Update_Available_Lines();
         Update_Typed_Line();
         Update_Mistake_Counter();
+
+
     }
 
     //-------------------------------------------------------------------------------------
@@ -322,6 +324,8 @@ public class TypingGame : MonoBehaviour
     {
         foreach (TextTree branch_ in _currentBranch.branches)
         {
+            Debug.Log("Letter: " + letter_);
+            Debug.Log("Branch: " + branch_.text);
             if (Is_Correct_Letter(letter_, branch_.text) && branch_.isAlive)
                 return true;
         }
