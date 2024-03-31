@@ -2,7 +2,7 @@
 Project: Change the Game
 File: TypingGame.cs
 Date Created: Feburary 26, 2024
-Author(s): Sean Thornton, Sky Vercauteren
+Author(s): Sean Thornton
 Info:
 
 Script that controls the Priestess' typing minigame.
@@ -14,8 +14,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
-public class TypingGame : MinigameBase
+public class TypingGame : MonoBehaviour
 {
     public const int NUM_AVAILABLE_LINES = 3;
     public const int MAX_GREEN_CHAR = 20;
@@ -38,6 +39,13 @@ public class TypingGame : MinigameBase
     [Header("Game Settings")]
     public float lockoutTime = 0.5f;
 
+    //-------------------------------------------------------------------------------------
+    //  Audio handling
+    //-------------------------------------------------------------------------------------
+    [Header("Audio Members and Settings")]
+    public AudioSource audioSource;
+    public AudioClip[] audioClipArray;
+    public float volume = 0.5f;
 
     //-------------------------------------------------------------------------------------
     //  Variables
@@ -50,22 +58,6 @@ public class TypingGame : MinigameBase
     private int _mistakeCount = 0;            //Running count of player mistakes. 
     private bool _isLocked = false;           //Will not accept additional mistake inputs while true.
 
-
-    private string[] _availableLines = { "Healy Dan, grant divine healing to my wounded body asdf asdf asdf asdf asdf asdf asd fasdf asdf asdf asdf asdf asd",
-                                         "Healy Dan, grant divine healing for my bloodied brethren",
-                                         "Healy Dan, bestow powerful and awesome divine healing to my mortally wounded vessel",
-                                         "Healy Dan, bestow powerful and awesome divine healing for my bloodied brethren",
-                                         "Healy Dan, bestow powerful and awesome zealous might to your humble servant",
-                                         "Healy Dan, bestow powerful and awesome zealous might for this glorious holy army",
-                                         "Ghost Malone, strike down this heathen",
-                                         "Ghost Malone, striketh down with ultimate might on the unbeliever",
-                                         "Ghost Malone, strike down these forsaken infidels",
-                                         "Ghost Malone, strengthen my body to spill your enemies blood",
-                                         "Shady Haga, do some wicked ass cool shit that I can't think of",
-                                         "Shady Haga, do some wicked stupid dumb shit I dunno",
-                                         "Shady Haga, do some wicked ass cool shit i guess jesus",
-                                         "Shady Haga, do some fine things for me" };
-
     //private bool[] _isActiveAvailableLines; // = { true, true, true };      //The line at _availableLines[i] is actively being typed by the player if _isActiveAvailableLines[i] == true;
 
     private TextTree _currentBranch;
@@ -74,57 +66,18 @@ public class TypingGame : MinigameBase
     //-------------------------------------------------------------------------------------
     //  Unity Methods
     //-------------------------------------------------------------------------------------
-    void OnEnable()
-    {
-        TypingGameEvents.onStart += Start_Minigame;
-        TypingGameEvents.onUpdateTimer += Update_Timer;
-        TypingGameEvents.onTimeOver += Time_Over;
-    }
-    void OnDisable()
-    {
-        TypingGameEvents.onStart -= Start_Minigame;
-        TypingGameEvents.onUpdateTimer -= Update_Timer;
-        TypingGameEvents.onTimeOver -= Time_Over;
-    }
 
     private void Update()
     {
         Check_Input();
     }
 
-    public void Start_Minigame()
+    private void Start()
     {
-        if (!_isRunning)
-        {
-            _currentBranch = new TextTree(_availableLines);
-            Update_Available_Lines();
-            Update_Typed_Line();
-            Update_Mistake_Counter();
-            _effectiveness = 0f;
-            _isRunning = true;
-        }
-    }
-
-    public void Update_Timer(int seconds_)
-    {
-        //lol I am not gonna fuck with this since you made this game :p user experience is all you!
-        
-        //but if you wanted to implement some sort of timer that is displayed to the user,
-        // this method is constantly being updated with the seconds left in the game
-        // you can do stuff with seconds_ here if you want.
-
-        //Also, Elijah built a 3 (or 5?) second countdown from the initial display of the game to the game actually starting. 
-        //This is updated by both timers, So you can use these seconds as "countdown until start" AND "countdown until end".
-        //I believe lol. 
-    }
-
-    public void Time_Over()
-    {
-        // this is the end state of the game. for now:
-        _effectiveness = 0f; //TODO: however you want to calculate effectiveness.
-        _isRunning = false; //the condition being checked by the overworld to see if it's done.
-        //Also, board needs to be reset in case we want to play it again next turn
-        //TODO reset();
+        _currentBranch = TextTree.Build(@"Assets\Scripts\Minigames\Priestess\Spells.txt");
+        Update_Available_Lines();
+        Update_Typed_Line();
+        Update_Mistake_Counter();
     }
 
     //-------------------------------------------------------------------------------------
@@ -145,7 +98,6 @@ public class TypingGame : MinigameBase
         string dispNextLine_;
         string dispGreenLine_;
 
-        string branchText_;
         string lastLine_;
 
         Clear_Available_Lines();
@@ -162,19 +114,18 @@ public class TypingGame : MinigameBase
             dispNextLine_ = string.Empty;
             dispGreenLine_ = string.Empty;
 
-            branchText_ = branch_.text;
 
             dispNextLine_ = branch_.Get_Text_To_End();
 
             lastLine_ = branch_.Get_Text_Upto_Branch();
 
-            int maxRemove_ = Math.Max(0, branchText_.Length + dispNextLine_.Length + lastLine_.Length - AVAILABLE_LINES_WIDTH);  //Maximum characters to remove from the left.
+            int maxRemove_ = Math.Max(0, branch_.text.Length + dispNextLine_.Length + lastLine_.Length - AVAILABLE_LINES_WIDTH);  //Maximum characters to remove from the left.
                                                                                                                     //Total length of line - number of characters shown on available line.
-            if (branch_.alive)
+            if (branch_.isAlive)
                 dispGreenLine_ = lastLine_ + _typedLine;
 
             else
-                dispGreenLine_ = lastLine_ + branchText_;
+                dispGreenLine_ = lastLine_ + branch_.text;
 
             if (_totalTypedCount > MAX_GREEN_CHAR)   //Begin removing letters from the left when the length of the typed line is more than the max number of green characters displayed.
             {
@@ -182,10 +133,10 @@ public class TypingGame : MinigameBase
                 dispGreenLine_ = dispGreenLine_.Remove(0, remove_);
             }
 
-            if (branch_.alive)
+            if (branch_.isAlive)
             {
-                dispCurrentLetter_ = Space_To_Underscore(branchText_[_typedCount]);
-                dispRemainingLine_ = branchText_.Remove(0, _typedCount + 1);
+                dispCurrentLetter_ = Space_To_Underscore(branch_.text[_typedCount]);
+                dispRemainingLine_ = branch_.text.Remove(0, _typedCount + 1);
 
                 availableLineOutputs[i].text += "<color=green>" + dispGreenLine_ + "</color><color=yellow>" + dispCurrentLetter_ + "</color>" + dispRemainingLine_ + dispNextLine_ + "\n";
             }
@@ -209,19 +160,16 @@ public class TypingGame : MinigameBase
     private void Check_Input()
     //Pulls the player input if it is a single key press and calls Enter_Letter. Calls Back_Space if backspace is pressed
     {
-        if(_isRunning)
+        if (Input.anyKeyDown)
         {
-            if (Input.anyKeyDown)
-            {
-                string keysPressed_ = Input.inputString;
+            string keysPressed_ = Input.inputString;
 
-                if (keysPressed_ == "\b")
-                    Back_Space();
-                else if (keysPressed_ == "q")
-                    inkSplatter.Splat(10);
-                else if (keysPressed_.Length == 1)
-                    Attempt_Letter(keysPressed_);
-            }
+            if (keysPressed_ == "\b")
+                Back_Space();
+            else if (keysPressed_ == "q")
+                inkSplatter.Splat(10);
+            else if (keysPressed_.Length == 1)
+                Attempt_Letter(keysPressed_);
         }
     }
 
@@ -264,8 +212,7 @@ public class TypingGame : MinigameBase
         _mistakeCount++;
         cameraShake.Shake();
         Update_Mistake_Counter();
-        //audioSource.PlayOneShot(audioClipArray[0], volume); //This clip is currently The grunt sound from Elijah's shooting game :,D 
-        //TODO: Audio Management.
+        audioSource.PlayOneShot(audioClipArray[0], volume);
         StartCoroutine(Lock_Mistake());
 
         //inkSplatter.Splat(10);
@@ -314,23 +261,11 @@ public class TypingGame : MinigameBase
         }
     }
 
-    private void Move_Line_Left()
-    {
-        float px_ = 27.46f;
-
-        availableLineOutputs[0].transform.position -= new Vector3(px_, 0f, 0f);
-    }
-
-    private void Move_Line_Right()
-    {
-
-    }
-
     private void Check_Complete()
     {
         foreach (TextTree branch_ in _currentBranch.branches)
         {
-            if (branch_.Is_Alive() && branch_.text == _typedLine)
+            if (branch_.isAlive && branch_.text == _typedLine)
             {
                 _typedLine = string.Empty;
                 _typedCount = 0;
@@ -387,7 +322,7 @@ public class TypingGame : MinigameBase
     {
         foreach (TextTree branch_ in _currentBranch.branches)
         {
-            if (Is_Correct_Letter(letter_, branch_.text) && branch_.Is_Alive())
+            if (Is_Correct_Letter(letter_, branch_.text) && branch_.isAlive)
                 return true;
         }
 
