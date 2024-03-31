@@ -216,30 +216,82 @@ public class TextTree
     // Converts string with bracketed words to a string with a random word chosen for each set up brackets. Words are deliniated by semi colons.
     // e.g. Select_Random_Words("These are [random;variable;chance] words [you;the player;anyone] can type.") may set the string to "These are random words the player can type." 
     {
-        int start_;
-        int end_;
-        int length_;
-        string[] words_;
-        string word_;
-        while (string_.Contains('[') && string_.Contains(']'))
+        int start_ = 0;         //Index of first character of substring 
+        int end_ = -1;          //Index of last charcter of substring
+        int length_;            //Length of substring 
+        string[] words_;        //Candidate strings to randomly select from
+        string word_;           //Randomly chosen string
+
+        int leftCount_;         //running count of [
+        int rightCount_;        //running count of ]
+        while (string_.Contains('[') && string_.Contains(']'))          //Loop removes brackets with each iteration. If brackets are left in string after loop completes, then mismatched brackets are present
         {
             start_ = string_.IndexOf('[');
-            string_ = string_.Remove(start_, 1);
+            string_ = string_.Remove(start_, 1);        //Remove starting [
+            leftCount_ = 1;
+            rightCount_ = 0;
+            for (int i = start_; i < string_.Length; i++)
+            {
+                if (string_[i] == '[')
+                    leftCount_++;
+                if (string_[i] == ']')
+                    rightCount_++;
 
-            end_ = string_.IndexOf(']');
-            string_ = string_.Remove(end_, 1);
-            end_--;     //End index is decremented to compensate removal of ']'
+                if (leftCount_ == rightCount_)      //We only mark the end of the substring if we have matched brackets. 
+                {
+                    end_ = i;
+                    break;
+                }
 
-            if (start_ > end_) {
-                Debug.Log("Error: ] precedes [ in text tree input");
-                return;
+                if (i == string_.Length - 1)        //Error if we get to the last iteration of loop without breaking meaning the brackets are mismatched.
+                {
+                    Debug.Log("Error: Mismatched brackets" );
+                    return;
+                }
+
             }
 
-            length_ = end_ - start_ + 1;
-            words_ = string_.Substring(start_, length_).Split(';');
+            string_ = string_.Remove(end_, 1);      //Remove matched ]
+            end_--;     //End index is decremented to compensate removal of ']'
 
-            word_ = words_[UnityEngine.Random.Range(0, words_.Length)];
-            string_ = string_.Substring(0, start_) + word_ + string_.Substring(end_ + 1);
+            length_ = end_ - start_ + 1;
+            words_ = Split(string_.Substring(start_, length_));     //Split substring between ;'s. Ignore ; if we are inside nested brackets.
+
+            word_ = words_[UnityEngine.Random.Range(0, words_.Length)];     //Randomly select a line in words_
+            string_ = string_.Substring(0, start_) + word_ + string_.Substring(end_ + 1);       //Add string to the rest of the line, with unchosen strings now removed.
         }
+    }
+
+    private static string[] Split(string string_)
+    //Splits string into array of substrings between ;'s. Ignores ; if inside nested bracket.
+    {
+        int leftCount_ = 0;
+        int rightCount_ = 0;
+        int substringLength_ = 0;
+        int start_ = 0;
+        string subString_;
+        List<string> splitLines_ = new List<string>();
+
+        for (int i = 0; i < string_.Length; i++)
+        {
+            if (string_[i] == '[')
+                leftCount_++;
+            if (string_[i] == ']')
+                rightCount_++;
+
+            if (string_[i] == ';' && leftCount_ == rightCount_)
+            {
+                subString_ = string_.Substring(start_, substringLength_);
+                if (subString_.Length > 0)
+                    splitLines_.Add(subString_);
+
+                start_ = i + 1;
+                substringLength_ = 0;
+            }
+            else
+                substringLength_++; 
+        }
+
+        return splitLines_.ToArray();
     }
 }
