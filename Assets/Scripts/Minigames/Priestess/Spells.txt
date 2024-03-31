@@ -1,6 +1,6 @@
-[1;2]
+[grant;give]
 =====
-Healy Dan, *1* divine healing to my wounded body asdf asdf asdf asdf asdf asdf asd fasdf asdf asdf asdf asdf asd
+Healy Dan, *1* divine healing to my wounded body
 Healy Dan, *1* divine healing for my bloodied brethren
 Healy Dan, bestow powerful and awesome divine healing to my mortally wounded vessel
 Healy Dan, bestow powerful and awesome divine healing for my bloodied brethren
