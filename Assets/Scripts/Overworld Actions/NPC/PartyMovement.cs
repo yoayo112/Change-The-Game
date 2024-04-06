@@ -62,6 +62,7 @@ public class PartyMovement : MonoBehaviour
 
     //combat
     private Canvas combatGUI_;
+    private Canvas healthBar;
     private bool inCombat = false;
     public void Set_Combat(bool b)
     {
@@ -73,6 +74,9 @@ public class PartyMovement : MonoBehaviour
             Camera camera = GameObject.Find("Main Camera").GetComponent<Camera>();
             combatGUI_.worldCamera = camera;
             combatGUI_.planeDistance = 2;
+            healthBar.worldCamera = camera;
+            healthBar.planeDistance = 2;
+            healthBar.gameObject.SetActive(true);
         }
         else
         {
@@ -90,6 +94,7 @@ public class PartyMovement : MonoBehaviour
         animator_ = transform.GetChild(0).GetComponent<Animator>();
         running_ = false;
         moving_ = false;
+
         //copycat run and walk speeds
         runSpeed_ = player_.gameObject.GetComponent<PlayerMovement>().runSpeed -1.5f;
         walkSpeed_ = player_.gameObject.GetComponent<PlayerMovement>().walkSpeed -1f;
@@ -97,6 +102,8 @@ public class PartyMovement : MonoBehaviour
         //combat
         combatGUI_ = GlobalService.Find_Canvas_In_Children(gameObject, "CombatGUI");
         combatGUI_.GetComponent<GraphicRaycaster>().enabled = false;
+        healthBar = GlobalService.Find_Canvas_In_Children(gameObject, "HealthBar");
+        healthBar.GetComponent<GraphicRaycaster>().enabled = false;
     }
 
     // Update is called once per frame
