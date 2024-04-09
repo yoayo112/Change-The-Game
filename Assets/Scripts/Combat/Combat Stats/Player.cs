@@ -340,7 +340,7 @@ public class Player : Character
         //    I.e. minigames could trigger and broadcast other actions, not just attack.
         Attack_Characters(CharacterType.enemy, _targets.ToArray(), _effectiveness);
 
-        //cleanup.
+        //cleanup all minigame stuff
         for(int i = 0; i <_cursors.Count; i++)
         {
             Destroy(_cursors[i]);
