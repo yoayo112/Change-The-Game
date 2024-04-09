@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 
 public class Player : Character
@@ -33,10 +34,14 @@ public class Player : Character
 
     //temp storage for each turn
     protected List<int> _targets;
+    private GameObject _currentArrow;
+    private int _selectedIndex;
+    protected bool _targetIsConfirmed;
     protected float _effectiveness;
     protected CharacterType _targetType;
     private bool _click;
     private Vector3 _clickLocation;
+    private List<GameObject> _cursors;
 
     //minigame vars
     private Camera _main;
@@ -45,6 +50,8 @@ public class Player : Character
     private GameObject _minigame;
     private string _mgPrefab;
     private MinigameBase _mgScript;
+    private GameObject _targetingGUI;
+    private Button _confirmTarget;
 
     //Animation Vars
     protected string _trigger;
@@ -175,6 +182,7 @@ public class Player : Character
         _title = "";
         _trigger = "";
         _actionState = "";
+        _targetIsConfirmed = false;
         _targetType = CharacterType.enemy; //TODO: You should be able to target non enemies too?
         StartCoroutine(Begin_Targeting(1));
     }
@@ -183,24 +191,33 @@ public class Player : Character
     public virtual IEnumerator Begin_Targeting(int numberOfTargets_)
     {
         //find game / init variables
+        _cursors = new List<GameObject>();
         _minigame = GameObject.Find(_title);
         _mgScript = _minigame.GetComponentInChildren<MinigameBase>();
         _mgPrefab = _mgScript.gameObject.name;
+        _targetingGUI = _mgScript.targeting_GUI.gameObject;
+        _confirmTarget = _targetingGUI.GetComponentInChildren<Button>();
+        _confirmTarget.onClick.AddListener(Confirm_Target);
         _targets = new List<int>(0);
         string targetTag = _targetType == CharacterType.enemy ? "Enemy" : "Party";
+        _minigame.SetActive(false);
 
         //hide combat gui.
         Canvas gui = GlobalService.Find_Canvas_In_Children(gameObject, "CombatGUI");
         gui.GetComponent<GraphicRaycaster>().enabled = false;
         gui.gameObject.SetActive(false);
-        //show targeting gui
-        _mgScript.targeting_GUI.gameObject.SetActive(true);
+        //show targeting gui but not the confirm button
+        _confirmTarget.gameObject.SetActive(false);
+        _targetingGUI.gameObject.SetActive(true);
 
         for (int i=0; i< numberOfTargets_; i++)
         {
             _click = false;
             yield return Select_Target(targetTag);
         }
+        //hide targeting gui
+        _targetingGUI.gameObject.SetActive(false);
+
 
         //TODO - Remove targetability from objects?
 
@@ -214,11 +231,13 @@ public class Player : Character
     public virtual IEnumerator Select_Target(string tag)
     {
         //wait for click on targetable object
+        _currentArrow = null;
         bool selected = false;
+        _targetIsConfirmed = false;
         GameObject selectedObject = new GameObject();
-        int selectedIndex = -99;
+        _selectedIndex = -99;
 
-        while(!selected)
+        while(!selected || !_targetIsConfirmed)
         {
             yield return new WaitWhile(() => !_click);
 
@@ -227,39 +246,57 @@ public class Player : Character
             if (Physics.Raycast(ray, out hit, 100.0f))
             {
                 Debug.Log("Something was clicked");
-                if(hit.collider.gameObject.CompareTag(tag))
+
+                if (hit.collider.gameObject.CompareTag(tag))
                 {
                     Debug.Log("It was an acceptable target");
-                    //hide targeting gui
-                    _mgScript.targeting_GUI.gameObject.SetActive(false);
+
                     //target selected object
                     selectedObject = hit.collider.gameObject;
-                    selectedIndex = selectedObject.GetComponentInChildren<Character>().Get_Position();
+                    _selectedIndex = selectedObject.GetComponentInChildren<Character>().Get_Position();
                     selected = true;
 
-                    if (!_targets.Contains(selectedIndex))
+                    // spawn cursor at targetted location
+                    if (_currentArrow == null)
                     {
-                        // spawn cursor at targetted location
-                        GameObject target = Instantiate(Resources.Load<GameObject>("CombatTarget"));
-                        Vector3 selectedPosition = selectedObject.transform.position;
-                        target.transform.position = new Vector3(selectedPosition.x + 1, selectedPosition.y + 2, selectedPosition.z);
-                        //refocus player on new target
-                        Vector3 newTarget = new Vector3(selectedPosition.x, transform.position.y, selectedPosition.z);
-                        transform.LookAt(newTarget, Vector3.up);
-                        // add targeted object to list
-                        _targets.Add(selectedIndex);
+                        _currentArrow = Instantiate(Resources.Load<GameObject>("CombatTarget"));
                     }
+
+                    Vector3 selectedPosition = selectedObject.transform.position;
+                    _currentArrow.transform.position = new Vector3(selectedPosition.x + 1, selectedPosition.y + 2, selectedPosition.z);
+                    //refocus player on new target
+                    Vector3 newTarget = new Vector3(selectedPosition.x, transform.position.y, selectedPosition.z);
+                    transform.LookAt(newTarget, Vector3.up);
+
+                    //show confirm button
+                    _confirmTarget.gameObject.SetActive(true);
+
+                    _click = false; //exit the block and wait for confirm or target change.
                 }
                 else
                 {
                     //it wasnt a target so wait for the next click
                     _click = false;
                 }
-            }else{
+            }
+            else
+            {
                 //nothing was clicked
                 _click = false;
             }
         }
+    }
+
+    public void Confirm_Target()
+    {
+        if (!_targets.Contains(_selectedIndex) && _selectedIndex != -99 && _currentArrow != null)
+        {
+            //confirm
+            _targetIsConfirmed = true;
+            // add targeted object to list
+            _targets.Add(_selectedIndex);
+            _cursors.Add(_currentArrow);
+        } 
     }
 
 
@@ -268,6 +305,7 @@ public class Player : Character
     public virtual IEnumerator Run_Minigame()
     {
         //display minigame
+        _minigame.SetActive(true);
         _main = GameObject.Find("Main Camera").GetComponent<Camera>();
         _overlay = _minigame.GetComponentInChildren<Camera>();
         _main.GetUniversalAdditionalCameraData().cameraStack.Add(_overlay);
@@ -302,7 +340,20 @@ public class Player : Character
         //    I.e. minigames could trigger and broadcast other actions, not just attack.
         Attack_Characters(CharacterType.enemy, _targets.ToArray(), _effectiveness);
 
-        //TODO - Remove all cursors
+        //cleanup.
+        for(int i = 0; i <_cursors.Count; i++)
+        {
+            Destroy(_cursors[i]);
+        }
+        _cursors = new List<GameObject>();
+        _currentArrow = null;
+        _targets = new List<int>();
+        _selectedIndex = -99;
+        _targetIsConfirmed = false;
+        _effectiveness = 0;
+        _click = false;
+        _minigame.SetActive(false);
+
 
         //End the turn
         _executingTurn = false;

@@ -162,12 +162,19 @@ public class Character : MonoBehaviour, IComparable
                 //modify stats
                 int actualDamage_ = (int) (damage_ * 100f / (_currentStats.armor + 100f));
                 _currentStats.currentHealth -= actualDamage_;
-                float newHealthPercentage_ = (float)_currentStats.currentHealth / (float)_currentStats.maxHealth;
-                Debug.Log(newHealthPercentage_);
-                //TODO: animate health bar changing instead of just setting its value.
-                healthBar.transform.GetChild(1).GetComponent<Image>().fillAmount = newHealthPercentage_;
+                
+                //we only need to show health bar on players
+                if (_myType == CharacterType.player)
+                {
+                    float newHealthPercentage_ = (float)_currentStats.currentHealth / (float)_currentStats.maxHealth;
+                    Debug.Log(newHealthPercentage_);
+                    //TODO: animate health bar changing instead of just setting its value.
+                    healthBar.transform.GetChild(1).GetComponent<Image>().fillAmount = newHealthPercentage_;
+                }
+
                 Debug.Log("Character " + characterName + " just took " + actualDamage_ + " damage!");
                 Animator _animator = gameObject.GetComponentInChildren<Animator>();
+
                 if (!Is_Alive())
                 {
                     //animate death

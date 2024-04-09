@@ -16,7 +16,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
-public class TypingGame : MonoBehaviour
+public class TypingGame : MinigameBase
 {
     public const int NUM_AVAILABLE_LINES = 3;
     public const int MAX_GREEN_CHAR = 20;
@@ -38,14 +38,6 @@ public class TypingGame : MonoBehaviour
     //-------------------------------------------------------------------------------------
     [Header("Game Settings")]
     public float lockoutTime = 0.5f;
-
-    //-------------------------------------------------------------------------------------
-    //  Audio handling
-    //-------------------------------------------------------------------------------------
-    [Header("Audio Members and Settings")]
-    public AudioSource audioSource;
-    public AudioClip[] audioClipArray;
-    public float volume = 0.5f;
 
     //-------------------------------------------------------------------------------------
     //  Variables
@@ -78,8 +70,6 @@ public class TypingGame : MonoBehaviour
         Update_Available_Lines();
         Update_Typed_Line();
         Update_Mistake_Counter();
-
-
     }
 
     //-------------------------------------------------------------------------------------
@@ -214,7 +204,12 @@ public class TypingGame : MonoBehaviour
         _mistakeCount++;
         cameraShake.Shake();
         Update_Mistake_Counter();
-        audioSource.PlayOneShot(audioClipArray[0], volume);
+        
+        //THIS IS CURRENTLY THE RELOAD SOUND IN THE OTHER MINIGAME.
+        //KEEP THIS COMMENTED UNTIL WE HAVE AUDIO MANAGEMENT OTHERWISE ALL KEY PRESS CAUSE "AUUUGHH?"
+
+        //audioSource.PlayOneShot(audioClipArray[0], volume);
+        
         StartCoroutine(Lock_Mistake());
 
         //inkSplatter.Splat(10);
