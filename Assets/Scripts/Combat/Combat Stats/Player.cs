@@ -352,7 +352,7 @@ public class Player : Character
         _targetIsConfirmed = false;
         _effectiveness = 0;
         _click = false;
-        _minigame.SetActive(false);
+        _minigame.SetActive(false); //I think this is where our gui click problems are coming from?
 
 
         //End the turn
