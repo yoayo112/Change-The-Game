@@ -7,7 +7,6 @@ Info:
 
 Script that controls the Priestess' typing minigame.
 */
-//sean did you revert this file after I integrated it into combat?
 
 using System;
 using System.Collections;
