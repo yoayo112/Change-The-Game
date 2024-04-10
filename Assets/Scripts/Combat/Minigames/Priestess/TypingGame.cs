@@ -2,7 +2,7 @@
 Project: Change the Game
 File: TypingGame.cs
 Date Created: Feburary 26, 2024
-Author(s): Sean Thornton
+Author(s): Sean Thornton, Sky Vercauteren
 Info:
 
 Script that controls the Priestess' typing minigame.
@@ -59,17 +59,58 @@ public class TypingGame : MinigameBase
     //  Unity Methods
     //-------------------------------------------------------------------------------------
 
+    void OnEnable()
+    {
+        TypingGameEvents.onStart += Start_Minigame;
+        TypingGameEvents.onUpdateTimer += Update_Timer;
+        TypingGameEvents.onTimeOver += Time_Over;
+    }
+    void OnDisable()
+    {
+        TypingGameEvents.onStart -= Start_Minigame;
+        TypingGameEvents.onUpdateTimer -= Update_Timer;
+        TypingGameEvents.onTimeOver -= Time_Over;
+    }
+
+
     private void Update()
     {
         Check_Input();
     }
 
-    private void Start()
+    public void Start_Minigame()
     {
-        _currentBranch = TextTree.Build(@"Assets\Scripts\Combat\Minigames\Priestess\Spells.txt");
-        Update_Available_Lines();
-        Update_Typed_Line();
-        Update_Mistake_Counter();
+        if (!_isRunning)
+        {
+            _currentBranch = TextTree.Build(@"Assets\Scripts\Combat\Minigames\Priestess\Spells.txt");
+            Update_Available_Lines();
+            Update_Typed_Line();
+            Update_Mistake_Counter();
+            _effectiveness = 0f;
+            _isRunning = true;
+        }
+    }
+
+    public void Update_Timer(int seconds_)
+    {
+        //lol I am not gonna fuck with this since you made this game :p user experience is all you!
+
+        //but if you wanted to implement some sort of timer that is displayed to the user,
+        // this method is constantly being updated with the seconds left in the game
+        // you can do stuff with seconds_ here if you want.
+
+        //Also, Elijah built a 3 (or 5?) second countdown from the initial display of the game to the game actually starting. 
+        //This is used twice, each used and updated by both timers, So you can use these seconds as "countdown until start" AND "countdown until end".
+        //I believe lol. 
+    }
+
+    public void Time_Over()
+    {
+        // this is the end state of the game. for now:
+        _effectiveness = 0f; //TODO: however you want to calculate effectiveness.
+        _isRunning = false; //the condition being checked by the overworld to see if it's done.
+        //Also, board needs to be reset in case we want to play it again next turn
+        //TODO reset();
     }
 
     //-------------------------------------------------------------------------------------
@@ -152,16 +193,19 @@ public class TypingGame : MinigameBase
     private void Check_Input()
     //Pulls the player input if it is a single key press and calls Enter_Letter. Calls Back_Space if backspace is pressed
     {
-        if (Input.anyKeyDown)
+        if(_isRunning) //this still seems to be running in the background and collecting input during the shooting game?
         {
-            string keysPressed_ = Input.inputString;
+            if (Input.anyKeyDown)
+            {
+                string keysPressed_ = Input.inputString;
 
-            if (keysPressed_ == "\b")
-                Back_Space();
-            else if (keysPressed_ == "q")
-                inkSplatter.Splat(10);
-            else if (keysPressed_.Length == 1)
-                Attempt_Letter(keysPressed_);
+                if (keysPressed_ == "\b")
+                    Back_Space();
+                else if (keysPressed_ == "q")
+                    inkSplatter.Splat(10);
+                else if (keysPressed_.Length == 1)
+                    Attempt_Letter(keysPressed_);
+            }
         }
     }
 
@@ -209,6 +253,8 @@ public class TypingGame : MinigameBase
         //KEEP THIS COMMENTED UNTIL WE HAVE AUDIO MANAGEMENT OTHERWISE ALL KEY PRESS CAUSE "AUUUGHH?"
 
         //audioSource.PlayOneShot(audioClipArray[0], volume);
+
+        //TODO: Audio Management Object.
         
         StartCoroutine(Lock_Mistake());
 
