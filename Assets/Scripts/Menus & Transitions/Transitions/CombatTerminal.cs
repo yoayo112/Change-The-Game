@@ -39,9 +39,10 @@ public class CombatTerminal : MonoBehaviour
         yield return null;
     }
 
-    public void End_Combat()
+    public void End_Combat(string message)
     {
         stopCombat.SetActive(true);
+        stopCombat.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = message;
         stopCombat.GetComponentInChildren<GraphicRaycaster>().enabled = true;
         stopCombat.GetComponentInChildren<Animator>().SetTrigger("over");
     }

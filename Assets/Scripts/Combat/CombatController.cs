@@ -232,7 +232,7 @@ public class CombatController : MonoBehaviour
         }
         Debug.Log("Combat Over! " + victoryMessage_);
         //Handle end state here, command to transition scene, post combat screen start, etc.
-        terminal.GetComponentInChildren<CombatTerminal>().End_Combat();
+        terminal.GetComponentInChildren<CombatTerminal>().End_Combat(victoryMessage_);
     }
 
     //Make a big string of who's dead on both sides.
