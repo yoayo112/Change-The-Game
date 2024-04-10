@@ -8,7 +8,6 @@ Info:
 Script that controls the Priestess' typing minigame.
 */
 
-//SEAN, lmao did you revert this back from the version that I modified so that it would integrate correctly???
 
 using System;
 using System.Collections;
