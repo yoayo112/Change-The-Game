@@ -17,6 +17,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using DG.Tweening;
 
 [System.Serializable]
 public class Character : MonoBehaviour, IComparable
@@ -169,7 +170,7 @@ public class Character : MonoBehaviour, IComparable
                     float newHealthPercentage_ = (float)_currentStats.currentHealth / (float)_currentStats.maxHealth;
                     Debug.Log(newHealthPercentage_);
                     //TODO: animate health bar changing instead of just setting its value.
-                    healthBar.transform.GetChild(1).GetComponent<Image>().fillAmount = newHealthPercentage_;
+                    healthBar.transform.GetChild(1).GetComponent<Image>().DOFillAmount(newHealthPercentage_, 2f);
                 }
 
                 Debug.Log("Character " + characterName + " just took " + actualDamage_ + " damage!");

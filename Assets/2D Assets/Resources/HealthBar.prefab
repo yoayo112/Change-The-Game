@@ -87,7 +87,6 @@ GameObject:
   - component: {fileID: 4947146054397331795}
   - component: {fileID: 5702285949239990197}
   - component: {fileID: 2747963071262896860}
-  - component: {fileID: 4993361247177557946}
   m_Layer: 5
   m_Name: HealthBar
   m_TagString: Untagged
@@ -179,22 +178,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
---- !u!111 &4993361247177557946
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5863685855423980818}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 0}
-  m_Animations:
-  - {fileID: 7400000, guid: 265dc40eac2bad34496933b48b400961, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!1 &8114412402482688708
 GameObject:
   m_ObjectHideFlags: 0
