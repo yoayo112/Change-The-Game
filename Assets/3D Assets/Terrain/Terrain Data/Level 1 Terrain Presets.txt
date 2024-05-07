@@ -1,0 +1,75 @@
+__________________________________
+
+LEVEL -1- TERRAIN DETAIL SETTINGS
+__________________________________
+
+BASIC:
+Material - 			Terrain Base
+
+TREE/DETAIL:
+Detail Distance - 		30
+Detail Density Scale - 		1
+Tree Distance - 		5000
+Fade Length - 			5
+Max Mesh Trees -		50
+
+WIND:
+speed - 			0.424
+size - 				0.272
+bending - 			0.102
+tint - 				B29980 - 0 alpha
+
+MESH:
+Detail res. per patch - 	64
+Detail Resolution		2048
+
+TEXTURE:
+heightmap - 			129 x 129
+Control - 			512 x 512
+Base texture -			1024 x 1024
+
+LIGHTING:
+contribute -			true
+receive -			lightmaps
+
+GRASS TEXTURE 1
+target density -		100
+detail density - 		0.3
+min width -			0.05
+max width - 			0.5
+min height -			0.05
+max height -			0.5
+Healthy color -			5D8E56
+Dry color - 			979A46
+billboard - 			false
+
+GRASS TEXTURE 2
+target density -		100
+detail density - 		0.19
+min width -			0.2
+max width - 			0.7
+min height -			0.2
+max height -			0.9
+Healthy color -			7D9C29
+Dry color - 			BCA21A
+billboard - 			false
+
+GRASS TEXTURE 3 (special tuft)
+target density -		100
+detail density - 		0.04
+min width -			0.25
+max width - 			0.5
+min height -			0.1
+max height -			0.5
+Healthy color -			3C5E1F
+Dry color - 			616F30
+billboard - 			false
+
+CRACKED GROUND BRUSH:
+(use textured brush pattern)
+Strength - 			0.025
+Size -				4.2
+Spacing -			6
+Scatter -			1
+Target Strength -		0.6
+
