@@ -96,7 +96,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _Distance: 3.77
+    - _Distance: 2.4
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
@@ -128,9 +128,9 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Deep: {r: 0.05098039, g: 0.3960784, b: 0.8117647, a: 0.36862746}
+    - _Deep: {r: 0.05098039, g: 0.3960784, b: 0.8117647, a: 0.34117648}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Shallow: {r: 0, g: 0.7137255, b: 1, a: 1}
+    - _Shallow: {r: 0, g: 0.7137255, b: 1, a: 0.80784315}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _Specular_Color: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
