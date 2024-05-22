@@ -158,7 +158,7 @@ public class GridShooterController : MinigameBase
         _isRunning = false;
         _targets.Kill_All();
         _effectiveness = (_hitTargets != 0)? ((float)_hitTargets/(float)_totalTargets): 0f;
-        Debug.Log(_effectiveness);
+        Debug.Log(Get_effectiveness() + "from GSCont");
 
         Reset_State();
     }

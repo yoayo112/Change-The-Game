@@ -197,7 +197,7 @@ public class Player : Character
         _mgPrefab = _mgScript.gameObject.name;
         _targetingGUI = _mgScript.targeting_GUI.gameObject;
         _confirmTarget = _targetingGUI.GetComponentInChildren<Button>();
-        _confirmTarget.onClick.AddListener(Confirm_Target);
+        _confirmTarget.onClick.AddListener(Confirm_Target); //TODO: for some reason you have to click twice?
         _targets = new List<int>(0);
         string targetTag = _targetType == CharacterType.enemy ? "Enemy" : "Party";
         _minigame.SetActive(false);

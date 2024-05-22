@@ -193,6 +193,7 @@ public class TypingGame : MinigameBase
     private void Check_Input()
     //Pulls the player input if it is a single key press and calls Enter_Letter. Calls Back_Space if backspace is pressed
     {
+        Debug.Log("Typing game is running: " + _isRunning);
         if(_isRunning) //this still seems to be running in the background and collecting input during the shooting game?
         {
             if (Input.anyKeyDown)

@@ -11,6 +11,7 @@ public class GridShooterTimer : MiniGameTimer
 
     protected override void Invoke_Start()
     {
+        Debug.Log("Specific Grid Shooter start is invoked");
         GridShooterEventManager.Start_Minigame();
     }
     protected override void Time_Over()
