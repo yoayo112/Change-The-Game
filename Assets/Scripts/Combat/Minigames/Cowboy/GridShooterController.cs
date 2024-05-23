@@ -61,18 +61,26 @@ public class GridShooterController : MinigameBase
     private float _reloadProgress = 0f; 
     private bool _isReloading = false; // Reload coroutine running?
 
+    //-------------------------------------------------------------------------------------
+    // Character Type declaration
+    //-------------------------------------------------------------------------------------
+    private const PlayerCharacterType _myCharacter = PlayerCharacterType.cowboy;
+
+    //--------------------------------------------------------------------------------------
+    //        8============D
+    //-------------------------------------------------------------------------------------- 
 
     void OnEnable()
     {
-        GridShooterEventManager.onStart += Start_Minigame;
-        GridShooterEventManager.onUpdateTimer += Update_Timer;
-        GridShooterEventManager.onTimeOver += Time_Over;
+        MinigameEventManager.onStart += Start_Minigame;
+        MinigameEventManager.onUpdateTimer += Update_Timer;
+        MinigameEventManager.onTimeOver += Time_Over;
     }
     void OnDisable()
     {
-        GridShooterEventManager.onStart -= Start_Minigame;
-        GridShooterEventManager.onUpdateTimer -= Update_Timer;
-        GridShooterEventManager.onTimeOver -= Time_Over;
+        MinigameEventManager.onStart -= Start_Minigame;
+        MinigameEventManager.onUpdateTimer -= Update_Timer;
+        MinigameEventManager.onTimeOver -= Time_Over;
     }
     void Start() // Called before first frame update.
     {
@@ -150,32 +158,45 @@ public class GridShooterController : MinigameBase
     //---------------------------------------------------------------------------------------------
     //  Event Subscriptions
     //---------------------------------------------------------------------------------------------
-    public void Time_Over()
+    public void Time_Over(PlayerCharacterType whichCharacter_)
     {
-        StopAllCoroutines();
-        _isSpawning = false;
-        _isReloading = false;
-        _isRunning = false;
-        _targets.Kill_All();
-        _effectiveness = (_hitTargets != 0)? ((float)_hitTargets/(float)_totalTargets): 0f;
-        Debug.Log(Get_effectiveness() + "from GSCont");
-
-        Reset_State();
-    }
-    public void Update_Timer(int seconds_)
-    {
-        Set_Timer_Text(seconds_);
-    }
-    public void Start_Minigame()
-    {
-        if(!_isRunning)
+        if( whichCharacter_ == _myCharacter )
         {
-            _hitTargets = 0;
-            Set_Hits_Text();
-            _effectiveness = 0f;
-            _isRunning = true;
+            StopAllCoroutines();
+
+            _isSpawning = false;
+            _isReloading = false;
+            _isRunning = false;
+            _targets.Kill_All();
+            _effectiveness = (_hitTargets != 0)? ((float)_hitTargets/(float)_totalTargets): 0f;
+            Debug.Log(Get_effectiveness() + "from GSCont");
+
+            Reset_State();
+        }
+
+    }
+    public void Update_Timer(PlayerCharacterType whichCharacter_, int seconds_)
+    {
+        if( whichCharacter_ == _myCharacter)
+        {
+            Set_Timer_Text(seconds_);
+        }
+
+    }
+    public void Start_Minigame(PlayerCharacterType whichCharacter_)
+    {
+        if( whichCharacter_ == _myCharacter)
+        {
+            if(!_isRunning)
+            {
+                _hitTargets = 0;
+                Set_Hits_Text();
+                _effectiveness = 0f;
+                _isRunning = true;
+            }
         }
     }
+
     //--------------------------------------------------------------------------------------------
     //  General Game Methods
     //--------------------------------------------------------------------------------------------

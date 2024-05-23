@@ -22,8 +22,9 @@ public enum StatusType
     //etc...
 }
 
-public enum PlayerCharacters
-(
+public enum PlayerCharacterType
+{
+    nobody, //Default Case for top level modules.
     cowboy,
     priestess
-)
+}

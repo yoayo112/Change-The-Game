@@ -4,26 +4,33 @@ using UnityEngine;
 
 public class TypingGameTimer : MiniGameTimer
 {
+    private const PlayerCharacterType _myCharacter = PlayerCharacterType.priestess;
     protected override void Update_Time(int seconds_)
     {
-        TypingGameEvents.Update_Timer(seconds_);
+        MinigameEventManager.Update_Timer(_myCharacter, seconds_);
     }
 
     protected override void Invoke_Start()
     {
-        TypingGameEvents.Start_Minigame();
+        MinigameEventManager.Start_Minigame(_myCharacter);
     }
     protected override void Time_Over()
     {
-        TypingGameEvents.Time_Over();
+        MinigameEventManager.Time_Over(_myCharacter);
     }
 
-    protected override void Subscribe_Events()
-    {
-        TypingGameEvents.onStart += Start_Minigame;
+    public override void Start_Minigame(PlayerCharacterType whichCharacter_)
+    {   
+        if( whichCharacter_ == _myCharacter)
+        {
+            int time_ = (int)minigameTime;
+            Update_Time(time_);
+            if(!_timerRunning)
+            {
+                _timeRemaining = minigameTime;
+                _timerRunning = true;
+            }
+        }
     }
-    protected override void Unsubscribe_Events()
-    {
-        TypingGameEvents.onStart -= Start_Minigame;
-    }
+
 }

@@ -7,11 +7,13 @@ public class MiniGameTimer : MonoBehaviour
 {
     // Start is called before the first frame update
     public float minigameTime = 10; // Time in seconds minigame will last
-    private float _timeRemaining; // Time left in minigame
-    private bool _timerRunning; // internal control
+    protected float _timeRemaining; // Time left in minigame
+    protected bool _timerRunning; // internal control
 
     private float _countdownTime;
-    private bool _countdownRunning = false;
+    protected bool _countdownRunning = false;
+
+    private const PlayerCharacterType _myCharacter = PlayerCharacterType.nobody; //Top level timer should target no one in particular.
 
     //Just for now I am calling this from the combat GUI!!
     public virtual void Start_Countdown()
@@ -80,23 +82,40 @@ public class MiniGameTimer : MonoBehaviour
     //----------------------------------------------------------------
     //  OVERRIDE THESE GUYS IN INHERITED CLASSES
     //----------------------------------------------------------------
-    // Change MinigameEventManager to the name of whatever 
-    // Event manager you created out of minigameeventmanager
+    // In your Inherited class, set _myCharacter to who it needs to
+    // be, and whatnot. See GridShooterTimer.cs for an example.
     //----------------------------------------------------------------
     protected virtual void Update_Time(int seconds_)
     {
-        MinigameEventManager.Update_Timer(seconds_);
+        MinigameEventManager.Update_Timer(_myCharacter, seconds_);
     }
     protected virtual void Invoke_Start()
     {
         Debug.Log("General start is invoked");
-        MinigameEventManager.Start_Minigame();
+        MinigameEventManager.Start_Minigame(_myCharacter);
     }
     protected virtual void Time_Over()
     {
-        MinigameEventManager.Time_Over();
+        MinigameEventManager.Time_Over(_myCharacter);
     }
 
+    public virtual void Start_Minigame(PlayerCharacterType whichCharacter_)
+    {   
+        if( whichCharacter_ == _myCharacter)
+        {
+            int time_ = (int)minigameTime;
+            Update_Time(time_);
+            if(!_timerRunning)
+            {
+                _timeRemaining = minigameTime;
+                _timerRunning = true;
+            }
+        }
+    }
+
+    //------------------------------------------------------------------------
+    //  Event Subscriptions
+    //------------------------------------------------------------------------
     protected virtual void Subscribe_Events()
     {
         MinigameEventManager.onStart += Start_Minigame;
@@ -104,19 +123,5 @@ public class MiniGameTimer : MonoBehaviour
     protected virtual void Unsubscribe_Events()
     {
         MinigameEventManager.onStart -= Start_Minigame;
-    }
-
-    //------------------------------------------------------------------------
-    //  Event Subscriptions
-    //------------------------------------------------------------------------
-    public void Start_Minigame()
-    {   
-        int time_ = (int)minigameTime;
-        Update_Time(time_);
-        if(!_timerRunning)
-        {
-            _timeRemaining = minigameTime;
-            _timerRunning = true;
-        }
     }
 }

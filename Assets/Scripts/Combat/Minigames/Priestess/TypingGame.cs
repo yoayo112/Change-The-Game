@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System;
 
 public class TypingGame : MinigameBase
 {
@@ -54,6 +53,12 @@ public class TypingGame : MinigameBase
 
     private TextTree _currentBranch;
 
+    //-------------------------------------------------------------------------------------
+    // Character Type Declaration
+    //-------------------------------------------------------------------------------------
+
+    private const PlayerCharacterType _myCharacter = PlayerCharacterType.priestess;
+
 
     //-------------------------------------------------------------------------------------
     //  Unity Methods
@@ -61,15 +66,15 @@ public class TypingGame : MinigameBase
 
     void OnEnable()
     {
-        TypingGameEvents.onStart += Start_Minigame;
-        TypingGameEvents.onUpdateTimer += Update_Timer;
-        TypingGameEvents.onTimeOver += Time_Over;
+        MinigameEventManager.onStart += Start_Minigame;
+        MinigameEventManager.onUpdateTimer += Update_Timer;
+        MinigameEventManager.onTimeOver += Time_Over;
     }
     void OnDisable()
     {
-        TypingGameEvents.onStart -= Start_Minigame;
-        TypingGameEvents.onUpdateTimer -= Update_Timer;
-        TypingGameEvents.onTimeOver -= Time_Over;
+        MinigameEventManager.onStart -= Start_Minigame;
+        MinigameEventManager.onUpdateTimer -= Update_Timer;
+        MinigameEventManager.onTimeOver -= Time_Over;
     }
 
 
@@ -78,20 +83,23 @@ public class TypingGame : MinigameBase
         Check_Input();
     }
 
-    public void Start_Minigame()
+    public void Start_Minigame(PlayerCharacterType whichCharacter_)
     {
-        if (!_isRunning)
+        if(whichCharacter_ == _myCharacter)
         {
-            _currentBranch = TextTree.Build(@"Assets\Scripts\Combat\Minigames\Priestess\Spells.txt");
-            Update_Available_Lines();
-            Update_Typed_Line();
-            Update_Mistake_Counter();
-            _effectiveness = 0f;
-            _isRunning = true;
+            if (!_isRunning)
+            {
+                _currentBranch = TextTree.Build(@"Assets\Scripts\Combat\Minigames\Priestess\Spells.txt");
+                Update_Available_Lines();
+                Update_Typed_Line();
+                Update_Mistake_Counter();
+                _effectiveness = 0f;
+                _isRunning = true;
+            }
         }
     }
 
-    public void Update_Timer(int seconds_)
+    public void Update_Timer(PlayerCharacterType whichCharacter_, int seconds_)
     {
         //lol I am not gonna fuck with this since you made this game :p user experience is all you!
 
@@ -102,15 +110,24 @@ public class TypingGame : MinigameBase
         //Also, Elijah built a 3 (or 5?) second countdown from the initial display of the game to the game actually starting. 
         //This is used twice, each used and updated by both timers, So you can use these seconds as "countdown until start" AND "countdown until end".
         //I believe lol. 
+
+        if( whichCharacter_ == _myCharacter)
+        {
+            // do timer shit.
+        }
     }
 
-    public void Time_Over()
+    public void Time_Over(PlayerCharacterType whichCharacter_)
     {
-        // this is the end state of the game. for now:
-        _effectiveness = 0f; //TODO: however you want to calculate effectiveness.
-        _isRunning = false; //the condition being checked by the overworld to see if it's done.
-        //Also, board needs to be reset in case we want to play it again next turn
-        //TODO reset();
+        if( whichCharacter_ == _myCharacter)
+        {
+            // this is the end state of the game. for now:
+            _effectiveness = 0.5f; //TODO: however you want to calculate effectiveness.
+            _isRunning = false; //the condition being checked by the overworld to see if it's done.
+            //Also, board needs to be reset in case we want to play it again next turn
+            //TODO reset();
+        }
+    
     }
 
     //-------------------------------------------------------------------------------------

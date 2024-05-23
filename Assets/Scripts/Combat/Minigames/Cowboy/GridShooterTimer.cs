@@ -4,27 +4,34 @@ using UnityEngine;
 
 public class GridShooterTimer : MiniGameTimer
 {
+    private const PlayerCharacterType _myCharacter = PlayerCharacterType.cowboy;
     protected override void Update_Time(int seconds_)
     {
-        GridShooterEventManager.Update_Timer(seconds_);
+        MinigameEventManager.Update_Timer(_myCharacter, seconds_);
     }
 
     protected override void Invoke_Start()
     {
         Debug.Log("Specific Grid Shooter start is invoked");
-        GridShooterEventManager.Start_Minigame();
+        MinigameEventManager.Start_Minigame(_myCharacter);
     }
     protected override void Time_Over()
     {
-        GridShooterEventManager.Time_Over();
+        MinigameEventManager.Time_Over(_myCharacter);
     }
 
-    protected override void Subscribe_Events()
-    {
-        GridShooterEventManager.onStart += Start_Minigame;
+    public override void Start_Minigame(PlayerCharacterType whichCharacter_)
+    {   
+        if( whichCharacter_ == _myCharacter)
+        {
+            int time_ = (int)minigameTime;
+            Update_Time(time_);
+            if(!_timerRunning)
+            {
+                _timeRemaining = minigameTime;
+                _timerRunning = true;
+            }
+        }
     }
-    protected override void Unsubscribe_Events()
-    {
-        GridShooterEventManager.onStart -= Start_Minigame;
-    }
+    
 }
