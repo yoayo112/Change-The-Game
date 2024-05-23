@@ -21,3 +21,9 @@ public enum StatusType
     weakened
     //etc...
 }
+
+public enum PlayerCharacters
+(
+    cowboy,
+    priestess
+)
