@@ -52,6 +52,7 @@ public class Player : Character
     private MinigameBase _mgScript;
     private GameObject _targetingGUI;
     private Button _confirmTarget;
+    private bool _firstRound = true;
 
     //Animation Vars
     protected string _trigger;
@@ -192,7 +193,11 @@ public class Player : Character
     {
         //find game / init variables
         _cursors = new List<GameObject>();
-        _minigame = GameObject.Find(_title);
+        if(_firstRound)
+        {
+            _minigame = GameObject.Find(_title);
+            _firstRound = false;
+        }else { _minigame.SetActive(true); }
         _mgScript = _minigame.GetComponentInChildren<MinigameBase>();
         _mgPrefab = _mgScript.gameObject.name;
         _targetingGUI = _mgScript.targeting_GUI.gameObject;
@@ -322,18 +327,15 @@ public class Player : Character
 
         //wait for minigame to finish
         yield return new WaitWhile(() => _minigame.GetComponentInChildren<MinigameBase>().Get_isRunning());
-
         //fade out
         yield return GlobalService.AnimWait(mg_animator, "fade", "Fade Out");
 
         //then get the effictiveness
         _effectiveness = _minigame.GetComponentInChildren<MinigameBase>().Get_effectiveness();
         _main.GetUniversalAdditionalCameraData().cameraStack.Remove(_overlay);
-
         //animate and wait for animation to finish
         Animator animator = gameObject.GetComponentInChildren<Animator>();
         yield return GlobalService.AnimWait(animator, _trigger, _actionState); //TODO: how to better sync attack anim with hurt anim??
-
         //Broadcast the event
         //TODO: can we make the character action methods into delegates?
         // -> This way, a function could be passed as an arg on button click and called here,
@@ -353,6 +355,7 @@ public class Player : Character
         _effectiveness = 0;
         _click = false;
         _minigame.SetActive(false); //I think this is where our gui click problems are coming from?
+        //BUT ALSO - If this is false, the GameObject.Find() won't work in the begin_targeting() method. 
 
 
         //End the turn

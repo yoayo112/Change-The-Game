@@ -91,7 +91,6 @@ public class MiniGameTimer : MonoBehaviour
     }
     protected virtual void Invoke_Start()
     {
-        Debug.Log("General start is invoked");
         MinigameEventManager.Start_Minigame(_myCharacter);
     }
     protected virtual void Time_Over()

@@ -17,7 +17,6 @@ public class MinigameEventManager : MonoBehaviour
 
     public static void Start_Minigame(PlayerCharacterType whichCharacter_)
     {
-        //Ok so this is being directly invoked by the grid shooter, which is also causing the typing game to start!
         onStart?.Invoke(whichCharacter_);
     }
 

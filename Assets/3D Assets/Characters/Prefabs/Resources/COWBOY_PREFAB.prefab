@@ -306,6 +306,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBar: {fileID: 6749171831177397201}
   characterName: Cowboy
+  _minigame: {fileID: 9089746416753920476, guid: 17939ec6c17b1cf4b90fc79511b91b7f, type: 3}
 --- !u!1 &2795947880986105205
 GameObject:
   m_ObjectHideFlags: 0
