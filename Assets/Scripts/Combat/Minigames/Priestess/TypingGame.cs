@@ -99,6 +99,23 @@ public class TypingGame : MinigameBase
         }
     }
 
+    //ok attempting to reset seans code :3
+    public void reset()
+    {
+        _typedLine = string.Empty;
+        _typedCount = 0;
+        _totalTypedCount = 0;
+        _dispTypedLine = string.Empty;
+        _mistakeCount = 0;
+        _isLocked = false;
+        _currentBranch = TextTree.Build(@"Assets\Scripts\Combat\Minigames\Priestess\Spells.txt");
+        Update_Available_Lines();
+        Update_Typed_Line();
+        Update_Mistake_Counter();
+        _effectiveness = 0f;
+
+    }
+
     public void Update_Timer(PlayerCharacterType whichCharacter_, int seconds_)
     {
         //lol I am not gonna fuck with this since you made this game :p user experience is all you!
@@ -108,7 +125,8 @@ public class TypingGame : MinigameBase
         // you can do stuff with seconds_ here if you want.
 
         //Also, Elijah built a 3 (or 5?) second countdown from the initial display of the game to the game actually starting. 
-        //This is used twice, each used and updated by both timers, So you can use these seconds as "countdown until start" AND "countdown until end".
+        
+        //SO: this methis is used twice, each used and updated by both timers, So you can use these seconds as "countdown until start" AND "countdown until end".
         //I believe lol. 
 
         if( whichCharacter_ == _myCharacter)
@@ -125,7 +143,7 @@ public class TypingGame : MinigameBase
             _effectiveness = 0.5f; //TODO: however you want to calculate effectiveness.
             _isRunning = false; //the condition being checked by the overworld to see if it's done.
             //Also, board needs to be reset in case we want to play it again next turn
-            //TODO reset();
+            reset();
         }
     
     }

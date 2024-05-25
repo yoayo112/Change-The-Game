@@ -23,8 +23,8 @@ public class Squid : Enemy
     private const int ATTACK_POWER_MAX = 15;
     private const int HEAL_POWER_MIN = 0;
     private const int HEAL_POWER_MAX = 0;
-    private const int HEALTH_MIN = 100;
-    private const int HEALTH_MAX = 200;
+    private const int HEALTH_MIN = 50;
+    private const int HEALTH_MAX = 80;
     private const int ENERGY_MIN = 0;
     private const int ENERGY_MAX = 0;
     private const int SPEED_MIN = 50;

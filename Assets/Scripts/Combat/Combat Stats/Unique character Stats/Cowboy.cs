@@ -45,6 +45,7 @@ public class Cowboy : Player
     //----------------------------------------------------------------
     public override void Set_Starting_Stats()
     {
+        _firstRound = true;
         Set_StatsStruct(_cowboyStats);
         Set_CharacterType(CharacterType.player);
     }

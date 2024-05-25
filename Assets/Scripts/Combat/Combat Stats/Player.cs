@@ -52,7 +52,7 @@ public class Player : Character
     private MinigameBase _mgScript;
     private GameObject _targetingGUI;
     private Button _confirmTarget;
-    private bool _firstRound = true;
+    protected bool _firstRound = true;
 
     //Animation Vars
     protected string _trigger;
@@ -157,6 +157,7 @@ public class Player : Character
     //----------------------------------------------------------------
     public override void Set_Starting_Stats()
     {
+        _firstRound = true;
         Set_StatsStruct(_permanentStats);
         Set_CharacterType(CharacterType.player);
     }
@@ -193,7 +194,7 @@ public class Player : Character
     {
         //find game / init variables
         _cursors = new List<GameObject>();
-        if(_firstRound)
+        if(_firstRound || _minigame == null)
         {
             _minigame = GameObject.Find(_title);
             _firstRound = false;
@@ -239,7 +240,7 @@ public class Player : Character
         _currentArrow = null;
         bool selected = false;
         _targetIsConfirmed = false;
-        GameObject selectedObject = new GameObject();
+        GameObject selectedObject; //= new GameObject();
         _selectedIndex = -99;
 
         while(!selected || !_targetIsConfirmed)
@@ -371,5 +372,6 @@ public class Player : Character
     {
         _permanentStats.currentHealth = Get_CurrentHealth();
         _permanentStats.currentEnergy = Get_CurrentEnergy();
+        _firstRound = true;
     }
 }

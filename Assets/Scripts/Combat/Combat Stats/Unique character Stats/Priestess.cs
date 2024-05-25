@@ -45,6 +45,7 @@ public class Priestess : Player
     //----------------------------------------------------------------
     public override void Set_Starting_Stats()
     {
+        _firstRound = true;
         Set_StatsStruct(_priestessStats);
         Set_CharacterType(CharacterType.player);
     }
