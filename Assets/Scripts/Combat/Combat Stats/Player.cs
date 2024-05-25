@@ -194,6 +194,7 @@ public class Player : Character
     {
         //find game / init variables
         _cursors = new List<GameObject>();
+        Debug.Log(_minigame);
         if(_firstRound || _minigame == null)
         {
             _minigame = GameObject.Find(_title);
