@@ -32228,6 +32228,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1321508318794563470, guid: 5291b8ec7ed6820478cb4950b45bef97, type: 3}
+      propertyPath: m_text
+      value: CONFIRM
+      objectReference: {fileID: 0}
     - target: {fileID: 1411457760537162170, guid: 5291b8ec7ed6820478cb4950b45bef97, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

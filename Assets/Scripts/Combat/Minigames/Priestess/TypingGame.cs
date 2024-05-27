@@ -54,7 +54,6 @@ public class TypingGame : MinigameBase
     private TextTree _currentBranch;
     private int _correctCount = 0;
     private string _currentSpell = string.Empty;
-    private int _finalSpellType = 0;
 
     //-------------------------------------------------------------------------------------
     // Character Type Declaration
@@ -111,15 +110,11 @@ public class TypingGame : MinigameBase
         _dispTypedLine = string.Empty;
         _mistakeCount = 0;
         _isLocked = false;
-        _currentBranch = TextTree.Build(@"Assets\Scripts\Combat\Minigames\Priestess\Spells.txt");
         _correctCount = 0;
-        _currentSpell = string.Empty;
-        _finalSpellType = 0;
+        //probably redundant
         Update_Available_Lines();
         Update_Typed_Line();
         Update_Mistake_Counter();
-        _effectiveness = 0f;
-
     }
 
     public void Update_Timer(PlayerCharacterType whichCharacter_, int seconds_)
@@ -475,22 +470,25 @@ public class TypingGame : MinigameBase
     //3 - for buff/debuff spells
     {
         //TODO: update these deities with real gods!
-        string _fullSpell = _currentBranch.Get_Full_Text().ToLower();
-        if (_fullSpell.Contains("healy dan"))
+        Debug.Log("Spell Cast: " + _currentSpell);
+        if (_currentSpell.Contains("healy dan"))
         {
             Debug.Log("Casting a Heal Type Spell");
             return 1;
         }
-        else if (_fullSpell.Contains("ghost malone"))
+        else if (_currentSpell.Contains("ghost malone"))
         {
             Debug.Log("Casting a DPS Type Spell");
             return 0;
         }
-        else if (_fullSpell.Contains("shady haga"))
+        else if (_currentSpell.Contains("shady haga"))
         {
             Debug.Log("Casting a Buff Type Spell");
             return 2;
         }
+
+        //dont reset until the action is send to the event.
+        _currentSpell = string.Empty;
         return 0;
     }
 }

@@ -47,11 +47,11 @@ public class Player : Character
     private Camera _main;
     private Camera _overlay;
     protected string _title;
-    private GameObject _minigame;
-    private string _mgPrefab;
-    private MinigameBase _mgScript;
-    private GameObject _targetingGUI;
-    private Button _confirmTarget;
+    protected GameObject _minigame;
+    protected string _mgPrefab;
+    protected MinigameBase _mgScript;
+    protected GameObject _targetingGUI;
+    protected Button _confirmTarget;
     protected bool _firstRound = true;
 
     //Animation Vars
@@ -172,8 +172,20 @@ public class Player : Character
         gui.gameObject.SetActive(true);
     }
 
+    //-----------------------------------------------------------------
+    // Writing currentHealth and currentEnergy values back into
+    // "permanent" stats
+    //-----------------------------------------------------------------
+
+    public void End_Combat()
+    {
+        _permanentStats.currentHealth = Get_CurrentHealth();
+        _permanentStats.currentEnergy = Get_CurrentEnergy();
+        _firstRound = true;
+    }
+
     //----------------------------------------------------------------
-    //Minigame and Targeting System
+    //Minigame Event Cycle
     //----------------------------------------------------------------
 
     //Called on button click. Wrapper for minigame coroutine.
@@ -186,49 +198,76 @@ public class Player : Character
         _actionState = "";
         _targetIsConfirmed = false;
         _targetType = CharacterType.enemy; //TODO: You should be able to target non enemies too?
-        StartCoroutine(Begin_Targeting(1));
+        StartCoroutine(Minigame_Cycle());
     }
 
-    //wait until all targets are selected then run the minigame
+    //this determines the order of events regarding a minigame cycle. Override for unique behavior
+    public virtual IEnumerator Minigame_Cycle()
+    {
+        //begin targeting -> (select target -> confirm target)
+        yield return Begin_Targeting(1);
+
+
+        //display the minigame -> (start countdown -> initialize -> wait for gameplay -> animate)
+        yield return Run_Minigame();
+
+        //broadcast an event corresponding with the appropriate result of the minigame
+        yield return Resulting_Action(_mgScript);
+
+        //cleanup all minigame stuff
+        yield return Finish_Minigame();
+
+        //End the turn
+        _executingTurn = false;
+    }
+
+    //----------------------------------------------------------------
+    //Targeting
+    //----------------------------------------------------------------
+
+    //Manage combat gui, targeting gui, and target selection/
     public virtual IEnumerator Begin_Targeting(int numberOfTargets_)
     {
         //find game / init variables
-        _cursors = new List<GameObject>();
-        Debug.Log(_minigame);
-        if(_firstRound || _minigame == null)
+        if (_firstRound || _minigame == null)
         {
             _minigame = GameObject.Find(_title);
             _firstRound = false;
-        }else { _minigame.SetActive(true); }
+        }
+        else { _minigame.SetActive(true); }
         _mgScript = _minigame.GetComponentInChildren<MinigameBase>();
         _mgPrefab = _mgScript.gameObject.name;
+        _cursors = new List<GameObject>();
         _targetingGUI = _mgScript.targeting_GUI.gameObject;
         _confirmTarget = _targetingGUI.GetComponentInChildren<Button>();
         _confirmTarget.onClick.AddListener(Confirm_Target); //TODO: for some reason you have to click twice?
         _targets = new List<int>(0);
         string targetTag = string.Empty;
-        switch(_targetType)
+        switch (_targetType)
         {
             case CharacterType.enemy: targetTag = "Enemy"; break;
             case CharacterType.player: targetTag = "Player"; break;
             case CharacterType.both: targetTag = "both"; break;
         }
-        _minigame.SetActive(false);
 
         //hide combat gui.
+        _minigame.SetActive(false);
         Canvas gui = GlobalService.Find_Canvas_In_Children(gameObject, "CombatGUI");
         gui.GetComponent<GraphicRaycaster>().enabled = false;
         gui.gameObject.SetActive(false);
+       
         //show targeting gui but not the confirm button
         _confirmTarget.gameObject.SetActive(false);
         _targetingGUI.gameObject.SetActive(true);
 
-        for (int i=0; i< numberOfTargets_; i++)
+        //wait for targets to be selected
+        for (int i = 0; i < numberOfTargets_; i++)
         {
             _click = false;
             yield return Select_Target(targetTag);
         }
-        //hide targeting gui
+        
+        //then hide targeting gui
         _targetingGUI.gameObject.SetActive(false);
 
 
@@ -236,21 +275,20 @@ public class Player : Character
 
         //Let the targets hang for a moment.
         yield return new WaitForSeconds(0.5f);
-
-        StartCoroutine(Run_Minigame());
     }
 
-    //called when a clickable target is raycast and clicked
+    //raycasts an object/click and assigns a target if its acceptable.
     public virtual IEnumerator Select_Target(string tag)
     {
-        //wait for click on targetable object
+        //empty target
         _currentArrow = null;
         bool selected = false;
         _targetIsConfirmed = false;
         GameObject selectedObject; //= new GameObject();
         _selectedIndex = -99;
 
-        while(!selected || !_targetIsConfirmed)
+        //wait for raycast click.
+        while (!selected || !_targetIsConfirmed)
         {
             yield return new WaitWhile(() => !_click);
 
@@ -259,10 +297,10 @@ public class Player : Character
             if (Physics.Raycast(ray, out hit, 100.0f))
             {
                 Debug.Log("Something was clicked");
-                
+
                 //Determine if it was appropriate
                 bool acceptable_ = false;
-                if(tag == "both")
+                if (tag == "both")
                 {
                     acceptable_ = (hit.collider.gameObject.CompareTag("Enemy") || hit.collider.gameObject.CompareTag("Player"));
                 }
@@ -289,6 +327,7 @@ public class Player : Character
 
                     Vector3 selectedPosition = selectedObject.transform.position;
                     _currentArrow.transform.position = new Vector3(selectedPosition.x + 1, selectedPosition.y + 2, selectedPosition.z);
+                   
                     //refocus player on new target
                     Vector3 newTarget = new Vector3(selectedPosition.x, transform.position.y, selectedPosition.z);
                     transform.LookAt(newTarget, Vector3.up);
@@ -312,17 +351,25 @@ public class Player : Character
         }
     }
 
+    //called on click of "confirm" in the targeting gui.
     public void Confirm_Target()
     {
         if (!_targets.Contains(_selectedIndex) && _selectedIndex != -99 && _currentArrow != null)
         {
             //confirm
             _targetIsConfirmed = true;
+            
             // add targeted object to list
             _targets.Add(_selectedIndex);
             _cursors.Add(_currentArrow);
-        } 
+        }
     }
+
+
+
+    //----------------------------------------------------------------
+    //  !! MINIGAME !!
+    //----------------------------------------------------------------
 
 
     //Use me to trigger and run gameplay, 
@@ -356,28 +403,6 @@ public class Player : Character
         //animate and wait for animation to finish
         Animator animator = gameObject.GetComponentInChildren<Animator>();
         yield return GlobalService.AnimWait(animator, _trigger, _actionState); //TODO: how to better sync attack anim with hurt anim??
-
-        //relsolve outstanding processes and variables
-        yield return Resulting_Action(_mgScript);
-
-        //cleanup all minigame stuff
-        for (int i = 0; i < _cursors.Count; i++)
-        {
-            Destroy(_cursors[i]);
-        }
-        _cursors = new List<GameObject>();
-        _currentArrow = null;
-        _targets = new List<int>();
-        _selectedIndex = -99;
-        _targetIsConfirmed = false;
-        _effectiveness = 0;
-        _click = false;
-        _minigame.SetActive(false); //I think this is where our gui click problems are coming from?
-        //BUT ALSO - If this is false, the GameObject.Find() won't work in the begin_targeting() method. 
-
-
-        //End the turn
-        _executingTurn = false;
     }
 
     //overload me if a characters minigame needs to be more complex than just "attack"
@@ -391,15 +416,24 @@ public class Player : Character
         yield return null;
     }
 
-    //-----------------------------------------------------------------
-    // Writing currentHealth and currentEnergy values back into
-    // "permanent" stats
-    //-----------------------------------------------------------------
-
-    public void End_Combat()
+    //reset targeting and base minigame variables
+    public virtual IEnumerator Finish_Minigame()
     {
-        _permanentStats.currentHealth = Get_CurrentHealth();
-        _permanentStats.currentEnergy = Get_CurrentEnergy();
-        _firstRound = true;
+
+        for (int i = 0; i < _cursors.Count; i++)
+        {
+            Destroy(_cursors[i]);
+        }
+        _cursors = new List<GameObject>();
+        _currentArrow = null;
+        _targets = new List<int>();
+        _selectedIndex = -99;
+        _targetIsConfirmed = false;
+        _effectiveness = 0;
+        _click = false;
+        _minigame.SetActive(false); //I think this is where our gui click problems are coming from?
+        //BUT ALSO - If this is false, the GameObject.Find() won't work in the begin_targeting() method.
+
+        yield return null;
     }
 }

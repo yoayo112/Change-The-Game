@@ -29,19 +29,6 @@ public class Priestess : Player
 
 
     //----------------------------------------------------------------
-    //Overridden minigame trigger
-    //----------------------------------------------------------------
-    //Called on button click. Wrapper for minigame coroutine.
-    public virtual void Minigame_Button()
-    {
-        _title = "Priestess Minigame";
-        _trigger = "Attack";
-        _actionState = "BAKED Combat-Attack";
-        _targetType = CharacterType.both; 
-        StartCoroutine(Begin_Targeting(1));
-    }
-
-    //----------------------------------------------------------------
     //Overridden Starting Method
     //----------------------------------------------------------------
     public override void Set_Starting_Stats()
@@ -52,24 +39,58 @@ public class Priestess : Player
     }
 
     //----------------------------------------------------------------
-    //Overridden Starting Method
+    //Overridden minigame cycle 
     //----------------------------------------------------------------
+    
+    //Called on button click. Wrapper for minigame coroutine.
+    public virtual void Minigame_Button()
+    {
+        _title = "Priestess Minigame";
+        _trigger = "Attack";
+        _actionState = "BAKED Combat-Attack";
+        _targetType = CharacterType.both;
+        StartCoroutine(Minigame_Cycle());
+    }
+
+    //this determines the order of events regarding a minigame cycle specific to the priestess.
+    public virtual IEnumerator Minigame_Cycle()
+    {
+        //begin targeting -> (select target -> confirm target)
+        yield return Begin_Targeting(1);
+
+
+        //display the minigame -> (start countdown -> initialize -> wait for gameplay -> animate)
+        yield return Run_Minigame();
+
+        //broadcast an event corresponding with the appropriate result of the minigame
+        yield return Resulting_Action(_mgScript);
+
+        //cleanup all minigame stuff
+        yield return Finish_Minigame();
+
+        //End the turn
+        _executingTurn = false;
+    }
+
+    //called by the minigame cycle, specific to the priestess to allow for different spell types.
     public override IEnumerator Resulting_Action(MinigameBase _script)
     {
         switch(_script.Get_Action_Type())
         {
             case 0:
-                //health
-                Heal_Characters(CharacterType.player, _targets.ToArray(), _effectiveness);
-                break;
-            case 1:
                 //dps
                 Attack_Characters(CharacterType.enemy, _targets.ToArray(), _effectiveness);
                 break;
+            case 1:
+                //health
+                Heal_Characters(CharacterType.player, _targets.ToArray(), _effectiveness);
+                break;
             case 2:
                 //buff/debuff
+                int oldVal = Get_AttackPower();
                 int modVal = (int)Math.Round(_priestessStats.attackPower * (_effectiveness));
                 Modify_AttackPower(0 - modVal);
+                Debug.Log("Priestess buffs attack power from " + oldVal + " -TO- " + Get_AttackPower());
                 //TODO: add complex behaviour
                 break;
         }

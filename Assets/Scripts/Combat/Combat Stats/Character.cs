@@ -125,6 +125,19 @@ public class Character : MonoBehaviour, IComparable
     //  Incoming and Outgoing Healing.
     //----------------------------------------------------------------------------
 
+    //displays the change in health as a change in the health torous
+    public void Update_Health()
+    {
+        //we only need to show health bar on players
+        if (_myType == CharacterType.player)
+        {
+            float newHealthPercentage_ = (float)_currentStats.currentHealth / (float)_currentStats.maxHealth;
+            Debug.Log(newHealthPercentage_);
+            healthBar.transform.GetChild(1).GetComponent<Image>().DOFillAmount(newHealthPercentage_, 2f);
+        }
+    }
+
+
     //Random generated effectiveness in place of enemy logic for now.
     public void Attack_Characters(CharacterType type_, int[] targets_)
     {
@@ -163,15 +176,8 @@ public class Character : MonoBehaviour, IComparable
                 //modify stats
                 int actualDamage_ = (int) (damage_ * 100f / (_currentStats.armor + 100f));
                 _currentStats.currentHealth -= actualDamage_;
-                
-                //we only need to show health bar on players
-                if (_myType == CharacterType.player)
-                {
-                    float newHealthPercentage_ = (float)_currentStats.currentHealth / (float)_currentStats.maxHealth;
-                    Debug.Log(newHealthPercentage_);
-                    //TODO: animate health bar changing instead of just setting its value.
-                    healthBar.transform.GetChild(1).GetComponent<Image>().DOFillAmount(newHealthPercentage_, 2f);
-                }
+
+                Update_Health();
 
                 Debug.Log("Character " + characterName + " just took " + actualDamage_ + " damage!");
                 Animator _animator = gameObject.GetComponentInChildren<Animator>();
@@ -242,6 +248,8 @@ public class Character : MonoBehaviour, IComparable
 
                 int actualHealing_ = temp - _currentStats.currentHealth;
                 _currentStats.currentHealth = temp;
+
+                Update_Health();
 
                 Debug.Log("Character " + characterName + " Just got healed for " + actualHealing_ + " health!");
             }

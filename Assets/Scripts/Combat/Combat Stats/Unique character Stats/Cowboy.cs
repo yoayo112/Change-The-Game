@@ -37,7 +37,7 @@ public class Cowboy : Player
         _trigger = "Attack";
         _actionState = "combat_attack";
         _targetType = CharacterType.enemy;
-        StartCoroutine(Begin_Targeting(1));
+        StartCoroutine(Minigame_Cycle());
     }
 
     //----------------------------------------------------------------
