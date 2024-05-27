@@ -206,7 +206,13 @@ public class Player : Character
         _confirmTarget = _targetingGUI.GetComponentInChildren<Button>();
         _confirmTarget.onClick.AddListener(Confirm_Target); //TODO: for some reason you have to click twice?
         _targets = new List<int>(0);
-        string targetTag = _targetType == CharacterType.enemy ? "Enemy" : "Party";
+        string targetTag = string.Empty;
+        switch(_targetType)
+        {
+            case CharacterType.enemy: targetTag = "Enemy"; break;
+            case CharacterType.player: targetTag = "Player"; break;
+            case CharacterType.both: targetTag = "both"; break;
+        }
         _minigame.SetActive(false);
 
         //hide combat gui.
@@ -253,8 +259,20 @@ public class Player : Character
             if (Physics.Raycast(ray, out hit, 100.0f))
             {
                 Debug.Log("Something was clicked");
+                
+                //Determine if it was appropriate
+                bool acceptable_ = false;
+                if(tag == "both")
+                {
+                    acceptable_ = (hit.collider.gameObject.CompareTag("Enemy") || hit.collider.gameObject.CompareTag("Player"));
+                }
+                else
+                {
+                    acceptable_ = hit.collider.gameObject.CompareTag(tag);
+                }
 
-                if (hit.collider.gameObject.CompareTag(tag))
+                //continue with raycasting the target
+                if (acceptable_)
                 {
                     Debug.Log("It was an acceptable target");
 
@@ -338,14 +356,12 @@ public class Player : Character
         //animate and wait for animation to finish
         Animator animator = gameObject.GetComponentInChildren<Animator>();
         yield return GlobalService.AnimWait(animator, _trigger, _actionState); //TODO: how to better sync attack anim with hurt anim??
-        //Broadcast the event
-        //TODO: can we make the character action methods into delegates?
-        // -> This way, a function could be passed as an arg on button click and called here,
-        //    I.e. minigames could trigger and broadcast other actions, not just attack.
-        Attack_Characters(CharacterType.enemy, _targets.ToArray(), _effectiveness);
+
+        //relsolve outstanding processes and variables
+        yield return Resulting_Action(_mgScript);
 
         //cleanup all minigame stuff
-        for(int i = 0; i <_cursors.Count; i++)
+        for (int i = 0; i < _cursors.Count; i++)
         {
             Destroy(_cursors[i]);
         }
@@ -362,6 +378,17 @@ public class Player : Character
 
         //End the turn
         _executingTurn = false;
+    }
+
+    //overload me if a characters minigame needs to be more complex than just "attack"
+    public virtual IEnumerator Resulting_Action(MinigameBase _script)
+    {
+        //Broadcast the event
+        //TODO: can we make the character action methods into delegates?
+        // -> This way, a function could be passed as an arg on button click and called here,
+        //    I.e. minigames could trigger and broadcast other actions, not just attack.
+        Attack_Characters(CharacterType.enemy, _targets.ToArray(), _effectiveness);
+        yield return null;
     }
 
     //-----------------------------------------------------------------

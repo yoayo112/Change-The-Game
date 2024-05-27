@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abf7a551474a88c48b1cf83e921af9fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthBar: {fileID: 0}
   characterName: Place Holder
   level: 1
 --- !u!114 &-77456484822121904
@@ -139,6 +140,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: a14c98bc3906de449be147dde5098474, type: 3}
       propertyPath: m_Name
       value: THEOCTOPUSANIMATED
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a14c98bc3906de449be147dde5098474, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

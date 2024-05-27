@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8501944433648360003}
   m_Layer: 0
   m_Name: PRIESTESS_PREFAB
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -95,7 +95,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBar: {fileID: 6514728513086691780}
   characterName: Priestess
-  _minigame: {fileID: 4691086830909229124, guid: a3fde84c96e3f9e48acb508ab10f712e, type: 3}
 --- !u!1001 &65735638979068241
 PrefabInstance:
   m_ObjectHideFlags: 0

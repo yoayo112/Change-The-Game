@@ -52,6 +52,9 @@ public class TypingGame : MinigameBase
     //private bool[] _isActiveAvailableLines; // = { true, true, true };      //The line at _availableLines[i] is actively being typed by the player if _isActiveAvailableLines[i] == true;
 
     private TextTree _currentBranch;
+    private int _correctCount = 0;
+    private string _currentSpell = string.Empty;
+    private int _finalSpellType = 0;
 
     //-------------------------------------------------------------------------------------
     // Character Type Declaration
@@ -109,6 +112,9 @@ public class TypingGame : MinigameBase
         _mistakeCount = 0;
         _isLocked = false;
         _currentBranch = TextTree.Build(@"Assets\Scripts\Combat\Minigames\Priestess\Spells.txt");
+        _correctCount = 0;
+        _currentSpell = string.Empty;
+        _finalSpellType = 0;
         Update_Available_Lines();
         Update_Typed_Line();
         Update_Mistake_Counter();
@@ -140,7 +146,24 @@ public class TypingGame : MinigameBase
         if( whichCharacter_ == _myCharacter)
         {
             // this is the end state of the game. for now:
-            _effectiveness = 0.5f; //TODO: however you want to calculate effectiveness.
+
+            //calculate effectiveness
+            float _denominator = (_currentSpell.Length == 0)? 1 : _currentSpell.Length;
+            float _numorator = _correctCount;
+            _effectiveness = _numorator / _denominator;
+
+            //then modify the effectiveness based on how many splits the player passed (x0, x1, x2+).
+            //count the number of splits/branches from the root.
+            int branches_ = _currentBranch.Count_Branches();
+            int modVal_ = 0;
+            if (branches_ == 0 && _correctCount == 0)
+                modVal_ = 0;
+            else if (branches_ == 0 && _correctCount >= 1)
+                modVal_ = 1;
+            else if (branches_ >= 1 && _correctCount >= 1)
+                modVal_ = branches_ + 1;
+
+            //set the games end conditions.
             _isRunning = false; //the condition being checked by the overworld to see if it's done.
             //Also, board needs to be reset in case we want to play it again next turn
             reset();
@@ -401,7 +424,11 @@ public class TypingGame : MinigameBase
         foreach (TextTree branch_ in _currentBranch.branches)
         {
             if (Is_Correct_Letter(letter_, branch_.text) && branch_.isAlive)
+            {
+                _currentSpell = branch_.Get_Full_Text(); // Do we know this is the buest guess at the attempted spell?
+                _correctCount++;
                 return true;
+            }
         }
 
         return false;
@@ -436,5 +463,34 @@ public class TypingGame : MinigameBase
         _isLocked = true;
         yield return new WaitForSeconds(lockoutTime);
         _isLocked = false;
+    }
+
+    //-------------------------------------------------------------------------------------
+    // Helper Functions
+    //-------------------------------------------------------------------------------------
+    override public int Get_Action_Type()
+    //checks the diety name in order to dertermine the type of magic to be used
+    //0 - for health spells
+    //1 - for dps spells
+    //3 - for buff/debuff spells
+    {
+        //TODO: update these deities with real gods!
+        string _fullSpell = _currentBranch.Get_Full_Text().ToLower();
+        if (_fullSpell.Contains("healy dan"))
+        {
+            Debug.Log("Casting a Heal Type Spell");
+            return 1;
+        }
+        else if (_fullSpell.Contains("ghost malone"))
+        {
+            Debug.Log("Casting a DPS Type Spell");
+            return 0;
+        }
+        else if (_fullSpell.Contains("shady haga"))
+        {
+            Debug.Log("Casting a Buff Type Spell");
+            return 2;
+        }
+        return 0;
     }
 }

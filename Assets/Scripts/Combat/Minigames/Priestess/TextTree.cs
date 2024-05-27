@@ -185,6 +185,20 @@ public class TextTree
             Remove_Branch(branch_);
     }
 
+    public int Count_Branches()
+    //counts the number of splits between the root and the current branch
+    {
+        int count_ = 0;
+        TextTree testRoot_ = root;
+        while(testRoot_ != null )
+        {
+            count_++;
+            testRoot_ = testRoot_.root;
+        }
+
+        return count_;
+    }
+
     public string Get_Text_Upto_Branch()
     // Returns a string concatenating the text from the tree from the root upto and not including this branch
     {
@@ -199,6 +213,12 @@ public class TextTree
         if (branches.Count == 0)
             return string.Empty;
         return branches[0].text + branches[0].Get_Text_To_End();
+    }
+
+    public string Get_Full_Text()
+    //returns a string concatenating the text from the root up to (and including) the current branchm with the text from this branches first branch to the end leaf.
+    {
+        return Get_Text_Upto_Branch() + text + Get_Text_To_End();
     }
 
     private string Find_Common_String(string stringA_, string stringB_)

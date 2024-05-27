@@ -10,6 +10,7 @@ Holds priestes's stats and handles combat gui functions.
 
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class Priestess : Player
@@ -36,7 +37,7 @@ public class Priestess : Player
         _title = "Priestess Minigame";
         _trigger = "Attack";
         _actionState = "BAKED Combat-Attack";
-        _targetType = CharacterType.enemy; //TODO: Add versatility in who priestess can target
+        _targetType = CharacterType.both; 
         StartCoroutine(Begin_Targeting(1));
     }
 
@@ -48,5 +49,30 @@ public class Priestess : Player
         _firstRound = true;
         Set_StatsStruct(_priestessStats);
         Set_CharacterType(CharacterType.player);
+    }
+
+    //----------------------------------------------------------------
+    //Overridden Starting Method
+    //----------------------------------------------------------------
+    public override IEnumerator Resulting_Action(MinigameBase _script)
+    {
+        switch(_script.Get_Action_Type())
+        {
+            case 0:
+                //health
+                Heal_Characters(CharacterType.player, _targets.ToArray(), _effectiveness);
+                break;
+            case 1:
+                //dps
+                Attack_Characters(CharacterType.enemy, _targets.ToArray(), _effectiveness);
+                break;
+            case 2:
+                //buff/debuff
+                int modVal = (int)Math.Round(_priestessStats.attackPower * (_effectiveness));
+                Modify_AttackPower(0 - modVal);
+                //TODO: add complex behaviour
+                break;
+        }
+        yield return null;
     }
 }

@@ -1,16 +1,10 @@
 [grant;give]
+[strike;smite]
+[do;say]
 =====
-Healy Dan, *1* divine healing to my wounded body
-Healy Dan, *1* divine healing for my bloodied brethren
-Healy Dan, bestow powerful and awesome divine healing to my mortally wounded vessel
-Healy Dan, bestow powerful and awesome divine healing for my bloodied brethren
-Healy Dan, bestow powerful and awesome zealous might to your humble servant
-Healy Dan, bestow powerful and awesome zealous might for this glorious holy army
-Ghost Malone, strike down this heathen
-Ghost Malone, striketh down with ultimate might on the unbeliever
-Ghost Malone, strike down these forsaken infidels
-Ghost Malone, strengthen my body to spill your enemies blood
-Shady Haga, do some wicked ass cool shit that I can't think of
-Shady Haga, do some wicked stupid dumb shit I dunno
-Shady Haga, do some wicked ass cool shit i guess jesus
-Shady Haga, do some fine things for me
+Healy Dan, *1* me health
+Healy Dan, *1* us health
+Ghost malone, *2* him down
+Ghost malone, *2* them down
+Shady haga, *3* a cool thing
+Shady haga, *3* some cool things

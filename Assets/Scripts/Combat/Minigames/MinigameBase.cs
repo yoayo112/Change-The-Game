@@ -27,6 +27,7 @@ public class MinigameBase : MonoBehaviour
     protected float _effectiveness;
     public float Get_effectiveness() => _effectiveness;
     public GameObject targeting_GUI;
+    public virtual int Get_Action_Type() => 0; //dps is the default action!! OVerride this to return different event actions
 
     //-------------------------------------------------------------------------------------
     //  Audio handling
