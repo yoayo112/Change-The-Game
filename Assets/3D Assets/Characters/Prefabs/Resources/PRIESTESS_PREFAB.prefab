@@ -119,6 +119,10 @@ PrefabInstance:
       propertyPath: m_text
       value: 'Priestess Stats:'
       objectReference: {fileID: 0}
+    - target: {fileID: 1665909390925972486, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -15.6
+      objectReference: {fileID: 0}
     - target: {fileID: 2247890946143215969, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_Color.b
       value: 0.3019608
@@ -147,6 +151,10 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4294440959
       objectReference: {fileID: 0}
+    - target: {fileID: 3614211411368206930, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 22.3
+      objectReference: {fileID: 0}
     - target: {fileID: 4111699794275865958, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_Color.b
       value: 0.3137255
@@ -165,7 +173,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5218170641543915437, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6309218783550024215, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_Pivot.x
@@ -436,7 +444,9 @@ PrefabInstance:
       value: 0.85098046
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8010466066093239916, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+    - {fileID: 2074079169011021573, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
