@@ -466,7 +466,7 @@ Transform:
   m_GameObject: {fileID: 195561737}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 3.02}
+  m_LocalPosition: {x: 0, y: 1.63, z: 37.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1090,8 +1090,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 1613018150}
   launcher: {fileID: 1658633947}
-  background: {fileID: 2049066724}
-  depth: 26
+  wall: {fileID: 2049066724}
+  mgOverlay: {fileID: 1435936794}
   speed: 20
   mass: 1
 --- !u!1 &1658633947
@@ -1225,7 +1225,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1278,7 +1278,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0.04, y: 0.26913744, z: 26}
-  m_LocalScale: {x: 1.7814373, y: 1.4685, z: 1.4685}
+  m_LocalScale: {x: 2.570258, y: 1.4685, z: 1.4685}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 749167493}
@@ -1299,7 +1299,7 @@ MeshCollider:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
-  m_ProvidesContacts: 0
+  m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 5
   m_Convex: 0
