@@ -798,6 +798,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   notes: "Add a Minigame Timer object here. \n\nMake sure it inherits the MiniGameTimer.cs
     script and sets the _myCharacter value. See GridShooterTimer.cs for reference."
+--- !u!1 &1083513398
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1083513399}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1083513399
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1083513398}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1330450059
 GameObject:
   m_ObjectHideFlags: 0
@@ -1092,7 +1123,6 @@ MonoBehaviour:
   launcher: {fileID: 1658633947}
   wall: {fileID: 2049066724}
   mgOverlay: {fileID: 1435936794}
-  speed: 20
   mass: 1
 --- !u!1 &1658633947
 GameObject:
@@ -1200,7 +1230,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1887613264}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1375.5}
+  m_LocalPosition: {x: 0, y: 0, z: 1526}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1277,7 +1307,7 @@ Transform:
   m_GameObject: {fileID: 2049066724}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.04, y: 0.26913744, z: 26}
+  m_LocalPosition: {x: 0.04, y: 0.26913744, z: 28.64}
   m_LocalScale: {x: 2.570258, y: 1.4685, z: 1.4685}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1536,3 +1566,4 @@ SceneRoots:
   - {fileID: 1330450061}
   - {fileID: 195561741}
   - {fileID: 1868942421}
+  - {fileID: 1083513399}
