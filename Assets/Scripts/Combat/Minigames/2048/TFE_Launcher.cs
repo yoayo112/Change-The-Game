@@ -52,8 +52,8 @@ public class TFE_Launcher : MonoBehaviour
 
             //This apporximation works!
             // - theta = arcsin(rg/v^2)
-            float v = velocity + ((4.45f * y) / height);
-            float theta = Mathf.Asin((r * 9.81f) / (v * v))/2;
+            //float v = velocity + ((4.45f * y) / height);
+            //float theta = Mathf.Asin((r * 9.81f) / (v * v))/2;
 
             //Lets try seansters monster equation - :(
             //float v = velocity;
@@ -62,6 +62,10 @@ public class TFE_Launcher : MonoBehaviour
             //float bigTerm = 0.5f * Mathf.Sqrt((bigNumerator / Mathf.Sqrt(3 - (4 * y))) - (((8 * y) - 2) / ((4 * y) + 1)) + ((2 * ((4 * y) - 1)) / ((4 * y) + 1)) + (32 / (((4 * y) + 1) * ((4 * y) + 1))));
             //float atan = (Mathf.Sqrt(3 - (4 * y)) / Mathf.Sqrt((16 * (y * y)) + (8 * y) + 1)) + bigTerm + (2 / (4 * y) + 1);
             //float theta = 2 * Mathf.PI - (2 * Mathf.Atan(atan));
+
+            //Seans chat GPT solution
+            float v = velocity;
+            float theta = Mathf.Atan(2 - (Mathf.Sqrt(3 - ((8*y*9.81f)/(v*v)))));
 
             // - phi = tan(distance x/depth)
             float phi = Mathf.Tan(x / (1.5f*depth));
