@@ -1,3 +1,13 @@
+/*
+Project: Change the Game
+File: TFE_Launcher.cs
+Date Created: Aug 10, 2024
+Author(s): Sky Vercauteren, Sean Thornton
+Info:
+
+handles trigonometry of launching a projectile in the 2048 minigame
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.ShaderGraph;
@@ -9,10 +19,10 @@ public class TFE_Launcher : MonoBehaviour
     public GameObject launcher;
     public GameObject wall;
     public Camera mgOverlay;
-    private float depth; // the distance between the canon and the wall
+    private float depth; // the distance between the cannon and the wall
     private float height; // the height of the WALL, not the arc.
-    private Vector3 origin; // the location of the canon
-    public float velocity = 17.98f;
+    private Vector3 origin; // the location of the cannon
+    public float velocity = 19;
     public float mass = 5;
     // Start is called before the first frame update
     void Start()
@@ -65,7 +75,9 @@ public class TFE_Launcher : MonoBehaviour
 
             //Seans chat GPT solution
             float v = velocity;
-            float theta = Mathf.Atan(2 - (Mathf.Sqrt(3 - ((8*y*9.81f)/(v*v)))));
+            float v2 = (v * v);
+            float sqrtTerm = Mathf.Sqrt((v2 * v2) - ((9.81f * 9.81f) * (depth * depth)) - (2 * 9.81f * v2 * y));
+            float theta = Mathf.Atan((v2 - sqrtTerm)/(9.81f*depth));
 
             // - phi = tan(distance x/depth)
             float phi = Mathf.Tan(x / (1.5f*depth));
