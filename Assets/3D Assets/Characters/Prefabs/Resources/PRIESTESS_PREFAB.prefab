@@ -173,7 +173,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5218170641543915437, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6309218783550024215, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_Pivot.x
@@ -636,6 +636,10 @@ PrefabInstance:
     - target: {fileID: 5863685855423980818, guid: 0bf20d033abc40642a3eef00489f4264, type: 3}
       propertyPath: m_Name
       value: HealthBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 5863685855423980818, guid: 0bf20d033abc40642a3eef00489f4264, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6620839464975423851, guid: 0bf20d033abc40642a3eef00489f4264, type: 3}
       propertyPath: m_SizeDelta.x
