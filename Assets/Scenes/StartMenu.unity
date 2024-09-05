@@ -398,33 +398,37 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 852315397}
     m_Modifications:
+    - target: {fileID: 1181284574436004166, guid: 96e00f639d29e104a8e99b7bae07d5ef, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3656382419841551955, guid: 96e00f639d29e104a8e99b7bae07d5ef, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.473742
+      value: 19.838669
       objectReference: {fileID: 0}
     - target: {fileID: 3656382419841551955, guid: 96e00f639d29e104a8e99b7bae07d5ef, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.6000001
+      value: 169.33063
       objectReference: {fileID: 0}
     - target: {fileID: 3656382419841551955, guid: 96e00f639d29e104a8e99b7bae07d5ef, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -9.084339
+      value: -18.51329
       objectReference: {fileID: 0}
     - target: {fileID: 3656382419841551955, guid: 96e00f639d29e104a8e99b7bae07d5ef, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.8752046
+      value: 0.87944907
       objectReference: {fileID: 0}
     - target: {fileID: 3656382419841551955, guid: 96e00f639d29e104a8e99b7bae07d5ef, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.16825382
+      value: 0.4410125
       objectReference: {fileID: 0}
     - target: {fileID: 3656382419841551955, guid: 96e00f639d29e104a8e99b7bae07d5ef, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.44539422
+      value: 0.1596491
       objectReference: {fileID: 0}
     - target: {fileID: 3656382419841551955, guid: 96e00f639d29e104a8e99b7bae07d5ef, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.08562488
+      value: -0.08117594
       objectReference: {fileID: 0}
     - target: {fileID: 3656382419841551955, guid: 96e00f639d29e104a8e99b7bae07d5ef, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -438,9 +442,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5958352101124560812, guid: 96e00f639d29e104a8e99b7bae07d5ef, type: 3}
+      propertyPath: field of view
+      value: 60.000004
+      objectReference: {fileID: 0}
     - target: {fileID: 8627920084548300743, guid: 96e00f639d29e104a8e99b7bae07d5ef, type: 3}
       propertyPath: m_Name
-      value: Main Camera
+      value: Camera Brain
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

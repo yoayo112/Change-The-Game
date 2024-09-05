@@ -22,6 +22,7 @@ public class GlobalService
         { Get_Global().GetChild(2).gameObject.name, 2 } };
     private static int numberOfChildren_ = 2;
     private static string playerObjectName_;
+    private static string followCam_;
 
     //Returns the BIG enchilada.
     static public Transform Get_Global()
@@ -54,12 +55,18 @@ public class GlobalService
         return Get_Child("Global Main Script").GetComponent<GlobalMain>();
     }
 
+    //sets the main follow cam to the instance of the virtual camera in the plaers prefab object (i.e. Cowboy free look)
+    static public void Set_Follow_Cam(string camName)
+    {
+        followCam_ = camName;
+    }
+
     //returns the main camera
     //this needs to return only the gameObject so that it includes the audioListener and Cinemachine components.
-    //to access the camera itself you can add the suffix call Get_Camera().GetComponent<Camera>();
-    static public GameObject Get_Camera() 
+    //to access the camera itself you can add the suffix call Get_Camera_Brain().GetComponent<Camera>();
+    static public GameObject Get_Camera_Brain() 
     {
-        return Get_Child("Main Camera").gameObject;
+        return Get_Child("Camera Brain").gameObject;
     }
 
     //returns a reference to the instance of the player object saved/stored in _Global_

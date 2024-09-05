@@ -48,7 +48,7 @@ public class PlayerAction : MonoBehaviour
             animator_.runtimeAnimatorController = combatController;
             //initialize combat GUI
             combatGUI_.renderMode = RenderMode.ScreenSpaceCamera;
-            Camera camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+            Camera camera = GlobalService.Get_Camera_Brain().GetComponent<Camera>();
             combatGUI_.worldCamera = camera;
             combatGUI_.planeDistance = 2;
             healthBar.worldCamera = camera;
@@ -73,7 +73,7 @@ public class PlayerAction : MonoBehaviour
         //dialog 
         speechBubble_ = GlobalService.Find_Canvas_In_Children(player_.gameObject, "DialogBox");
         speechBubble_.renderMode = RenderMode.ScreenSpaceCamera;
-        Camera camera = GlobalService.Get_Camera().GetComponentInChildren<Camera>(true);
+        Camera camera = GlobalService.Get_Camera_Brain().GetComponentInChildren<Camera>(true);
         speechBubble_.worldCamera = camera;
         speechBubble_.planeDistance = Vector3.Distance(camera.gameObject.GetComponent<Transform>().position, player_.position) / 2;
         dialogText_ = gameObject.GetComponentInChildren<TextMeshProUGUI>();

@@ -31,7 +31,7 @@ public class CombatTransition : SceneTransition
         if (inCombat)
         {
             //disable the overworld camera
-            GlobalService.Get_Camera().SetActive(false);
+            GlobalService.Get_Camera_Brain().SetActive(false);
             canvas_.worldCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
 
             //initialize player and enemy lists.
@@ -77,7 +77,7 @@ public class CombatTransition : SceneTransition
         else //we are returning to the overword from combat
         {
             //ensure camera is live
-            GlobalService.Get_Camera().SetActive(true);
+            GlobalService.Get_Camera_Brain().SetActive(true);
 
             //ensure everyone in the party has overworld behavior
             player_.GetComponent<PlayerAction>().Set_Combat(false);

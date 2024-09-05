@@ -56,7 +56,7 @@ public class SceneTransition : MonoBehaviour
 
         //set fade transition render camera to main camera
         canvas_ = transform.GetComponentInChildren<Canvas>();
-        canvas_.worldCamera = GlobalService.Get_Camera().GetComponent<Camera>();
+        canvas_.worldCamera = GlobalService.Get_Camera_Brain().GetComponent<Camera>();
         canvas_.planeDistance = 1;
 
         //also we need the fade animator

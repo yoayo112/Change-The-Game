@@ -8,6 +8,7 @@ Info:
 Handles Behavior during the initial moments of the game.
 */
 
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,7 +27,7 @@ public class StartMenu : MonoBehaviour
         //this is literally just so the cowboy is interactable in the start menu.      
         main_ = GlobalService.Get_Main();            // = GameObject.Find("_GLOBAL_").GetComponent<Transform>().GetChild(0).GetComponent<GlobalMain>();
         //TODO: Select from list - cowboy is just default.
-        StartCoroutine(Select_Player(Resources.Load<GameObject>("COWBOY_PREFAB")));
+        StartCoroutine(Select_Player());
     }
 
     public void Play()
@@ -36,7 +37,7 @@ public class StartMenu : MonoBehaviour
         main_.Set_Party(new List<GameObject>());
 
         //This should actually probably be a cutscene.
-        SceneManager.LoadScene("Family Farm"); //should probably start at family farm at some point but Oh well
+        SceneManager.LoadScene("Church_inside"); //should probably start at family farm at some point but Oh well
     }
 
     public void Quit()
@@ -45,11 +46,13 @@ public class StartMenu : MonoBehaviour
     }
 
     //Initializes a selected character as "Player"
-    public IEnumerator Select_Player(GameObject o)
+    public IEnumerator Select_Player()
     {
+        GameObject o = Resources.Load<GameObject>("COWBOY_PREFAB");
         if (player_) { Destroy(player_); }
         player_ = Instantiate(o);
         GlobalService.Set_Player_Instance(player_);
+        GlobalService.Set_Follow_Cam(player_.GetComponentInChildren<CinemachineFreeLook>().gameObject.name);
         yield return new WaitWhile(() => player_.GetComponentInChildren<PlayerAction>().body_ == null);
 
         
