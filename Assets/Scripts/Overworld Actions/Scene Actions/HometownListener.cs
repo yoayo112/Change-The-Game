@@ -20,6 +20,7 @@ public class HometownListener : SceneListener
     public GameObject squidPortal;
     public GameObject squidZoom;
 
+    private bool zoomOnSquid_ = true;
 
     // Start is called before the first frame update
     void Start()
@@ -27,10 +28,12 @@ public class HometownListener : SceneListener
         //this is the trigger when you come back out of the church with the priestess
         if(GlobalService.Get_Party().Count > 0) 
         { 
-            Destroy(fish); 
+            if(zoomOnSquid_ == false) { Destroy(squidZoom); }
+            Destroy(fish);
             //trigger cutscene (zoom on squid)
+            zoomOnSquid_ = false;
         }
-        else { Destroy(squid); Destroy(squidPortal); Destroy(squidZoom); }
+        else { Destroy(squid); Destroy(squidPortal); Destroy(squidZoom);  }
         player_ = GlobalService.Get_Player_Instance();
         doors_ = FindObjectsOfType<Door>();
     }

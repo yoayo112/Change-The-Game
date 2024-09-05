@@ -35,8 +35,8 @@ public class PlayerAction : MonoBehaviour
     private TMP_Text dialogText_;
     private bool talking_;
 
-    private Canvas combatGUI_;
-    private Canvas healthBar;
+    public Canvas combatGUI_;
+    public Canvas healthBar;
 
     private bool inCombat_ = false;
     public void Set_Combat(bool t)
@@ -48,7 +48,7 @@ public class PlayerAction : MonoBehaviour
             animator_.runtimeAnimatorController = combatController;
             //initialize combat GUI
             combatGUI_.renderMode = RenderMode.ScreenSpaceCamera;
-            Camera camera = GlobalService.Get_Camera_Brain().GetComponent<Camera>();
+            Camera camera = GameObject.Find("Main Camera").GetComponent<Camera>();
             combatGUI_.worldCamera = camera;
             combatGUI_.planeDistance = 2;
             healthBar.worldCamera = camera;
@@ -81,11 +81,10 @@ public class PlayerAction : MonoBehaviour
         speechBubble_.gameObject.SetActive(false);
 
         //combat
-        combatGUI_ = GlobalService.Find_Canvas_In_Children(player_.gameObject, "CombatGUI");
         combatGUI_.GetComponent<GraphicRaycaster>().enabled = false;
         combatGUI_.gameObject.SetActive(false);
-        healthBar = GlobalService.Find_Canvas_In_Children(gameObject, "HealthBar");
         healthBar.GetComponent<GraphicRaycaster>().enabled = false;
+        healthBar.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
