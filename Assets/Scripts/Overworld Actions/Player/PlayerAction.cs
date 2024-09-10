@@ -13,6 +13,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 using TMPro;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class PlayerAction : MonoBehaviour
 {
@@ -25,6 +26,12 @@ public class PlayerAction : MonoBehaviour
     private Animator animator_;
     private Transform player_;
     public Transform body_ { get; private set; }
+    private string[] dialogWords_;
+    public void Set_dialogWords(string[] words) => dialogWords_ = words;
+    public string[] Get_dialogWords() => dialogWords_;
+    private int dialogPage_;
+    public void Set_dialogPage(int page) => dialogPage_ = page;
+    public int Get_dialogPage() => dialogPage_;
     
 
     private Canvas speechBubble_;
@@ -79,6 +86,8 @@ public class PlayerAction : MonoBehaviour
         dialogText_ = gameObject.GetComponentInChildren<TextMeshProUGUI>();
         speechBubble_.GetComponent<GraphicRaycaster>().enabled = false;
         speechBubble_.gameObject.SetActive(false);
+        dialogPage_ = 0;
+        dialogWords_ = new string[] { ". . ." };
 
         //combat
         combatGUI_.GetComponent<GraphicRaycaster>().enabled = false;
@@ -119,16 +128,33 @@ public class PlayerAction : MonoBehaviour
 
 
     //toggles dialog box
-    public void Dialog(string text)
+    public void Dialog()
     {
+        int page = Get_dialogPage();
         if (!talking_)
         {
             talking_ = true;
-            dialogText_.text = text;
+            dialogText_.text = dialogWords_[page];
+            IncrementDialog();
         }
-        else { talking_ = false; }
+        else if(page < dialogWords_.Length) 
+        {
+            dialogText_.text = dialogWords_[page];
+            IncrementDialog();
+        }
+        else
+        {
+            talking_ = false;
+        }
         speechBubble_.GetComponent<GraphicRaycaster>().enabled = talking_;
         speechBubble_.gameObject.SetActive(talking_);
         //speechBubble_.enabled = talking_;
     }
+
+    public void IncrementDialog()
+    {
+        int page = Get_dialogPage();
+        Set_dialogPage(page + 1);
+    }
+
 }

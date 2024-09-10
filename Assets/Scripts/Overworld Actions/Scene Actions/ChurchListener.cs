@@ -38,12 +38,19 @@ public class ChurchListener : SceneListener
         //i.e. special dialog -> even if all other dialog happens elsewhere, I am choosing to put this here because it is what triggers the priestess to join the party.
         if (Input.GetButtonDown("Interact"))
         {
-            if (player_.GetComponent<PlayerAction>().isDialogActive()) { player_.GetComponent<PlayerAction>().Dialog(""); }
+            PlayerAction playerAction = player_.GetComponent<PlayerAction>();
+            if (playerAction.isDialogActive()) { playerAction.Dialog(); }
             if (priestess_.GetComponent<PartyMovement>().Is_Close_To_Player(3) && inParty == false) // three is totally arbitrary lol
             {
                 //trigger initial dialog and add priestess to party!
-                string[] words = new string[] { "I am in your party now uwu", "Seanster the Meaunster", "Everyone Tell Sam He's Gay, Ok?", "OMG! Sam is the cutest boy in town!", "Hey There Cowboy ;)" };
-                player_.GetComponent<PlayerAction>().Dialog(words[Random.Range(0, words.Length -1)]);
+                string[] words = new string[] {"Oh! you don't seem locked like everyone else. ",
+                    "You're the first person I've encountered who doesn't just keep repeating the same inane phrases. ",
+                    "..I've been pouring over this book for an answer to my sudden conciousness, but I haven't found anything. ",
+                    "Oh well. If the gods wanted me to understand they would have layed it down differently. ",
+                    "Seeing as there isn't much we can learn in here, why don't we go check out the town and give it a second look." };
+                playerAction.Set_dialogWords(words);
+                playerAction.Set_dialogPage(0);
+                playerAction.Dialog();
                 GlobalService.Get_Main().Party_Push(priestess_.gameObject, "PRIESTESS_PREFAB");
                 inParty = true;
             }
