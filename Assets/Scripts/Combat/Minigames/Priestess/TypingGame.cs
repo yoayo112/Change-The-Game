@@ -37,6 +37,8 @@ public class TypingGame : MinigameBase
     //-------------------------------------------------------------------------------------
     [Header("Game Settings")]
     public float lockoutTime = 0.5f;
+    public TMP_Text timerText;
+    public GameObject mask;
 
     //-------------------------------------------------------------------------------------
     //  Variables
@@ -91,6 +93,7 @@ public class TypingGame : MinigameBase
         {
             if (!_isRunning)
             {
+                mask.SetActive(true);
                 _currentBranch = TextTree.Build(@"Assets\Scripts\Combat\Minigames\Priestess\Spells.txt");
                 Update_Available_Lines();
                 Update_Typed_Line();
@@ -132,7 +135,7 @@ public class TypingGame : MinigameBase
 
         if( whichCharacter_ == _myCharacter)
         {
-            // do timer shit.
+            timerText.text = $"{seconds_}";
         }
     }
 
