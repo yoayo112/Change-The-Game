@@ -63,7 +63,7 @@ public class StartMenu : MonoBehaviour
         // -- init all vars
         //remove partyMovement.cs
         //add playerAction
-        // -- init all vars
+        // -- init all varsewedd
         //tag object as Player
 
         //TODO: for each other *potential* party member.

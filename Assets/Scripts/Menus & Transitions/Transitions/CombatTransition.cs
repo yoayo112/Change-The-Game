@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,17 +23,19 @@ public class CombatTransition : SceneTransition
     [Header("Check this from the combat scene")]
     public bool inCombat;
 
-    [Header("Reference to combat controller")]
+    [Header("Reference to combat controller and scene camera")]
     public GameObject controller;
+    public CinemachineVirtualCamera mainShot;
 
     protected override void Spawn()
     {
         //We dont want to spawn combat when enetering the overworld!
         if (inCombat)
         {
-            //disable the overworld camera
-            GlobalService.Get_Camera_Brain().SetActive(false);
-            canvas_.worldCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
+            //disable the overworld camera and set live camera to static main
+            //GlobalService.Get_Camera_Brain().SetActive(false);
+            //canvas_.worldCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
+            canvas_.worldCamera = GlobalService.Get_Camera_Brain().GetComponent<Camera>();
 
             //initialize player and enemy lists.
             CombatController.players = new List<Character>();
@@ -77,7 +80,7 @@ public class CombatTransition : SceneTransition
         else //we are returning to the overword from combat
         {
             //ensure camera is live
-            GlobalService.Get_Camera_Brain().SetActive(true);
+            //GlobalService.Get_Camera_Brain().SetActive(true);
 
             //ensure everyone in the party has overworld behavior
             player_.GetComponent<PlayerAction>().Set_Combat(false);

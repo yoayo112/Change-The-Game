@@ -297,6 +297,7 @@ public class Player : Character
             if (Physics.Raycast(ray, out hit, 100.0f))
             {
                 Debug.Log("Something was clicked");
+                Debug.Log(hit.collider.gameObject.tag);
 
                 //Determine if it was appropriate
                 bool acceptable_ = false;
@@ -331,6 +332,9 @@ public class Player : Character
                     //refocus player on new target
                     Vector3 newTarget = new Vector3(selectedPosition.x, transform.position.y, selectedPosition.z);
                     transform.LookAt(newTarget, Vector3.up);
+
+                    //refocus camera on new target
+                    combatShot.LookAt = selectedObject.transform;
 
                     //show confirm button
                     _confirmTarget.gameObject.SetActive(true);
@@ -378,7 +382,8 @@ public class Player : Character
     {
         //display minigame
         _minigame.SetActive(true);
-        _main = GameObject.Find("Main Camera").GetComponent<Camera>();
+        //_main = GameObject.Find("Main Camera").GetComponent<Camera>();
+        _main = GlobalService.Get_Camera_Brain().GetComponent<Camera>();
         _overlay = _minigame.GetComponentInChildren<Camera>();
         _main.GetUniversalAdditionalCameraData().cameraStack.Add(_overlay);
 

@@ -35,6 +35,7 @@ Transform:
   - {fileID: 5324015740554676265}
   - {fileID: 6298094110089079622}
   - {fileID: 7670082987473397955}
+  - {fileID: 2916860577572511874}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!143 &7283045246785767900
@@ -95,6 +96,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBar: {fileID: 2547641346715572779}
   characterName: Priestess
+  combatShot: {fileID: 626263453565947416}
 --- !u!1001 &65735638979068241
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -520,6 +522,79 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a07d83834f0625e468f5f06bbce5e196, type: 3}
   m_PrefabInstance: {fileID: 5649780467711668162}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5698250258445759377
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6862799329188158104}
+    m_Modifications:
+    - target: {fileID: 1554336523454899394, guid: 303b8e69ea6cc1945a28714b4cd2e32f, type: 3}
+      propertyPath: m_Name
+      value: Priestess_CombatCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 7453041041623683859, guid: 303b8e69ea6cc1945a28714b4cd2e32f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 7453041041623683859, guid: 303b8e69ea6cc1945a28714b4cd2e32f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 7453041041623683859, guid: 303b8e69ea6cc1945a28714b4cd2e32f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -7.82
+      objectReference: {fileID: 0}
+    - target: {fileID: 7453041041623683859, guid: 303b8e69ea6cc1945a28714b4cd2e32f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9855977
+      objectReference: {fileID: 0}
+    - target: {fileID: 7453041041623683859, guid: 303b8e69ea6cc1945a28714b4cd2e32f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.0006623509
+      objectReference: {fileID: 0}
+    - target: {fileID: 7453041041623683859, guid: 303b8e69ea6cc1945a28714b4cd2e32f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.16858336
+      objectReference: {fileID: 0}
+    - target: {fileID: 7453041041623683859, guid: 303b8e69ea6cc1945a28714b4cd2e32f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.013284514
+      objectReference: {fileID: 0}
+    - target: {fileID: 7453041041623683859, guid: 303b8e69ea6cc1945a28714b4cd2e32f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0.331
+      objectReference: {fileID: 0}
+    - target: {fileID: 7453041041623683859, guid: 303b8e69ea6cc1945a28714b4cd2e32f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -19.408
+      objectReference: {fileID: 0}
+    - target: {fileID: 7453041041623683859, guid: 303b8e69ea6cc1945a28714b4cd2e32f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 1.488
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 303b8e69ea6cc1945a28714b4cd2e32f, type: 3}
+--- !u!114 &626263453565947416 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5162443631867755913, guid: 303b8e69ea6cc1945a28714b4cd2e32f, type: 3}
+  m_PrefabInstance: {fileID: 5698250258445759377}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &2916860577572511874 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7453041041623683859, guid: 303b8e69ea6cc1945a28714b4cd2e32f, type: 3}
+  m_PrefabInstance: {fileID: 5698250258445759377}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9185618008116125654
 PrefabInstance:

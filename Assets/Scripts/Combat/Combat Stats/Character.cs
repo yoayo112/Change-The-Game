@@ -18,6 +18,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using DG.Tweening;
+using Cinemachine;
 
 [System.Serializable]
 public class Character : MonoBehaviour, IComparable
@@ -32,6 +33,9 @@ public class Character : MonoBehaviour, IComparable
     private StatsStruct _currentStats = new StatsStruct(); //StatsStruct is defined in Scripts/Global/Stats_Struct
     private int _position = 0; // the index of position slot I am occupying in the Control Script
     private int _queuePosition = 0; // What index do I have in the Control Script's turn queue?
+
+    /// public Cinamachine
+    public CinemachineVirtualCamera combatShot;
 
     protected bool _executingTurn = false;
 
@@ -275,6 +279,7 @@ public class Character : MonoBehaviour, IComparable
 
             if (Is_Alive())
             {
+                Character_Zoom();
                 _executingTurn = true;
                 Execute_Turn();
                 StartCoroutine(Wait_For_Gameplay());
@@ -285,6 +290,7 @@ public class Character : MonoBehaviour, IComparable
     public void End_Turn()
     {
         Debug.Log("Character " + characterName + " is ending their turn.");
+        Zoom_Out();
         CombatEventManager.End_Turn();
     }
 
@@ -323,5 +329,16 @@ public class Character : MonoBehaviour, IComparable
         int[] targets_ = { target_ };
 
         Attack_Characters(CharacterType.enemy, targets_);
+    }
+
+    private void Character_Zoom()
+    {
+        //go to combat virtual cam
+        combatShot.gameObject.SetActive(true);
+    }
+
+    private void Zoom_Out()
+    {
+        combatShot.gameObject.SetActive(false);
     }
 }

@@ -71,7 +71,8 @@ public class PartyMovement : MonoBehaviour
         {
             animator_.runtimeAnimatorController = combatController;
             combatGUI_.renderMode = RenderMode.ScreenSpaceCamera;
-            Camera camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+            //Camera camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+            Camera camera = GlobalService.Get_Camera_Brain().GetComponent<Camera>();
             combatGUI_.worldCamera = camera;
             combatGUI_.planeDistance = 2;
             healthBar.worldCamera = camera;
