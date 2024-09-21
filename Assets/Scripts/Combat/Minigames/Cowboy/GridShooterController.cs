@@ -338,7 +338,8 @@ public class GridShooterController : MinigameBase
             }
             else
             {
-                audioSource.PlayOneShot(audioClipArray[2], volume);
+                //need miss noise
+                //audioSource.PlayOneShot(audioClipArray[2], volume);
                 if(!_isReloading)
                 {
                     StartCoroutine(Reload());

@@ -122,8 +122,12 @@ PrefabInstance:
       value: 'Priestess Stats:'
       objectReference: {fileID: 0}
     - target: {fileID: 1665909390925972486, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -35.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1665909390925972486, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -15.6
+      value: -20.6
       objectReference: {fileID: 0}
     - target: {fileID: 2247890946143215969, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_Color.b
@@ -154,8 +158,20 @@ PrefabInstance:
       value: 4294440959
       objectReference: {fileID: 0}
     - target: {fileID: 3614211411368206930, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.1243282
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614211411368206930, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.1672
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614211411368206930, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2122
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614211411368206930, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 22.3
+      value: -35.1
       objectReference: {fileID: 0}
     - target: {fileID: 4111699794275865958, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_Color.b

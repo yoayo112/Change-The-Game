@@ -104,7 +104,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2529163360840544427}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.1274824, y: 0.87223333, z: -0.3455929, w: 0.32174972}
+  m_LocalRotation: {x: 0.12748238, y: 0.87223333, z: -0.34559286, w: 0.32174972}
   m_LocalPosition: {x: 0, y: 0.0000010738373, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -310,6 +310,7 @@ MonoBehaviour:
   healthBar: {fileID: 7023597551341909303}
   characterName: Cowboy
   combatShot: {fileID: 6803984627699328835}
+  GunConstraint: {fileID: 3008321124794137832}
 --- !u!1 &2795947880986105205
 GameObject:
   m_ObjectHideFlags: 0
@@ -1810,8 +1811,28 @@ PrefabInstance:
 '
       objectReference: {fileID: 0}
     - target: {fileID: 1665909390925972486, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.13558567
+      objectReference: {fileID: 0}
+    - target: {fileID: 1665909390925972486, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.18233936
+      objectReference: {fileID: 0}
+    - target: {fileID: 1665909390925972486, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.3219603
+      objectReference: {fileID: 0}
+    - target: {fileID: 1665909390925972486, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1665909390925972486, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -33.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1665909390925972486, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -14.5
+      value: -19.9
       objectReference: {fileID: 0}
     - target: {fileID: 2247890946143215969, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_Color.b
@@ -1842,12 +1863,28 @@ PrefabInstance:
       value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 3614211411368206930, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.16669306
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614211411368206930, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.22417344
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614211411368206930, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.6252574
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614211411368206930, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.00001525879
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3614211411368206930, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 21.2
+      value: -33.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614211411368206930, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -11.1
       objectReference: {fileID: 0}
     - target: {fileID: 4111699794275865958, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_Color.b

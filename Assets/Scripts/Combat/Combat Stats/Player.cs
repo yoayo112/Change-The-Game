@@ -44,8 +44,8 @@ public class Player : Character
     private List<GameObject> _cursors;
 
     //minigame vars
-    private Camera _main;
-    private Camera _overlay;
+    protected Camera _main;
+    protected Camera _overlay;
     protected string _title;
     protected GameObject _minigame;
     protected string _mgPrefab;
@@ -297,7 +297,7 @@ public class Player : Character
             if (Physics.Raycast(ray, out hit, 100.0f))
             {
                 Debug.Log("Something was clicked");
-                Debug.Log(hit.collider.gameObject.tag);
+                //Debug.Log(hit.collider.gameObject.tag);
 
                 //Determine if it was appropriate
                 bool acceptable_ = false;
