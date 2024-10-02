@@ -72,7 +72,7 @@ public class CombatTransition : SceneTransition
                 CombatController.enemies.Add(baddy.GetComponent<Character>());
                 baddy.transform.position = baddySpawns[i].transform.position;
                 baddy.transform.LookAt(initialTarget, Vector3.up);
-                baddy.GetComponent<BasicNPCMovement>().Set_Combat(true); 
+                baddy.GetComponent<BasicNPCMovement>().Set_Combat(true);
             }
             //Once we are ready to start combat - we can power up the combatController
             controller.GetComponent<CombatController>().Start_Combat();

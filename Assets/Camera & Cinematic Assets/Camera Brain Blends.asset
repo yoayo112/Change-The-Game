@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Camera Brain Blends
   m_EditorClassIdentifier: 
   m_CustomBlends:
-  - m_From: Priestess_CombatCamera
-    m_To: Cowboy_CombatCamera
+  - m_From: Cowboy_CombatCamera
+    m_To: Priestess_CombatCamera
     m_Blend:
       m_Style: 1
       m_Time: 0.5
@@ -24,11 +24,11 @@ MonoBehaviour:
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: '**ANY CAMERA**'
-    m_To: Main Virtual Shot
+  - m_From: Priestess_CombatCamera
+    m_To: Cowboy_CombatCamera
     m_Blend:
       m_Style: 1
-      m_Time: 1
+      m_Time: 0.5
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []
@@ -40,72 +40,6 @@ MonoBehaviour:
     m_Blend:
       m_Style: 1
       m_Time: 1
-      m_CustomCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 0
-        m_PostInfinity: 0
-        m_RotationOrder: 0
-  - m_From: Cowboy_CombatCamera
-    m_To: Priestess_CombatCamera
-    m_Blend:
-      m_Style: 1
-      m_Time: 0.5
-      m_CustomCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 0
-        m_PostInfinity: 0
-        m_RotationOrder: 0
-  - m_From: Cowboy_CombatCamera
-    m_To: Squid_CombatCamera
-    m_Blend:
-      m_Style: 0
-      m_Time: 2
-      m_CustomCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 0
-        m_PostInfinity: 0
-        m_RotationOrder: 0
-  - m_From: Priestess_CombatCamera
-    m_To: Squid_CombatCamera
-    m_Blend:
-      m_Style: 0
-      m_Time: 2
-      m_CustomCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 0
-        m_PostInfinity: 0
-        m_RotationOrder: 0
-  - m_From: Squid_CombatCamera
-    m_To: Squid_CombatCamera
-    m_Blend:
-      m_Style: 1
-      m_Time: 0.5
-      m_CustomCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 0
-        m_PostInfinity: 0
-        m_RotationOrder: 0
-  - m_From: Squid_CombatCamera
-    m_To: Priestess_CombatCamera
-    m_Blend:
-      m_Style: 0
-      m_Time: 2
-      m_CustomCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 0
-        m_PostInfinity: 0
-        m_RotationOrder: 0
-  - m_From: Squid_CombatCamera
-    m_To: Cowboy_CombatCamera
-    m_Blend:
-      m_Style: 0
-      m_Time: 2
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []

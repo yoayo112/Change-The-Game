@@ -402,6 +402,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2592239853862534001, guid: 96e00f639d29e104a8e99b7bae07d5ef, type: 3}
+      propertyPath: m_BlendUpdateMethod
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3656382419841551955, guid: 96e00f639d29e104a8e99b7bae07d5ef, type: 3}
       propertyPath: m_LocalPosition.x
       value: 19.838669

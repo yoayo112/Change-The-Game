@@ -122,12 +122,24 @@ PrefabInstance:
       value: 'Priestess Stats:'
       objectReference: {fileID: 0}
     - target: {fileID: 1665909390925972486, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.12885126
+      objectReference: {fileID: 0}
+    - target: {fileID: 1665909390925972486, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.17328276
+      objectReference: {fileID: 0}
+    - target: {fileID: 1665909390925972486, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2563
+      objectReference: {fileID: 0}
+    - target: {fileID: 1665909390925972486, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -35.5
+      value: -34.5
       objectReference: {fileID: 0}
     - target: {fileID: 1665909390925972486, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -20.6
+      value: -20
       objectReference: {fileID: 0}
     - target: {fileID: 2247890946143215969, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_Color.b
@@ -159,19 +171,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3614211411368206930, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.1243282
+      value: 0.15619352
       objectReference: {fileID: 0}
     - target: {fileID: 3614211411368206930, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.1672
+      value: 0.21005335
       objectReference: {fileID: 0}
     - target: {fileID: 3614211411368206930, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.2122
+      value: 1.5228869
       objectReference: {fileID: 0}
     - target: {fileID: 3614211411368206930, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -35.1
+      value: -33.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3614211411368206930, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -11.4
       objectReference: {fileID: 0}
     - target: {fileID: 4111699794275865958, guid: 84bc48596a7292c449ccabe1406c4eb3, type: 3}
       propertyPath: m_Color.b

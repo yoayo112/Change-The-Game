@@ -290,7 +290,7 @@ public class Character : MonoBehaviour, IComparable
     public void End_Turn()
     {
         Debug.Log("Character " + characterName + " is ending their turn.");
-        Zoom_Out();
+        StartCoroutine(Zoom_Out());
         CombatEventManager.End_Turn();
     }
 
@@ -337,8 +337,10 @@ public class Character : MonoBehaviour, IComparable
         combatShot.gameObject.SetActive(true);
     }
 
-    private void Zoom_Out()
+    private IEnumerator Zoom_Out()
     {
+        yield return new WaitForSeconds(0.1f);
         combatShot.gameObject.SetActive(false);
+        yield return null;
     }
 }

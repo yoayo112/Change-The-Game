@@ -65,6 +65,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 747430912887501702}
+  combatCamera: {fileID: 4683116240251655019}
 --- !u!143 &8602209196024982845
 CharacterController:
   m_ObjectHideFlags: 0
@@ -102,6 +103,10 @@ PrefabInstance:
     - target: {fileID: 1554336523454899394, guid: 303b8e69ea6cc1945a28714b4cd2e32f, type: 3}
       propertyPath: m_Name
       value: Squid_CombatCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 1554336523454899394, guid: 303b8e69ea6cc1945a28714b4cd2e32f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7453041041623683859, guid: 303b8e69ea6cc1945a28714b4cd2e32f, type: 3}
       propertyPath: m_LocalPosition.x
